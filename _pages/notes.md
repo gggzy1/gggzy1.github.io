@@ -9,7 +9,7 @@ This page collects my technical notes on optimization, stochastic programming, a
 
 ## Optimization
 
-- [A Note on the Augmented Lagrangian Method](/posts/2026/05/alm/)
+- [A Note on the Augmented Lagrangian Method](/notes/augmented-lagrangian-method/)
 - [Mirror Descent and Bregman Divergence](/posts/2026/05/mirror-descent/)
 - [KKT Conditions and Duality](/posts/2026/05/kkt-duality/)
 
