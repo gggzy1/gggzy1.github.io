@@ -1,13 +1,13 @@
 ---
 permalink: /
 title: "Zhiyun Guo"
-author_profile: false
+author_profile: true
 redirect_from:
   - /about/
   - /about.html
 ---
 
-Hello! I am Zhiyun Guo, an explorer in the ocean of optimization and machine learning😊.
+Hello! I am Zhiyun Guo, an explorer in the ocean of optimization and machine learning.
 
 Currently, this website mainly serves as a place to collect my CV, technical notes, and research-related thoughts.
 
@@ -19,11 +19,10 @@ Currently, this website mainly serves as a place to collect my CV, technical not
 
 ## Current Focus
 
-I am currently organizing notes around optimization and LLMs. Some of them are formal, some are just me trying to understand the basic objects before building anything too ambitious.
+I am currently organizing notes around optimization and LLMs.
 
 ## Selected Notes
 
 - [A Note on the Augmented Lagrangian Method](/notes/augmented-lagrangian-method/)
 - [LLM Basics](/notes/llm/basic/)
 - [LLM Agents](/notes/llm/agent/)
-
