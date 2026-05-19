@@ -8,9 +8,26 @@
       <stop offset="100%" stop-color="#d7e4f5"/>
     </radialGradient>
     <linearGradient id="curve" x1="50" y1="320" x2="350" y2="90">
-      <stop offset="0%" stop-color="#2d6cdf"/>
-      <stop offset="100%" stop-color="#00a884"/>
+      <stop offset="0%" stop-color="#111827"/>
+      <stop offset="45%" stop-color="#4c1d95"/>
+      <stop offset="75%" stop-color="#2563eb"/>
+      <stop offset="100%" stop-color="#22d3ee"/>
     </linearGradient>
+    <radialGradient id="markerA" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#e0f2fe"/>
+      <stop offset="45%" stop-color="#60a5fa"/>
+      <stop offset="100%" stop-color="#1e1b4b"/>
+    </radialGradient>
+    <radialGradient id="markerB" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#f5d0fe"/>
+      <stop offset="45%" stop-color="#8b5cf6"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </radialGradient>
+    <radialGradient id="markerC" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#ccfbf1"/>
+      <stop offset="45%" stop-color="#22d3ee"/>
+      <stop offset="100%" stop-color="#172554"/>
+    </radialGradient>
   </defs>
 
   <circle cx="200" cy="200" r="196" fill="url(#bg)"/>
@@ -40,15 +57,10 @@
   <path d="M82 295 C130 220, 166 260, 202 178 S284 116, 326 158" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" opacity="0.85"/>
 
   <g>
-    <circle cx="82" cy="295" r="13" fill="#2d6cdf"/>
-    <circle cx="202" cy="178" r="13" fill="#00a884"/>
-    <circle cx="326" cy="158" r="13" fill="#ef476f"/>
-    <circle cx="139" cy="238" r="8" fill="#5b6f82"/>
-    <circle cx="263" cy="134" r="8" fill="#5b6f82"/>
-  </g>
-
-  <g fill="#243447" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="700">
-    <text x="72" y="105">min</text>
-    <text x="72" y="145" font-size="28">f(x)</text>
+    <circle cx="82" cy="295" r="13" fill="url(#markerA)"/>
+    <circle cx="202" cy="178" r="13" fill="url(#markerB)"/>
+    <circle cx="326" cy="158" r="13" fill="url(#markerC)"/>
+    <circle cx="139" cy="238" r="8" fill="#312e81"/>
+    <circle cx="263" cy="134" r="8" fill="#0f766e"/>
   </g>
 </svg>
