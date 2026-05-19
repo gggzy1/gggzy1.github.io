@@ -5,10 +5,14 @@ permalink: /research/
 author_profile: true
 ---
 
-## Research Interests
+My research interests are optimization, machine learning, and EconCS.
 
-I am currently exploring optimization, machine learning and EconCS.
+## Interests
 
-My current research interests include:
+- Optimization
+- Machine learning
+- Economics and computation (EconCS)
 
-- TO BE IMPLEMENTED
+## Current Direction
+
+I am interested in mathematical and computational tools for decision-making systems, especially where optimization methods interact with learning and economic models.

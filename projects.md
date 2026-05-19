@@ -1,8 +1,10 @@
 ---
 layout: archive
 title: "Projects"
-permalink: /projects/
+permalink: /legacy-projects/
 author_profile: true
+published: false
 ---
 
-## COMING UP..
+This hidden placeholder is kept to avoid deleting the original root-level file.
+The active Projects page lives at `_pages/projects.md`.

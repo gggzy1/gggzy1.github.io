@@ -1,12 +1,12 @@
 ---
 permalink: /
-title: "About"
+title: "Zhiyun Guo"
 author_profile: true
 redirect_from:
   - /about/
   - /about.html
 ---
 
-I am currently exploring the ocean of optimization😊
+I am Zhiyun Guo. My research interests are optimization, machine learning, and EconCS.
 
-This website is used to organize my research interests, selected projects, notes, and CV.
+This website collects my research interests, selected projects, technical notes, and CV.

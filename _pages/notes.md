@@ -5,19 +5,25 @@ permalink: /notes/
 author_profile: true
 ---
 
-This page collects my technical notes on optimization, stochastic programming, and related topics.
+This page collects technical notes and personal writing.
 
 ## Optimization
 
 - [A Note on the Augmented Lagrangian Method](/notes/augmented-lagrangian-method/)
-- [Mirror Descent and Bregman Divergence](/posts/2026/05/mirror-descent/)
-- [KKT Conditions and Duality](/posts/2026/05/kkt-duality/)
 
-## Stochastic Programming
+## Econ
 
-- [Introduction to SDDP](/posts/2026/05/sddp/)
-- [Risk-Averse Dynamic Programming and CVaR](/posts/2026/05/risk-averse-sddp/)
+Notes will be added here.
 
-## Probability and Stochastic Processes
+## Workflow
 
-- [Markov Chains: Recurrence, Periodicity, and Stationary Distributions](/posts/2026/05/markov-chain-basics/)
+Notes will be added here.
+
+## LLM
+
+- [LLM Basics](/notes/llm/basic/)
+- [LLM Agents](/notes/llm/agent/)
+
+## Personal
+
+Reflections, diary entries, and informal writing will be added here.
