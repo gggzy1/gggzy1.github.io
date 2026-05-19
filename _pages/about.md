@@ -7,7 +7,7 @@ redirect_from:
   - /about.html
 ---
 
-Hello! I am Zhiyun Guo, an explorer in the ocean of optimization and machine learning.
+Hello😊!
 
 Currently, this website mainly serves as a place to collect my CV, technical notes, and research-related thoughts.
 
