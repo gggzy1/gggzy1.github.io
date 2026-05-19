@@ -2,24 +2,7 @@
 title: "A Note on the Augmented Lagrangian Method"
 date: 2026-05-10
 permalink: /notes/augmented-lagrangian-method/
-tags:
-  - optimization
-  - constrained-optimization
-  - augmented-lagrangian
-  - numerical-optimization
-author_profile: true
----
-
----
-title: "A Note on the Augmented Lagrangian Method"
-date: 2026-05-10
-permalink: /notes/augmented-lagrangian-method/
-tags:
-  - optimization
-  - constrained-optimization
-  - augmented-lagrangian
-  - numerical-optimization
-author_profile: true
+author_profile: false
 ---
 
 The augmented Lagrangian method (ALM) is one of the central algorithms for constrained optimization. It can be viewed from several complementary perspectives: as a stabilized penalty method, as a multiplier method, as dual ascent on a smoothed dual function, and, in the convex case, as the proximal point method applied to the dual problem.

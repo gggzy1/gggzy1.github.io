@@ -1,7 +1,7 @@
 ---
 title: "LLM Basics"
 permalink: /notes/llm/basic/
-author_profile: true
+author_profile: false
 ---
 
 ## 1. What is an LLM 🤖? 

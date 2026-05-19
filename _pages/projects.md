@@ -2,7 +2,7 @@
 layout: archive
 title: "Projects"
 permalink: /projects/
-author_profile: true
+author_profile: false
 ---
 
 This page collects selected projects related to optimization, machine learning, and EconCS.

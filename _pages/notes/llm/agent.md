@@ -1,10 +1,8 @@
 ---
 title: "LLM Agents"
 permalink: /notes/llm/agent/
-author_profile: true
+author_profile: false
 ---
-
-This note records the most basic concepts of LLM agents. The goal is to define the objects clearly before discussing specific applications.
 
 ## 1. LLM vs Agent
 

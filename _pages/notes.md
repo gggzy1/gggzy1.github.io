@@ -2,7 +2,7 @@
 layout: archive
 title: "Notes"
 permalink: /notes/
-author_profile: true
+author_profile: false
 ---
 
 This page collects technical notes and personal writing.
