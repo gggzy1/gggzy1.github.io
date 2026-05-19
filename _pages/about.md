@@ -7,6 +7,6 @@ redirect_from:
   - /about.html
 ---
 
-I am currently exploring the ocean of optimization.
+I am currently exploring the ocean of optimization😊
 
 This website is used to organize my research interests, selected projects, notes, and CV.
