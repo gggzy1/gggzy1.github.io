@@ -1,7 +1,7 @@
 ---
+layout: archive
 title: "A Note on the Augmented Lagrangian Method"
-date: 2026-05-10
-permalink: /notes/augmented-lagrangian-method/
+permalink: /notes/optimization/augmented-lagrangian-method/
 author_profile: false
 ---
 

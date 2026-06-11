@@ -8,8 +8,8 @@ author_profile: false
 This page collects technical notes and personal writing.
 
 ## Optimization
-
-- [A Note on the Augmented Lagrangian Method](/notes/augmented-lagrangian-method/)
+- [A Note on Coerciveness](/notes/optimization/coercive/)
+- [A Note on the Augmented Lagrangian Method](/notes/optimization/augmented-lagrangian-method/)
 
 ## Econ
 

@@ -11,7 +11,7 @@ redirect_from:
 
 ## Zhiyun Guo
 
-Research interests: optimization, machine learning, and EconCS.
+Research interests: optimization(mainly stochastic optimization and first/second-order algorithms), machine learning, and EconCS.
 
 ## Education
 
@@ -20,8 +20,8 @@ Details will be added.
 ## Research Interests
 
 - Optimization
-- Machine learning
-- Economics and computation (EconCS)
+- Machine Learning
+- EconCS
 
 ## Selected Work
 

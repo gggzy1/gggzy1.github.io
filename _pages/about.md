@@ -23,6 +23,7 @@ I am currently organizing notes around optimization and LLMs.
 
 ## Selected Notes
 
-- [A Note on the Augmented Lagrangian Method](/notes/augmented-lagrangian-method/)
+- [A Note on Coerciveness](/notes/optimization/coercive/)
+- [A Note on the Augmented Lagrangian Method](/notes/optimization/augmented-lagrangian-method/)
 - [LLM Basics](/notes/llm/basic/)
 - [LLM Agents](/notes/llm/agent/)
