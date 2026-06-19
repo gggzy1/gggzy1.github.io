@@ -19,11 +19,9 @@ Currently, this website mainly serves as a place to collect my CV, technical not
 
 ## Current Focus
 
-I am currently organizing notes around optimization and LLMs.
+I am currently organizing notes around optimization.
 
 ## Selected Notes
 
 - [A Note on Coerciveness](/notes/optimization/coercive/)
 - [A Note on the Augmented Lagrangian Method](/notes/optimization/augmented-lagrangian-method/)
-- [LLM Basics](/notes/llm/basic/)
-- [LLM Agents](/notes/llm/agent/)
