@@ -4,7 +4,7 @@
 
 title: blank # the website title (if blank, full name will be used instead)
 first_name: Zhiyun
-middle_name:
+middle_name: ""
 last_name: Guo
 contact_note: >
   Feel free to reach out via GitHub.
@@ -417,7 +417,7 @@ external_links:
 # MAKE SURE imagemagick is installed and on your PATH before enabling imagemagick. In a terminal, run:
 #   convert -version
 imagemagick:
-  enabled: true # enables responsive images for your site (recommended, see https://github.com/alshedivat/al-folio/issues/537)
+  enabled: false # disabled: ImageMagick can break CI builds; enable locally if needed
   widths:
     - 480
     - 800
