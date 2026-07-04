@@ -1,0 +1,109 @@
+<!DOCTYPE html> <html lang="en"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> LLM Agents | Zhiyun Guo </title> <meta name="author" content="Zhiyun Guo"> <meta name="description" content="State, action, and observation frameworks for LLM agents."> <meta name="keywords" content="optimization, operations-research, machine-learning, econcs, academic-website"> <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' data: https:; media-src 'self' https:; frame-src 'self' https:; connect-src 'self' https:;"> <style>
+  :root {
+    --max-content-width: 930px;
+  }
+</style> <link rel="stylesheet" href="/assets/css/tailwind.css?v=50c64c15cbb9fd1ce6056fdb8bcb4b62"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.2.0/css/all.min.css" integrity="sha256-MVopmdyC2tYTiJ8wlktf0uh0v4NgT+vNdyVFepi7Q0c=" crossorigin="anonymous"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.5/css/academicons.min.css" integrity="sha256-SzrCOBJbGVFMahewkgjwnApaV2+av1DwMAA+/QGLyZw=" crossorigin="anonymous"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/scholar-icons@1.0.3/css/scholar-icons.css" integrity="sha256-VY3hHVj/hNX3fYG6wtbA6TcKJQl7+FthzGSyIB64klY=" crossorigin="anonymous"> <link defer rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons&amp;display=swap"> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?v=591dab5a4e56573bf4ef7fd332894c99" media="" id="highlight_theme_light"> <link rel="shortcut icon" href="/assets/img/favicon.svg?v=8327edbaa5b947b9d5740bbcb28cdf24"> <link rel="stylesheet" href="/assets/css/main.css?v=f0b101217084a90093badfe99ff9a7d1"> <link rel="canonical" href="https://gggzy1.github.io/notes/llm/agent/"> <script src="/assets/js/theme.js?v=7af685e2ba20b37fef545c97b8064050"></script> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-native.css?v=5847e5ed4a4568527aa6cfab446049ca" media="none" id="highlight_theme_dark"> <script>
+    initTheme();
+  </script> </head> <body class="fixed-top-nav "> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <a class="navbar-brand title font-weight-lighter" href="/"> <span class="font-weight-bold">Zhiyun</span> Guo </a> <button class="navbar-toggler collapsed navbar-toggler-main" type="button" data-nav-toggle="navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse navbar-collapse-main" id="navbarNav"> <ul class="navbar-nav navbar-menu-list flex-nowrap"> <li class="nav-item "> <a class="nav-link" href="/">about </a> </li> <li class="nav-item "> <a class="nav-link" href="/research/">Research </a> </li> <li class="nav-item "> <a class="nav-link" href="/projects/">projects </a> </li> <li class="nav-item active"> <a class="nav-link" href="/notes/">Notes <span class="sr-only">(current)</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/cv/">CV </a> </li> <li class="nav-item"> <button id="search-toggle" type="button" title="Search" aria-label="Open search"> <span class="nav-link">ctrl k <i class="fa-solid fa-magnifying-glass"></i></span> </button> </li> <li class="toggle-container"> <button id="light-toggle" type="button" title="Change theme" aria-label="Change color theme"> <i class="fa-half-sun-moon" id="light-toggle-system"></i> <i class="fa-solid fa-moon" id="light-toggle-dark"></i> <i class="fa-solid fa-sun" id="light-toggle-light"></i> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <div class="post"> <header class="post-header"> <h1 class="post-title">LLM Agents</h1> <p class="post-description">State, action, and observation frameworks for LLM agents.</p> </header> <article> <h2 id="1-llm-vs-agent">1. LLM vs Agent</h2> <p>An LLM is a conditional text generator:</p> \[p_\theta(y \mid x),\] <p>where (x) is the input context and (y) is the generated output.</p> <p>An LLM agent is not just the model. It is a controlled loop around the model. The model chooses actions, receives observations, and updates its context or state.</p> <p>Informally:</p> \[\text{agent} = \text{LLM} + \text{state} + \text{actions} + \text{tools} + \text{control loop}.\] <h2 id="2-state-action-observation">2. State, Action, Observation</h2> <p>A basic agent system can be described by:</p> <ul> <li>(s_t): state at step (t)</li> <li>(h_t): history or context available to the model</li> <li>(a_t): action chosen by the agent</li> <li>(o_{t+1}): observation returned by the environment or tool</li> <li>(T): transition rule from current state and action to next state</li> </ul> <p>At each step:</p> \[a_t = \pi_\theta(h_t),\] <p>where (\pi_\theta) is the policy induced by the LLM and the prompt.</p> <p>Then the environment or tool returns:</p> \[o_{t+1} = E(a_t),\] <p>and the system updates the state:</p> \[s_{t+1} = T(s_t, a_t, o_{t+1}).\] <p>The important point: the LLM does not usually update its model weights during this loop. What changes is the external state, memory, and context.</p> <h2 id="3-minimal-agent-loop">3. Minimal Agent Loop</h2> <div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>initialize state
+
+while not done:
+    build context from state, task, memory, and observations
+    ask LLM to choose next action
+    execute action
+    collect observation
+    update state
+    check stopping condition
+</code></pre></div></div> <p>This loop is the core object. Planning, reflection, memory, and multi-agent systems are extensions of this loop.</p> <h2 id="4-actions-and-tools">4. Actions and Tools</h2> <p>An action is something the agent can do. Common action types:</p> <ul> <li>answer directly</li> <li>call a search tool</li> <li>run code</li> <li>query a database</li> <li>read or write a file</li> <li>call an external API</li> <li>ask another agent to review something</li> </ul> <p>For tool use, the action should have a structured schema. For example:</p> <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"tool"</span><span class="p">:</span><span class="w"> </span><span class="s2">"search"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"query"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ReAct language agents paper"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div> <p>A good tool interface should specify:</p> <ul> <li>allowed inputs</li> <li>output format</li> <li>possible errors</li> <li>cost or latency</li> <li>whether the action changes external state</li> </ul> <h2 id="5-context-and-memory">5. Context and Memory</h2> <p>The context window is temporary. Memory is external.</p> <p>Useful distinction:</p> <ul> <li> <strong>Context</strong>: information currently passed into the LLM.</li> <li> <strong>Short-term state</strong>: variables needed for the current task.</li> <li> <strong>Long-term memory</strong>: information saved across tasks or episodes.</li> <li> <strong>Knowledge base</strong>: external documents or structured facts that can be retrieved.</li> </ul> <p>Memory is useful only if retrieval is useful. Storing everything is not the same as remembering well.</p> <h2 id="6-planning-and-reflection">6. Planning and Reflection</h2> <p>Planning means choosing a sequence of actions before executing all of them.</p> <p>Reflection means using feedback from previous actions to modify the next action or the stored memory.</p> <p>In a simple loop:</p> <div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>plan -&gt; act -&gt; observe -&gt; revise plan
+</code></pre></div></div> <p>Reflection is not automatically reliable. It needs feedback signals, such as errors, tests, scores, human comments, or tool outputs.</p> <h2 id="7-evaluation">7. Evaluation</h2> <p>An agent should be evaluated by task performance, not by whether its reasoning text sounds plausible.</p> <p>Possible evaluation targets:</p> <ul> <li>final answer correctness</li> <li>tool-call validity</li> <li>number of steps</li> <li>cost</li> <li>latency</li> <li>robustness to prompt changes</li> <li>ability to recover from errors</li> </ul> <p>For scientific or engineering tasks, an agent output should be checked against external criteria whenever possible: tests, data, proofs, simulations, or reproducible calculations.</p> <h2 id="8-failure-modes">8. Failure Modes</h2> <p>Common failure modes:</p> <ul> <li>hallucinated facts</li> <li>invalid tool calls</li> <li>losing track of state</li> <li>using irrelevant memory</li> <li>over-planning without executing</li> <li>confirmation bias in self-review</li> <li>prompt sensitivity</li> <li>stopping too early or looping too long</li> </ul> <p>These are system-level problems, not only model-level problems.</p> <h2 id="9-basic-references">9. Basic References</h2> <ul> <li>Yao et al., <a href="https://arxiv.org/abs/2210.03629" rel="external nofollow noopener" target="_blank">ReAct: Synergizing Reasoning and Acting in Language Models</a>, 2022.</li> <li>Schick et al., <a href="https://arxiv.org/abs/2302.04761" rel="external nofollow noopener" target="_blank">Toolformer: Language Models Can Teach Themselves to Use Tools</a>, 2023.</li> <li>Shinn et al., <a href="https://arxiv.org/abs/2303.11366" rel="external nofollow noopener" target="_blank">Reflexion: Language Agents with Verbal Reinforcement Learning</a>, 2023.</li> <li>Park et al., <a href="https://arxiv.org/abs/2304.03442" rel="external nofollow noopener" target="_blank">Generative Agents: Interactive Simulacra of Human Behavior</a>, 2023.</li> <li>Wu et al., <a href="https://arxiv.org/abs/2308.08155" rel="external nofollow noopener" target="_blank">AutoGen: Enabling Next-Gen LLM Applications via Multi-Agent Conversation</a>, 2023.</li> </ul> </article> </div> </div> <footer class="fixed-bottom" role="contentinfo"> <div class="container mt-0"> © Copyright 2026 Zhiyun Guo. Powered by <a href="https://jekyllrb.com/" target="_blank" rel="external nofollow noopener">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio" rel="external nofollow noopener" target="_blank">al-folio</a> theme. </div> </footer> <script>
+  window.alFolio = {
+    compatBootstrap: false
+  };
+</script> <script src="/assets/js/nav-toggle.js?v=141bd79a73ebc0f0b6ea58e440ae79fc"></script> <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@5.0.0/imagesloaded.pkgd.min.js" integrity="sha256-htrLFfZJ6v5udOG+3kNLINIKh2gvoKqwEhHYfTTMICc=" crossorigin="anonymous"></script> <script defer src="/assets/js/masonry.js?v=e49affc7bd2646f6acdad1dbe02c2359" type="text/javascript"></script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script src="/assets/al_math/js/mathjax-setup.js"></script> <script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6" crossorigin="anonymous"></script> <script src="/assets/js/tooltips-setup.js?v=fe487e99db6c43751e6e7bdb2d6a0611"></script> <script src="/assets/js/no_defer.js?v=53b1b1a645525975c963ce8bf8bfefcf"></script> <script defer src="/assets/js/common.js?v=87baac90f765f2f3362dcf6aaf312a8a"></script> <script defer src="/assets/js/copy_code.js?v=c8a01c11a92744d44b093fc3bda915df" type="text/javascript"></script> <script defer src="/assets/js/jupyter_new_tab.js?v=896d254890d9b47f0281f63bfccf0dee"></script> <script async src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script> <script async src="https://badge.dimensions.ai/badge.js"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/assets/al_img_tools/js/zoom.js"></script> <script defer src="/assets/js/progress-bar.js?v=499464c5c63ced6cf7ad62509f1e2610" type="text/javascript"></script> <script src="https://cdn.jsdelivr.net/npm/vanilla-back-to-top@7.2.1/dist/vanilla-back-to-top.min.js" integrity="sha256-uMJJ3EoTyfRBoTbR+lrfu1uRQ87RZG8AR3cVNuQVeFg=" crossorigin="anonymous"></script> <script>
+    addBackToTop();
+  </script> <script type="module" src="/assets/al_search/js/search/ninja-keys.min.js"></script> <ninja-keys hidebreadcrumbs noautoloadmdicons placeholder="Type to start searching"></ninja-keys> <script src="/assets/al_search/js/search-setup.js"></script> <script>
+// get the ninja-keys element
+const ninja = document.querySelector('ninja-keys');
+
+// add the home and posts menu items
+ninja.data = [{
+    id: "nav-about",
+    title: "about",
+    section: "Navigation",
+    handler: () => {
+      window.location.href = "/";
+    },
+  },{id: "nav-research",
+          title: "Research",
+          description: "Research interests and directions.",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/research/";
+          },
+        },{id: "nav-projects",
+          title: "projects",
+          description: "Selected projects in optimization, machine learning, and EconCS.",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/projects/";
+          },
+        },{id: "nav-notes",
+          title: "Notes",
+          description: "Technical notes and exposition.",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/notes/";
+          },
+        },{id: "nav-cv",
+          title: "CV",
+          description: "Curriculum vitae.",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/cv/";
+          },
+        },{
+        id: 'social-rss',
+        title: 'RSS Feed',
+        section: 'Socials',
+        handler: () => {
+          window.open("/feed.xml", "_blank");
+        },
+      },{
+        id: 'social-github',
+        title: 'GitHub',
+        section: 'Socials',
+        handler: () => {
+          window.open("https://github.com/gggzy1", "_blank");
+        },
+      },{
+      id: 'light-theme',
+      title: 'Change theme to light',
+      description: 'Change the theme of the site to Light',
+      section: 'Theme',
+      handler: () => {
+        setThemeSetting("light");
+      },
+    },
+    {
+      id: 'dark-theme',
+      title: 'Change theme to dark',
+      description: 'Change the theme of the site to Dark',
+      section: 'Theme',
+      handler: () => {
+        setThemeSetting("dark");
+      },
+    },
+    {
+      id: 'system-theme',
+      title: 'Use system default theme',
+      description: 'Change the theme of the site to System Default',
+      section: 'Theme',
+      handler: () => {
+        setThemeSetting("system");
+      },
+    },];
+
+</script> <script src="/assets/al_search/js/shortcut-key.js"></script> </body> </html>
