@@ -1,29 +1,20 @@
 ---
-layout: archive
-title: "Notes"
+layout: page
+title: Notes
 permalink: /notes/
-author_profile: false
+description: Technical notes and exposition.
+nav: true
+nav_order: 4
 ---
 
-This page collects technical notes and personal writing.
+Technical notes I write to teach myself. They are exposition, not peer-reviewed papers.
 
 ## Optimization
+
 - [A Note on Coerciveness](/notes/optimization/coercive/)
 - [A Note on the Augmented Lagrangian Method](/notes/optimization/augmented-lagrangian-method/)
-
-## Econ
-
-Notes will be added here.
-
-## Workflow
-
-Notes will be added here.
 
 ## LLM
 
 - [LLM Basics](/notes/llm/basic/)
 - [LLM Agents](/notes/llm/agent/)
-
-## Personal
-
-Reflections, diary entries, and informal writing will be added here.

@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-labelledby="title desc">
+  <title id="title">Abstract optimization avatar</title>
+  <desc id="desc">A playful abstract avatar with a sun, contour lines, and orbiting points.</desc>
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="40%" r="70%">
+      <stop offset="0%" stop-color="#fff7d6"/>
+      <stop offset="50%" stop-color="#e8f2ff"/>
+      <stop offset="100%" stop-color="#d7e4f5"/>
+    </radialGradient>
+    <linearGradient id="curve" x1="50" y1="320" x2="350" y2="90">
+      <stop offset="0%" stop-color="#111827"/>
+      <stop offset="45%" stop-color="#4c1d95"/>
+      <stop offset="75%" stop-color="#2563eb"/>
+      <stop offset="100%" stop-color="#22d3ee"/>
+    </linearGradient>
+    <radialGradient id="markerA" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#e0f2fe"/>
+      <stop offset="45%" stop-color="#60a5fa"/>
+      <stop offset="100%" stop-color="#1e1b4b"/>
+    </radialGradient>
+    <radialGradient id="markerB" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#f5d0fe"/>
+      <stop offset="45%" stop-color="#8b5cf6"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </radialGradient>
+    <radialGradient id="markerC" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#ccfbf1"/>
+      <stop offset="45%" stop-color="#22d3ee"/>
+      <stop offset="100%" stop-color="#172554"/>
+    </radialGradient>
+  </defs>
+
+  <circle cx="200" cy="200" r="196" fill="url(#bg)"/>
+  <circle cx="200" cy="200" r="178" fill="none" stroke="#ffffff" stroke-width="10" opacity="0.85"/>
+
+  <g transform="translate(275 95)">
+    <circle cx="0" cy="0" r="42" fill="#ffd166"/>
+    <g stroke="#f4a261" stroke-width="7" stroke-linecap="round">
+      <line x1="0" y1="-68" x2="0" y2="-55"/>
+      <line x1="0" y1="55" x2="0" y2="68"/>
+      <line x1="-68" y1="0" x2="-55" y2="0"/>
+      <line x1="55" y1="0" x2="68" y2="0"/>
+      <line x1="-48" y1="-48" x2="-39" y2="-39"/>
+      <line x1="39" y1="39" x2="48" y2="48"/>
+      <line x1="48" y1="-48" x2="39" y2="-39"/>
+      <line x1="-39" y1="39" x2="-48" y2="48"/>
+    </g>
+  </g>
+
+  <g fill="none" stroke="#5b6f82" stroke-width="4" opacity="0.35">
+    <ellipse cx="175" cy="230" rx="118" ry="50" transform="rotate(-25 175 230)"/>
+    <ellipse cx="175" cy="230" rx="88" ry="36" transform="rotate(-25 175 230)"/>
+    <ellipse cx="175" cy="230" rx="58" ry="24" transform="rotate(-25 175 230)"/>
+  </g>
+
+  <path d="M82 295 C130 220, 166 260, 202 178 S284 116, 326 158" fill="none" stroke="url(#curve)" stroke-width="13" stroke-linecap="round"/>
+  <path d="M82 295 C130 220, 166 260, 202 178 S284 116, 326 158" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" opacity="0.85"/>
+
+  <g>
+    <circle cx="82" cy="295" r="13" fill="url(#markerA)"/>
+    <circle cx="202" cy="178" r="13" fill="url(#markerB)"/>
+    <circle cx="326" cy="158" r="13" fill="url(#markerC)"/>
+    <circle cx="139" cy="238" r="8" fill="#312e81"/>
+    <circle cx="263" cy="134" r="8" fill="#0f766e"/>
+  </g>
+</svg>

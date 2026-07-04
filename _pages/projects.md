@@ -1,12 +1,12 @@
 ---
-layout: archive
-title: "Projects"
+layout: page
+title: projects
 permalink: /projects/
-author_profile: false
+description: Selected projects in optimization, machine learning, and EconCS.
+nav: true
+nav_order: 3
+display_categories: []
+horizontal: false
 ---
 
-This page collects selected projects related to optimization, machine learning, and EconCS.
-
-## Selected Projects
-
-Projects will be added here as they become ready to share.
+Projects related to optimization, machine learning, and EconCS will appear here.

@@ -1,7 +1,9 @@
 ---
+layout: page
 title: "LLM Agents"
 permalink: /notes/llm/agent/
-author_profile: false
+math: true
+description: State, action, and observation frameworks for LLM agents.
 ---
 
 ## 1. LLM vs Agent

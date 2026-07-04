@@ -1,15 +1,31 @@
 ---
+layout: about
+title: about
 permalink: /
-title: "Zhiyun Guo"
-author_profile: true
 redirect_from:
   - /about/
-  - /about.html
+subtitle: Optimization · Machine Learning · EconCS
+
+profile:
+  align: right
+  image: prof_pic.svg
+  image_circular: true
+  more_info: >
+    <p>Technical notes & research thoughts</p>
+
+selected_papers: false
+social: true
+
+announcements:
+  enabled: false
+
+latest_posts:
+  enabled: false
 ---
 
-Hello😊!
+Hello! I'm **Zhiyun Guo**.
 
-Currently, this website mainly serves as a place to collect my CV, technical notes, and research-related thoughts.
+This website collects my CV, technical notes, and research-related thoughts. I like explanations that are warm but exact.
 
 ## Research Interests
 
@@ -19,9 +35,11 @@ Currently, this website mainly serves as a place to collect my CV, technical not
 
 ## Current Focus
 
-I am currently organizing notes around optimization.
+I am organizing notes around optimization. More content coming soon.
 
 ## Selected Notes
 
-- [A Note on Coerciveness](/notes/optimization/coercive/)
+- [A Note on Coerciveness](/notes/optimization/coercive/) — includes an interactive explorer
 - [A Note on the Augmented Lagrangian Method](/notes/optimization/augmented-lagrangian-method/)
+
+See all notes on the [Notes](/notes/) page.

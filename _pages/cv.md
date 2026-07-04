@@ -1,21 +1,19 @@
 ---
-layout: archive
-title: "CV"
+layout: page
+title: CV
 permalink: /cv/
-author_profile: false
-redirect_from:
-  - /resume
+description: Curriculum vitae.
+nav: true
+nav_order: 5
 ---
-
-{% include base_path %}
 
 ## Zhiyun Guo
 
-Research interests: optimization(mainly stochastic optimization and first/second-order algorithms), machine learning, and EconCS.
+Research interests: optimization (stochastic optimization and first/second-order algorithms), machine learning, and EconCS.
 
 ## Education
 
-Details will be added.
+*To be added.*
 
 ## Research Interests
 
@@ -25,4 +23,4 @@ Details will be added.
 
 ## Selected Work
 
-Selected publications, projects, teaching, and service information will be added here.
+*Publications, projects, teaching, and service — to be added.*

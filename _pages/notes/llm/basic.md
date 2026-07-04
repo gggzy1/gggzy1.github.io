@@ -1,7 +1,9 @@
 ---
+layout: page
 title: "LLM Basics"
 permalink: /notes/llm/basic/
-author_profile: false
+math: true
+description: Autoregressive language models, training, and inference.
 ---
 
 ## 1. What is an LLM 🤖? 

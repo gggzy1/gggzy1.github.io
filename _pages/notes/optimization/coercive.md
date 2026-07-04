@@ -1,24 +1,21 @@
 ---
-layout: archive
+layout: page
 title: "A Note on Coerciveness"
-date: 2026-06-11
 permalink: /notes/optimization/coercive/
-author_profile: false
-mathjax: true
+math: true
+description: Coercivity, asymptotic functions, and an interactive 1D explorer.
 ---
 
 
 In mathematical optimization, establishing whether an objective function actually achieves its minimum is a foundational step before deploying any descent algorithm. The concept of **coerciveness** provides the rigorous framework to answer this by analyzing the function's behavior at infinity.
 
-We begin with the classical definition from Amir Beck's *First-Order Methods in Optimization* (Definition 2.13), which is the standard entry point in modern first-order texts. We then follow the refined convex-analytic presentation of J.-B. Hiriart-Urruty and C. Lemaréchal (*Convex Analysis and Minimization Algorithms I*), which distinguishes **0-coercive** and **1-coercive** functions via the asymptotic (horizon) function.
-
 ---
 
-### 1. Classical Coerciveness (Beck)
+### 1. Classical Definition of Coerciveness
 
 Let $\mathbb{E}$ denote a finite-dimensional Euclidean space equipped with the Euclidean norm $\|\cdot\|$.
 
-> **Definition 2.13 (coerciveness; Beck).** A proper function $f : \mathbb{E} \to (-\infty, +\infty]$ is called **coercive** if
+> **Definition 2.13 (coerciveness).** A proper function $f : \mathbb{E} \to (-\infty, +\infty]$ is called **coercive** if
 > $$\lim_{\|x\| \to +\infty} f(x) = +\infty.$$
 
 In words: $f$ must grow without bound along every sequence whose norm diverges. This is the notion most often assumed—implicitly or explicitly—when proving that a descent method has bounded iterates or that a minimizer exists.
@@ -27,7 +24,7 @@ In words: $f$ must grow without bound along every sequence whose norm diverges. 
 
 A basic but indispensable consequence of coercivity is that well-posedness is inherited on any closed feasible set that intersects the domain.
 
-> **Theorem (Beck).** Let $f : \mathbb{E} \to (-\infty, +\infty]$ be a **closed** coercive function, and let $C \subseteq \mathbb{E}$ be closed with $C \cap \mathrm{dom}\, f \neq \emptyset$. Then the constrained problem
+> **Theorem.** Let $f : \mathbb{E} \to (-\infty, +\infty]$ be a **closed** coercive function, and let $C \subseteq \mathbb{E}$ be closed with $C \cap \mathrm{dom}\, f \neq \emptyset$. Then the constrained problem
 > $$\min_{x \in C} f(x)$$
 > admits at least one minimizer.
 
