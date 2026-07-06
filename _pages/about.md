@@ -10,10 +10,10 @@ nav_order: 1
 
 profile:
   align: right
-  image: prof_pic.svg
+  image: a1.png
   image_circular: true
-  more_info: >
-    <p>Technical notes & research thoughts</p>
+  # more_info: >
+  #   <p>Technical notes & research thoughts</p>
 
 selected_papers: false
 social: true
