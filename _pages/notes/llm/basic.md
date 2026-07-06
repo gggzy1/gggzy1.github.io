@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: note
 title: "LLM Basics"
 permalink: /notes/llm/basic/
 math: true

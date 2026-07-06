@@ -23,5 +23,6 @@ I am interested in mathematical and computational tools for decision-making syst
 
 - [A Note on Coerciveness](/notes/optimization/coercive/)
 - [A Note on the Augmented Lagrangian Method](/notes/optimization/augmented-lagrangian-method/)
+- [A Note on Lagrangian Duality](/notes/optimization/lagrangian-duality/)
 - [LLM Basics](/notes/llm/basic/)
 - [LLM Agents](/notes/llm/agent/)

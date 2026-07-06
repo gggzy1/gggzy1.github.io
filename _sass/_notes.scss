@@ -1,0 +1,81 @@
+/*******************************************************************************
+ * Reading typography for technical notes (math-heavy pages).
+ ******************************************************************************/
+
+.post article {
+  font-family: "Source Serif 4", "Source Serif Pro", Georgia, "Times New Roman", serif;
+  font-size: 1.0625rem;
+  line-height: 1.78;
+  letter-spacing: 0.012em;
+  font-feature-settings: "kern" 1, "liga" 1;
+
+  p {
+    margin-bottom: 1.2em;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: "Source Sans 3", Roboto, system-ui, sans-serif;
+    line-height: 1.32;
+    letter-spacing: -0.01em;
+  }
+
+  h2 {
+    margin-top: 2.25em;
+    margin-bottom: 0.85em;
+  }
+
+  h3,
+  h4 {
+    margin-top: 1.75em;
+    margin-bottom: 0.65em;
+  }
+
+  blockquote {
+    margin: 1.75em 0;
+    padding: 1.1em 1.35em;
+    font-size: 1.02rem;
+    line-height: 1.68;
+    border-left-width: 4px;
+
+    p + p {
+      margin-top: 0.75em;
+    }
+  }
+
+  ul,
+  ol {
+    margin-bottom: 1.25em;
+    padding-left: 1.35em;
+  }
+
+  li {
+    margin-bottom: 0.45em;
+  }
+
+  hr {
+    margin: 2.5em 0;
+  }
+
+  mjx-container[display="true"],
+  .MathJax_Display {
+    margin: 1.35em 0 !important;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+}
+
+.post-header .post-title {
+  font-family: "Source Sans 3", Roboto, system-ui, sans-serif;
+  letter-spacing: -0.02em;
+}
+
+.post-header .post-description {
+  font-size: 0.95rem;
+  line-height: 1.55;
+  max-width: 42em;
+}

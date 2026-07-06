@@ -1,13 +1,13 @@
 ---
-layout: page
+layout: note
 title: "A Note on Coerciveness"
 permalink: /notes/optimization/coercive/
 math: true
-description: Coercivity, asymptotic functions, and an interactive 1D explorer.
+description: Coercivity.
 ---
 
 
-In mathematical optimization, establishing whether an objective function actually achieves its minimum is a foundational step before deploying any descent algorithm. The concept of **coerciveness** provides the rigorous framework to answer this by analyzing the function's behavior at infinity.
+In mathematical optimization, establishing whether an objective function actually achieves its minimum is a foundational step before deploying any descent algorithm. The concept of **coerciveness** provides the rigorous framework to answer this by analyzing the **function's behavior at infinity**.
 
 ---
 
@@ -28,11 +28,11 @@ A basic but indispensable consequence of coercivity is that well-posedness is in
 > $$\min_{x \in C} f(x)$$
 > admits at least one minimizer.
 
-*Proof.* Pick $x_0 \in C \cap \mathrm{dom}\, f$ and set $\alpha := f(x_0)$. Because $f$ is coercive, the sublevel set
-$$S_\alpha(f) := \{ x \in \mathbb{E} \mid f(x) \le \alpha \}$$
-is bounded: if not, there would exist a sequence $\{x_k\} \subset S_\alpha(f)$ with $\|x_k\| \to +\infty$, contradicting $\lim_{\|x\| \to +\infty} f(x) = +\infty$.
+*Proof.* Fix $x_0 \in C \cap \mathrm{dom}\, f$ and set $\alpha := f(x_0)$. For the sublevel set
+$$S_\alpha(f) := \{ x \in \mathbb{E} \mid f(x) \le \alpha \},$$
+coercivity gives boundedness: a sequence in $S_\alpha(f)$ with $\|x_k\| \to \infty$ would contradict $\lim_{\|x\| \to \infty} f(x) = +\infty$.
 
-The restricted feasible set $F := C \cap S_\alpha(f)$ is nonempty ($x_0 \in F$), closed (intersection of two closed sets), and bounded, hence **compact** in $\mathbb{E}$. Since $f$ is closed—equivalently, lower semicontinuous—$f$ attains its minimum on the compact set $F$ by the Weierstrass extreme value theorem. Any minimizer of $f$ over $F$ is also a minimizer of $f$ over $C$, because every point of $C$ with $f(x) > \alpha$ is suboptimal compared with $x_0$. $\square$
+Let $F := C \cap S_\alpha(f)$. Then $F \neq \emptyset$, $F$ is closed and bounded, hence compact. Since $f$ is closed, Weierstrass yields $x^\star \in \arg\min_{F} f$. If $x \in C$ and $f(x) > \alpha$, then $f(x) > f(x_0) \ge f(x^\star)$, so $x^\star \in \arg\min_{C} f$. $\square$
 
 > **Remark.** In the convex setting below, coercivity in Beck's sense coincides with **0-coercivity** in the Hiriart-Urruty–Lemaréchal terminology. The asymptotic function then supplies a directional certificate that is often easier to verify than the raw limit $\lim_{\|x\| \to +\infty} f(x)$.
 
@@ -40,7 +40,7 @@ The restricted feasible set $F := C \cap S_\alpha(f)$ is nonempty ($x_0 \in F$),
 
 ### 2. The Asymptotic Function (Slope at Infinity)
 
-To formalize the behavior of a convex function $f \in \text{Conv } \mathbb{R}^n$ at infinity, we rely on its **asymptotic function** (also known as the horizon function), denoted by $f_{\infty}'$. This function measures the limiting maximal slope of $f$ along any specific direction $d$. 
+To formalize the behavior of a convex function $f \in \text{Conv } \mathbb{R}^n$ at infinity, we rely on its **asymptotic function**, denoted by $f_{\infty}'$. This function measures the limiting maximal slope of $f$ along any specific direction $d$. 
 
 $$\begin{equation}
 f_{\infty}'(d) := \lim_{t \to +\infty} \frac{f(x_0 + td) - f(x_0)}{t}
@@ -61,7 +61,7 @@ $$\begin{equation}
 \lim_{\|x\| \to +\infty} f(x) = +\infty
 \end{equation}$$
 
-This is precisely Beck's definition of coerciveness, restricted to the convex case. The property provides a highly useful characterization of a function's sublevel sets, denoted as $S_r(f) = \{x \in \mathbb{R}^n \mid f(x) \le r\}$.
+The property provides a highly useful characterization of a function's sublevel sets, denoted as $S_r(f) = \{x \in \mathbb{R}^n \mid f(x) \le r\}$.
 
 #### Theorem (Characterization of 0-Coercivity)
 > For a closed convex function $f: \mathbb{R}^n \to (-\infty, +\infty]$, the following conditions are entirely equivalent:
@@ -96,13 +96,15 @@ $$f_{\infty}'(1) = +\infty \quad \text{and} \quad f_{\infty}'(-1) = +\infty$$
 
 ### 5. Interactive Visualization
 
-To build clean intuition around how individual mathematical parameters dictate these classification boundaries, you can tweak the coefficients of the 1D test function below:
+For the test function
 
-$$f(x) = ax^2 + b|x| + cx$$
+$$f(x) = ax^2 + b|x| + cx,$$
 
-* If $a > 0$, the quadratic term dominates, making it **1-Coercive**.
-* If $a = 0$ and $b > |c|$, the function grows linearly in both directions ($f_{\infty}'(1) = b+c > 0$ and $f_{\infty}'(-1) = b-c > 0$), making it **0-Coercive**.
-* Otherwise, if it fails to grow towards $+\infty$ in any direction, it is **Non-Coercive**.
+the cases are:
+
+1. $a > 0$: **1-coercive**.
+2. $a = 0$ and $b > |c|$: **0-coercive**, with $f_{\infty}^{\prime}(1) = b+c$ and $f_{\infty}^{\prime}(-1) = b-c$ both positive.
+3. Otherwise: **non-coercive**.
 
 <div id="coercivity-app" style="max-width: 650px; margin: 30px auto; padding: 20px; border: 1px solid #e1e4e8; border-radius: 8px; background-color: #f6f8fa; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;">
     <h4 style="margin-top: 0; margin-bottom: 15px; color: #24292e; text-align: center;">Interactive Coercivity Explorer</h4>

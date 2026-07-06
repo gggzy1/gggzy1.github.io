@@ -25,9 +25,9 @@ latest_posts:
   enabled: false
 ---
 
-Hello! I'm **Zhiyun Guo**.
+Hello! Here is **Zhiyun Guo**. 
 
-This website collects my CV, technical notes, and research-related thoughts. I like explanations that are warm but exact.
+This website is currently under construction :)
 
 ## Research Interests
 
@@ -41,7 +41,8 @@ I am organizing notes around optimization. More content coming soon.
 
 ## Selected Notes
 
-- [A Note on Coerciveness](/notes/optimization/coercive/) — includes an interactive explorer
+- [A Note on Coerciveness](/notes/optimization/coercive/)
 - [A Note on the Augmented Lagrangian Method](/notes/optimization/augmented-lagrangian-method/)
+- [A Note on Lagrangian Duality](/notes/optimization/lagrangian-duality/)
 
 See all notes on the [Notes](/notes/) page.

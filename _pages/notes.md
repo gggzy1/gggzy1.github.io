@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: note
 title: Notes
 permalink: /notes/
 description: Technical notes and exposition.
@@ -7,12 +7,11 @@ nav: true
 nav_order: 4
 ---
 
-Technical notes I write to teach myself. They are exposition, not peer-reviewed papers.
-
 ## Optimization
 
 - [A Note on Coerciveness](/notes/optimization/coercive/)
 - [A Note on the Augmented Lagrangian Method](/notes/optimization/augmented-lagrangian-method/)
+- [A Note on Lagrangian Duality](/notes/optimization/lagrangian-duality/)
 
 ## LLM
 
