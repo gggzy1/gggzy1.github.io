@@ -1,7 +1,7 @@
 ---
 layout: note
 title: "A Note on Coerciveness"
-permalink: /notes/optimization/coercive/
+permalink: /notes/optimization/basics/coercive/
 math: true
 description: Coercivity, asymptotic functions, and an interactive 1D explorer.
 ---

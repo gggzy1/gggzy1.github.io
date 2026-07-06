@@ -1,7 +1,7 @@
 ---
 layout: note
 title: "A Note on the Augmented Lagrangian Method"
-permalink: /notes/optimization/augmented-lagrangian-method/
+permalink: /notes/optimization/basics/augmented-lagrangian-method/
 math: true
 description: Mathematical structure of the augmented Lagrangian method.
 ---

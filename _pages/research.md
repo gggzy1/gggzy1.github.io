@@ -21,8 +21,17 @@ I am interested in mathematical and computational tools for decision-making syst
 
 ## Related Notes
 
-- [A Note on Coerciveness](/notes/optimization/coercive/)
-- [A Note on the Augmented Lagrangian Method](/notes/optimization/augmented-lagrangian-method/)
-- [A Note on Lagrangian Duality](/notes/optimization/lagrangian-duality/)
+### Optimization — [Basics](/notes/optimization/basics/)
+
+- [A Note on Coerciveness](/notes/optimization/basics/coercive/)
+- [A Note on Lagrangian Duality](/notes/optimization/basics/lagrangian-duality/)
+- [A Note on the Augmented Lagrangian Method](/notes/optimization/basics/augmented-lagrangian-method/)
+
+### [EconCS](/notes/econcs/)
+
+- [A Note on Fisher Markets](/notes/econcs/fisher-market/)
+
+### LLM
+
 - [LLM Basics](/notes/llm/basic/)
 - [LLM Agents](/notes/llm/agent/)

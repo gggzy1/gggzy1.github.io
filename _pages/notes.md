@@ -9,9 +9,19 @@ nav_order: 4
 
 ## Optimization
 
-- [A Note on Coerciveness](/notes/optimization/coercive/)
-- [A Note on the Augmented Lagrangian Method](/notes/optimization/augmented-lagrangian-method/)
-- [A Note on Lagrangian Duality](/notes/optimization/lagrangian-duality/)
+### [Basics](/notes/optimization/basics/)
+
+1. [A Note on Coerciveness](/notes/optimization/basics/coercive/)
+2. [A Note on Lagrangian Duality](/notes/optimization/basics/lagrangian-duality/)
+3. [A Note on the Augmented Lagrangian Method](/notes/optimization/basics/augmented-lagrangian-method/)
+
+### [First-order methods](/notes/optimization/first-order/) — roadmap
+
+### [Stochastic optimization](/notes/optimization/stochastic/) — roadmap
+
+## [EconCS](/notes/econcs/)
+
+- [A Note on Fisher Markets](/notes/econcs/fisher-market/)
 
 ## LLM
 

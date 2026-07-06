@@ -1,7 +1,7 @@
 ---
 layout: note
 title: "A Note on Lagrangian Duality"
-permalink: /notes/optimization/lagrangian-duality/
+permalink: /notes/optimization/basics/lagrangian-duality/
 math: true
 description: Lagrangian duality, weak and strong duality, and Slater-type constraint qualifications.
 ---

@@ -25,7 +25,7 @@ latest_posts:
   enabled: false
 ---
 
-Hello! Here is **Zhiyun Guo**. 
+Hello! This is **Zhiyun Guo**.
 
 This website is currently under construction :)
 
@@ -37,12 +37,12 @@ This website is currently under construction :)
 
 ## Current Focus
 
-I am organizing notes around optimization. More content coming soon.
+I am organizing notes around optimization and EconCS. More content coming soon.
 
 ## Selected Notes
 
-- [A Note on Coerciveness](/notes/optimization/coercive/)
-- [A Note on the Augmented Lagrangian Method](/notes/optimization/augmented-lagrangian-method/)
-- [A Note on Lagrangian Duality](/notes/optimization/lagrangian-duality/)
+- [A Note on Coerciveness](/notes/optimization/basics/coercive/)
+- [A Note on Lagrangian Duality](/notes/optimization/basics/lagrangian-duality/)
+- [A Note on Fisher Markets](/notes/econcs/fisher-market/)
 
 See all notes on the [Notes](/notes/) page.
