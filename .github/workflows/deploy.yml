@@ -44,7 +44,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: github-pages
-      url: ${{ steps.deployment_retry.outputs.page_url || steps.deployment.outputs.page_url }}
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -85,15 +85,15 @@ jobs:
         id: deployment
         continue-on-error: true
         uses: actions/deploy-pages@v4
-      - name: Retry Pages deploy
-        if: steps.deployment.outcome != 'success'
+      - name: Wait before retry
+        if: steps.deployment.conclusion == 'failure'
         run: sleep 30
       - name: Deploy to GitHub Pages (retry)
-        if: steps.deployment.outcome != 'success'
+        if: steps.deployment.conclusion == 'failure'
         id: deployment_retry
         uses: actions/deploy-pages@v4
       - name: Verify Pages deploy
-        if: steps.deployment.outcome != 'success' && steps.deployment_retry.outcome != 'success'
+        if: steps.deployment.conclusion == 'failure' && steps.deployment_retry.conclusion != 'success'
         run: |
           echo "GitHub Pages deployment failed after retry."
           exit 1

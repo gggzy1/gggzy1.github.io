@@ -104,11 +104,13 @@ $$
 f(x) = ax^2 + b|x| + cx,
 $$
 
-the cases are:
+classify as follows.
 
-1. $a > 0$: **1-coercive**.
-2. $a = 0$ and $b > \lvert c \rvert$: **0-coercive**, with $f_{\infty}^{\prime}(1) = b+c$ and $f_{\infty}^{\prime}(-1) = b-c$ both positive.
-3. Otherwise: **non-coercive**.
+**(i)** If $a > 0$, then $f$ is **1-coercive**.
+
+**(ii)** If $a = 0$, $b + c > 0$, and $b - c > 0$, then $f$ is **0-coercive**.
+
+**(iii)** Otherwise, $f$ is **non-coercive**.
 
 <div id="coercivity-app" style="max-width: 650px; margin: 30px auto; padding: 20px; border: 1px solid #e1e4e8; border-radius: 8px; background-color: #f6f8fa; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;">
     <h4 style="margin-top: 0; margin-bottom: 15px; color: #24292e; text-align: center;">Interactive Coercivity Explorer</h4>
