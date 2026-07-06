@@ -5,6 +5,8 @@ permalink: /
 redirect_from:
   - /about/
 subtitle: Optimization · Machine Learning · EconCS
+nav: true
+nav_order: 1
 
 profile:
   align: right
