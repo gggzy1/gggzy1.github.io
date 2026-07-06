@@ -3,107 +3,111 @@ layout: note
 title: "A Note on Coerciveness"
 permalink: /notes/optimization/coercive/
 math: true
-description: Coercivity.
+description: Coercivity, asymptotic functions, and an interactive 1D explorer.
 ---
 
-
-In mathematical optimization, establishing whether an objective function actually achieves its minimum is a foundational step before deploying any descent algorithm. The concept of **coerciveness** provides the rigorous framework to answer this by analyzing the **function's behavior at infinity**.
-
----
-
-### 1. Classical Definition of Coerciveness
-
-Let $\mathbb{E}$ denote a finite-dimensional Euclidean space equipped with the Euclidean norm $\|\cdot\|$.
-
-> **Definition 2.13 (coerciveness).** A proper function $f : \mathbb{E} \to (-\infty, +\infty]$ is called **coercive** if
-> $$\lim_{\|x\| \to +\infty} f(x) = +\infty.$$
-
-In words: $f$ must grow without bound along every sequence whose norm diverges. This is the notion most often assumed—implicitly or explicitly—when proving that a descent method has bounded iterates or that a minimizer exists.
-
-#### Existence of Minimizers on Closed Sets
-
-A basic but indispensable consequence of coercivity is that well-posedness is inherited on any closed feasible set that intersects the domain.
-
-> **Theorem.** Let $f : \mathbb{E} \to (-\infty, +\infty]$ be a **closed** coercive function, and let $C \subseteq \mathbb{E}$ be closed with $C \cap \mathrm{dom}\, f \neq \emptyset$. Then the constrained problem
-> $$\min_{x \in C} f(x)$$
-> admits at least one minimizer.
-
-*Proof.* Fix $x_0 \in C \cap \mathrm{dom}\, f$ and set $\alpha := f(x_0)$. For the sublevel set
-$$S_\alpha(f) := \{ x \in \mathbb{E} \mid f(x) \le \alpha \},$$
-coercivity gives boundedness: a sequence in $S_\alpha(f)$ with $\|x_k\| \to \infty$ would contradict $\lim_{\|x\| \to \infty} f(x) = +\infty$.
-
-Let $F := C \cap S_\alpha(f)$. Then $F \neq \emptyset$, $F$ is closed and bounded, hence compact. Since $f$ is closed, Weierstrass yields $x^\star \in \arg\min_{F} f$. If $x \in C$ and $f(x) > \alpha$, then $f(x) > f(x_0) \ge f(x^\star)$, so $x^\star \in \arg\min_{C} f$. $\square$
-
-> **Remark.** In the convex setting below, coercivity in Beck's sense coincides with **0-coercivity** in the Hiriart-Urruty–Lemaréchal terminology. The asymptotic function then supplies a directional certificate that is often easier to verify than the raw limit $\lim_{\|x\| \to +\infty} f(x)$.
+In optimization, one often needs to know whether a minimizer exists before designing algorithms. **Coerciveness** is the standard growth condition at infinity used for this purpose.
 
 ---
 
-### 2. The Asymptotic Function (Slope at Infinity)
+## 1. Coerciveness (Beck)
 
-To formalize the behavior of a convex function $f \in \text{Conv } \mathbb{R}^n$ at infinity, we rely on its **asymptotic function**, denoted by $f_{\infty}'$. This function measures the limiting maximal slope of $f$ along any specific direction $d$. 
+Let $\mathbb{E}$ be a finite-dimensional Euclidean space with norm $\|\cdot\|$.
 
-$$\begin{equation}
-f_{\infty}'(d) := \lim_{t \to +\infty} \frac{f(x_0 + td) - f(x_0)}{t}
-\end{equation}$$
+**Definition 2.13 (coerciveness).** A proper function $f : \mathbb{E} \to (-\infty, +\infty]$ is **coercive** if
 
-#### Key Theorem (Independence of Base Point)
-> **Theorem (Hiriart-Urruty & Lemaréchal):** Let $f: \mathbb{R}^n \to (-\infty, +\infty]$ be a closed convex function. The limit in (1) exists for every $d \in \mathbb{R}^n$ (allowing $+\infty$ or $-\infty$). Furthermore, this limit is independent of the choice of $x_0 \in \text{dom } f$.
+$$
+\lim_{\|x\| \to +\infty} f(x) = +\infty.
+$$
 
-The asymptotic function $f_{\infty}'$ is itself a closed convex function, and it is positively homogeneous of degree 1 (i.e., $f_{\infty}'(\lambda d) = \lambda f_{\infty}'(d)$ for $\lambda > 0$). It dictates whether a function "escapes" to infinity or successfully bounds its sublevel sets.
+**Theorem (attainment under coerciveness).** Let $f : \mathbb{E} \to (-\infty, +\infty]$ be proper and closed, and let $S \subseteq \mathbb{E}$ be nonempty and closed with $S \cap \mathrm{dom}\, f \neq \emptyset$. If $f$ is coercive, then $f$ attains a minimizer over $S$.
 
----
+*Proof.* Pick $x_0 \in S \cap \mathrm{dom}\, f$ and set $\alpha := f(x_0)$. Define
 
-### 3. 0-Coercive Functions
+$$
+L := \mathrm{Lev}_{\alpha}(f) := \{ x \in \mathbb{E} \mid f(x) \le \alpha \}.
+$$
 
-A function is **0-coercive** if it strictly increases toward $+\infty$ as one moves infinitely far in any direction. Formally, $f \in \text{Conv } \mathbb{R}^n$ is 0-coercive if:
+If $L$ is unbounded, there exists a sequence $(x_k) \subset L$ with $\|x_k\| \to +\infty$, so $f(x_k) \to +\infty$ by coercivity—a contradiction since $f(x_k) \le \alpha$. Hence $L$ is bounded; it is also closed because $f$ is closed.
 
-$$\begin{equation}
-\lim_{\|x\| \to +\infty} f(x) = +\infty
-\end{equation}$$
+The set $F := S \cap L$ is nonempty, closed, and bounded, hence compact. By the Weierstrass theorem, $f$ attains a minimizer on $F$, hence on $S$. $\square$
 
-The property provides a highly useful characterization of a function's sublevel sets, denoted as $S_r(f) = \{x \in \mathbb{R}^n \mid f(x) \le r\}$.
-
-#### Theorem (Characterization of 0-Coercivity)
-> For a closed convex function $f: \mathbb{R}^n \to (-\infty, +\infty]$, the following conditions are entirely equivalent:
-> 1. There exists some $r \in \mathbb{R}$ for which the sublevel set $S_r(f)$ is nonempty and compact.
-> 2. All sublevel sets $S_r(f)$ (for $r \in \mathbb{R}$) are compact.
-> 3. The asymptotic function is strictly positive in all nonzero directions:
->    $$f_{\infty}'(d) > 0 \quad \forall d \neq 0$$
-
-#### Fundamental Application
-If a closed convex function $f$ is 0-coercive, its minimizer set $\arg\min_{x \in \mathbb{R}^n} f(x)$ is a **nonempty compact set**. Thus, a minimum is guaranteed to exist. (This recovers Section 1 with $C = \mathbb{R}^n$.)
-
-In a one-dimensional space ($\mathbb{R}$), an equivalent condition for 0-coercivity is simply that the slopes in both directions are strictly positive:
-$$f_{\infty}'(1) > 0 \quad \text{and} \quad f_{\infty}'(-1) > 0$$
+**Remark.** For closed convex $f$, Beck's coerciveness coincides with **0-coercivity** in Hiriart-Urruty–Lemaréchal. The asymptotic function below gives a directional certificate that is often easier to check.
 
 ---
 
-### 4. 1-Coercive (Strongly Coercive) Functions
+## 2. Asymptotic function (Hiriart-Urruty & Lemaréchal)
 
-A stricter condition is **1-coercivity** (often referred to simply as *strongly coercive* in some modern optimization contexts). A function $f$ is 1-coercive if it grows at infinity faster than any affine function.
+Let $f : \mathbb{R}^n \to (-\infty, +\infty]$ be a closed convex function. Its **asymptotic function** is
 
-#### Theorem (Characterization of 1-Coercivity)
-> For a closed convex function $f$, the following conditions are equivalent:
-> 1. The asymptotic function explodes in every nonzero direction:
->    $$f_{\infty}'(d) = +\infty \quad \forall d \neq 0$$
-> 2. The growth rate outpaces the norm:
->    $$\lim_{\|x\| \to +\infty} \frac{f(x)}{\|x\|} = +\infty$$
+$$
+f_{\infty}^{\prime}(d) := \lim_{t \to +\infty} \frac{f(x_0 + td) - f(x_0)}{t},
+\qquad d \in \mathbb{R}^n,
+$$
 
-For univariate functions on $\mathbb{R}$, 1-coercivity translates to:
-$$f_{\infty}'(1) = +\infty \quad \text{and} \quad f_{\infty}'(-1) = +\infty$$
+where $x_0 \in \mathrm{dom}\, f$ (the limit exists in $(-\infty, +\infty]$ and does not depend on $x_0$).
+
+The function $f_{\infty}^{\prime}$ is closed convex and positively homogeneous:
+
+$$
+f_{\infty}^{\prime}(\lambda d) = \lambda f_{\infty}^{\prime}(d), \qquad \lambda > 0.
+$$
 
 ---
 
-### 5. Interactive Visualization
+## 3. 0-coercivity
 
-For the test function
+A closed convex $f$ is **0-coercive** if
 
-$$f(x) = ax^2 + b|x| + cx,$$
+$$
+\lim_{\|x\| \to +\infty} f(x) = +\infty.
+$$
+
+Write the sublevel sets as
+
+$$
+S_{r}(f) := \{ x \in \mathbb{R}^n \mid f(x) \le r \}.
+$$
+
+The following are equivalent:
+
+1. Some sublevel set $S_{r}(f)$ is nonempty and compact.
+2. Every sublevel set $S_{r}(f)$ is compact.
+3. $f_{\infty}^{\prime}(d) > 0$ for all $d \neq 0$.
+
+Hence a 0-coercive closed convex $f$ has a nonempty compact minimizer set $\arg\min f$. On $\mathbb{R}$, (3) reduces to
+
+$$
+f_{\infty}^{\prime}(1) > 0
+\quad \text{and} \quad
+f_{\infty}^{\prime}(-1) > 0.
+$$
+
+---
+
+## 4. 1-coercivity
+
+A closed convex $f$ is **1-coercive** if it grows faster than any affine function at infinity. The following are equivalent:
+
+1. $f_{\infty}^{\prime}(d) = +\infty$ for all $d \neq 0$.
+2. $\displaystyle \lim_{\|x\| \to +\infty} \frac{f(x)}{\|x\|} = +\infty$.
+
+On $\mathbb{R}$, this is equivalent to $f_{\infty}^{\prime}(1) = f_{\infty}^{\prime}(-1) = +\infty$.
+
+---
+
+## 5. Interactive visualization
+
+For
+
+$$
+f(x) = ax^2 + b|x| + cx,
+$$
 
 the cases are:
 
 1. $a > 0$: **1-coercive**.
-2. $a = 0$ and $b > |c|$: **0-coercive**, with $f_{\infty}^{\prime}(1) = b+c$ and $f_{\infty}^{\prime}(-1) = b-c$ both positive.
+2. $a = 0$ and $b > \lvert c \rvert$: **0-coercive**, with $f_{\infty}^{\prime}(1) = b+c$ and $f_{\infty}^{\prime}(-1) = b-c$ both positive.
 3. Otherwise: **non-coercive**.
 
 <div id="coercivity-app" style="max-width: 650px; margin: 30px auto; padding: 20px; border: 1px solid #e1e4e8; border-radius: 8px; background-color: #f6f8fa; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;">
@@ -135,21 +139,30 @@ the cases are:
 
 ---
 
-### 6. Summary Matrix for Quadratic Forms
+## 6. Quadratic forms
 
-To tie this back to multi-dimensional settings, consider the classical quadratic form often found in machine learning and optimization algorithms:
+For
 
-$$f(x) = \frac{1}{2}\langle Qx, x\rangle + \langle b, x\rangle + c$$
+$$
+f(x) = \tfrac{1}{2}\langle Qx, x\rangle + \langle b, x\rangle + c,
+\qquad Q \in \mathbb{S}^n_+,
+$$
 
-where $Q \in \mathbb{S}^n_+$ is a symmetric positive semi-definite matrix. Evaluating the asymptotic function yields:
+one has
 
-$$f_{\infty}'(d) = \begin{cases} 
-\langle b, d\rangle & \text{if } d \in \text{Ker } Q \\
-+\infty & \text{otherwise}
-\end{cases}$$
+$$
+f_{\infty}^{\prime}(d) =
+\begin{cases}
+\langle b, d\rangle & \text{if } d \in \mathrm{Ker}\, Q, \\
++\infty & \text{otherwise}.
+\end{cases}
+$$
 
-This structure forces an interesting collapse of the definitions: for quadratic forms, $f$ is 0-coercive if and only if it is 1-coercive, which occurs if and only if $Q \succ 0$ (strictly positive definite).
+Thus for quadratics, 0-coercivity and 1-coercivity coincide, and both hold iff $Q \succ 0$.
 
-### References
-* Beck, A. (2017). *First-Order Methods in Optimization*. SIAM. (Definition 2.13)
-* Hiriart-Urruty, J.-B., Lemaréchal, C. (1993). *Convex Analysis and Minimization Algorithms I: Fundamentals*. Springer-Verlag.
+---
+
+## References
+
+1. A. Beck, *First-Order Methods in Optimization*, SIAM, 2017 — Definition 2.13; attainment under coerciveness.
+2. J.-B. Hiriart-Urruty and C. Lemaréchal, *Convex Analysis and Minimization Algorithms I*, Springer, 1993 — asymptotic function and $\nu$-coercivity.
