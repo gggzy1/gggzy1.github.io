@@ -31,6 +31,14 @@ I am interested in mathematical and computational tools for decision-making syst
 
 - [A Note on Fisher Markets](/notes/econcs/fisher-market/)
 
+### [Generalization](/notes/generalization/)
+
+- [A Note on VC Dimension](/notes/generalization/vc-dimension/)
+- [A Note on Rademacher Complexity](/notes/generalization/rademacher-complexity/)
+- [A Note on Covering Numbers and Entropy Bounds](/notes/generalization/covering-numbers/)
+- [A Note on Stability-Based Generalization](/notes/generalization/stability-generalization/)
+- [A Note on PAC-Bayes Bounds](/notes/generalization/pac-bayes/)
+
 ### LLM
 
 - [LLM Basics](/notes/llm/basic/)
