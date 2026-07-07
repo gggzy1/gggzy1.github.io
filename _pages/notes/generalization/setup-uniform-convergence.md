@@ -4,6 +4,8 @@ title: "Generalization Setup and Uniform Convergence"
 permalink: /notes/generalization/setup-uniform-convergence/
 math: true
 description: Learning setup, generalization gap, and the uniform convergence template.
+toc:
+  sidebar: left
 ---
 
 Let $\mathcal{H}$ be a hypothesis class and $\ell(h,z)$ a bounded loss on sample $z$.
@@ -30,7 +32,12 @@ $$
 
 which then yields excess-risk guarantees for ERM.
 
-This note serves as the entry point for complexity measures such as VC dimension and Rademacher complexity.
+This note serves as the entry point for complexity measures such as [VC dimension](/notes/generalization/vc-dimension/) and [Rademacher complexity](/notes/generalization/rademacher-complexity/).
+
+## Series navigation
+
+- Next: [A Note on VC Dimension](/notes/generalization/vc-dimension/)
+- Series hub: [Generalization](/notes/generalization/)
 
 ## References
 

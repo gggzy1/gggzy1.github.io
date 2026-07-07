@@ -4,6 +4,8 @@ title: "A Note on Rademacher Complexity"
 permalink: /notes/generalization/rademacher-complexity/
 math: true
 description: Data-dependent complexity and generalization bounds via symmetrization.
+toc:
+  sidebar: left
 ---
 
 Rademacher complexity gives a **data-dependent** measure of function-class richness.
@@ -32,7 +34,13 @@ $$
 
 with probability at least $1-\delta$.
 
-Compared with VC dimension, Rademacher complexity adapts to sample geometry and often yields sharper bounds for norm-bounded linear predictors, kernels, and neural nets.
+Compared with [VC dimension](/notes/generalization/vc-dimension/), Rademacher complexity adapts to sample geometry and often yields sharper bounds for norm-bounded linear predictors, kernels, and neural nets. Entropy-based controls via [covering numbers](/notes/generalization/covering-numbers/) are a closely related next step.
+
+## Series navigation
+
+- Previous: [A Note on VC Dimension](/notes/generalization/vc-dimension/)
+- Next: [A Note on Covering Numbers and Entropy Bounds](/notes/generalization/covering-numbers/)
+- Series hub: [Generalization](/notes/generalization/)
 
 ## References
 

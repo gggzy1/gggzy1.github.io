@@ -4,6 +4,8 @@ title: "A Note on VC Dimension"
 permalink: /notes/generalization/vc-dimension/
 math: true
 description: Shattering, VC dimension, and finite-class style generalization bounds.
+toc:
+  sidebar: left
 ---
 
 For binary classification, let $\mathcal{H} \subseteq \{0,1\}^{\mathcal{X}}$.
@@ -24,7 +26,13 @@ $$
 \quad d=\mathrm{VC}(\mathcal{H}).
 $$
 
-VC dimension is combinatorial and distribution-free, but can be loose for norm-constrained real-valued models.
+VC dimension is combinatorial and distribution-free, but can be loose for norm-constrained real-valued models. This motivates data-dependent measures such as [Rademacher complexity](/notes/generalization/rademacher-complexity/).
+
+## Series navigation
+
+- Previous: [Generalization Setup and Uniform Convergence](/notes/generalization/setup-uniform-convergence/)
+- Next: [A Note on Rademacher Complexity](/notes/generalization/rademacher-complexity/)
+- Series hub: [Generalization](/notes/generalization/)
 
 ## References
 

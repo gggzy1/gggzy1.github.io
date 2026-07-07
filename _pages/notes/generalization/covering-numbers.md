@@ -4,6 +4,8 @@ title: "A Note on Covering Numbers and Entropy Bounds"
 permalink: /notes/generalization/covering-numbers/
 math: true
 description: Metric entropy, Dudley integral, and chaining-style generalization control.
+toc:
+  sidebar: left
 ---
 
 Covering numbers provide a geometric way to quantify function-class richness.
@@ -37,7 +39,13 @@ $$
 \right).
 $$
 
-So covering numbers connect geometric approximation of $\mathcal{F}$ to statistical generalization.
+So covering numbers connect geometric approximation of $\mathcal{F}$ to statistical generalization. For algorithm-dependent guarantees, see [stability-based generalization](/notes/generalization/stability-generalization/).
+
+## Series navigation
+
+- Previous: [A Note on Rademacher Complexity](/notes/generalization/rademacher-complexity/)
+- Next: [A Note on Stability-Based Generalization](/notes/generalization/stability-generalization/)
+- Series hub: [Generalization](/notes/generalization/)
 
 ## References
 

@@ -4,6 +4,8 @@ title: "A Note on PAC-Bayes Bounds"
 permalink: /notes/generalization/pac-bayes/
 math: true
 description: Posterior-prior KL control and high-probability risk bounds.
+toc:
+  sidebar: left
 ---
 
 PAC-Bayes gives generalization guarantees for randomized predictors by comparing a posterior $Q$ to a prior $P$.
@@ -31,7 +33,13 @@ Interpretation:
 - Complexity is measured by $\mathrm{KL}(Q\|P)$.
 - Choosing $Q$ close to $P$ while fitting data yields tighter guarantees.
 
-PAC-Bayes is influential in modern analyses of noisy SGD and flat-minima style posteriors.
+PAC-Bayes is influential in modern analyses of noisy SGD and flat-minima style posteriors, and conceptually complements both complexity-based bounds ([VC](/notes/generalization/vc-dimension/), [Rademacher](/notes/generalization/rademacher-complexity/)) and algorithm-dependent bounds ([stability](/notes/generalization/stability-generalization/)).
+
+## Series navigation
+
+- Previous: [A Note on Stability-Based Generalization](/notes/generalization/stability-generalization/)
+- Start over: [Generalization Setup and Uniform Convergence](/notes/generalization/setup-uniform-convergence/)
+- Series hub: [Generalization](/notes/generalization/)
 
 ## References
 

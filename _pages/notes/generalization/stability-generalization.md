@@ -4,6 +4,8 @@ title: "A Note on Stability-Based Generalization"
 permalink: /notes/generalization/stability-generalization/
 math: true
 description: Algorithmic stability as an alternative route to generalization guarantees.
+toc:
+  sidebar: left
 ---
 
 Besides uniform convergence, one can control generalization by studying the algorithm itself.
@@ -29,7 +31,13 @@ $$
 
 This framework is particularly natural for regularized ERM and gradient-based training where perturbing one sample changes the output only slightly.
 
-Stability complements VC/Rademacher analyses and often yields tighter, algorithm-specific results.
+Stability complements [VC](/notes/generalization/vc-dimension/) and [Rademacher](/notes/generalization/rademacher-complexity/) analyses and often yields tighter, algorithm-specific results. Another complementary route is [PAC-Bayes](/notes/generalization/pac-bayes/).
+
+## Series navigation
+
+- Previous: [A Note on Covering Numbers and Entropy Bounds](/notes/generalization/covering-numbers/)
+- Next: [A Note on PAC-Bayes Bounds](/notes/generalization/pac-bayes/)
+- Series hub: [Generalization](/notes/generalization/)
 
 ## References
 
