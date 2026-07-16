@@ -2,7 +2,7 @@
   const root = document.querySelector(".note-page[data-bilingual]");
   if (!root) return;
 
-  const storageKey = "note-lang";
+  const storageKey = "note-lang-v2";
   const defaultLang = root.dataset.defaultLang || "en";
   const buttons = root.querySelectorAll(".note-lang-btn");
 
