@@ -12,6 +12,7 @@ Foundational notes on existence of minimizers, Lagrangian duality, and the mathe
 1. [A Note on Coerciveness](/notes/optimization/basics/coercive/)
 2. [A Note on Lagrangian Duality](/notes/optimization/basics/lagrangian-duality/)
 3. [A Note on the Augmented Lagrangian Method](/notes/optimization/basics/augmented-lagrangian-method/)
+4. [为什么优化研究锥，而不是柱体？](/notes/optimization/basics/why-cone/) / Why cones, not cylinders
 
 ## Sibling tracks
 

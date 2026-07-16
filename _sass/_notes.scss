@@ -79,3 +79,72 @@
   line-height: 1.55;
   max-width: 42em;
 }
+
+/* Bilingual notes: Chinese default, manual ZH/EN switch */
+.note-lang-switch {
+  display: inline-flex;
+  gap: 0.35rem;
+  margin: 0 0 1.1rem;
+  padding: 0.2rem;
+  border: 1px solid rgba(42, 157, 143, 0.28);
+  border-radius: 999px;
+  background: rgba(42, 157, 143, 0.06);
+}
+
+.note-lang-btn {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font-family: "Source Sans 3", Roboto, system-ui, sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  padding: 0.45rem 0.85rem;
+  border-radius: 999px;
+  opacity: 0.72;
+  transition: background 0.15s ease, opacity 0.15s ease, color 0.15s ease;
+}
+
+.note-lang-btn:hover {
+  opacity: 1;
+}
+
+.note-lang-btn.is-active,
+.note-lang-btn[aria-pressed="true"] {
+  background: rgba(42, 157, 143, 0.9);
+  color: #fafbfc;
+  opacity: 1;
+}
+
+.note-page[data-bilingual][data-lang="zh"] .lang-en,
+.note-page[data-bilingual][data-lang="en"] .lang-zh {
+  display: none !important;
+}
+
+.note-page[data-bilingual] .lang-block {
+  min-height: 1px;
+}
+
+.note-page[data-bilingual] article table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.4em 0;
+  font-size: 0.95em;
+}
+
+.note-page[data-bilingual] article th,
+.note-page[data-bilingual] article td {
+  border-bottom: 1px solid rgba(130, 130, 130, 0.28);
+  padding: 0.55em 0.65em;
+  text-align: left;
+  vertical-align: top;
+}
+
+.note-page[data-bilingual] article th {
+  font-family: "Source Sans 3", Roboto, system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 0.9em;
+}
