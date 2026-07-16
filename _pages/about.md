@@ -42,7 +42,7 @@ I am organizing notes around optimization and EconCS. More content coming soon.
 ## Selected Notes
 
 - [A Note on Coerciveness](/notes/optimization/basics/coercive/)
-- [A Note on Lagrangian Duality](/notes/optimization/basics/lagrangian-duality/)
+- [Why Cones, Not Cylinders?](/notes/optimization/basics/why-cone/)
 - [A Note on Fisher Markets](/notes/econcs/fisher-market/)
 
 See all notes on the [Notes](/notes/) page.
