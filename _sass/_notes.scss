@@ -3,14 +3,17 @@
  ******************************************************************************/
 
 .post article {
-  font-family: "Source Serif 4", "Source Serif Pro", Georgia, "Times New Roman", serif;
-  font-size: 1.0625rem;
-  line-height: 1.78;
-  letter-spacing: 0.012em;
-  font-feature-settings: "kern" 1, "liga" 1;
+  font-family: "Source Serif 4", "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  font-size: 1.125rem;
+  line-height: 1.72;
+  letter-spacing: 0.005em;
+  font-feature-settings: "kern" 1, "liga" 1, "onum" 1;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 
   p {
-    margin-bottom: 1.2em;
+    margin-bottom: 1.15em;
   }
 
   h1,
@@ -19,9 +22,10 @@
   h4,
   h5,
   h6 {
-    font-family: "Source Sans 3", Roboto, system-ui, sans-serif;
-    line-height: 1.32;
-    letter-spacing: -0.01em;
+    font-family: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+    font-weight: 600;
+    line-height: 1.35;
+    letter-spacing: -0.015em;
   }
 
   h2 {
@@ -70,25 +74,29 @@
 }
 
 .post-header .post-title {
-  font-family: "Source Sans 3", Roboto, system-ui, sans-serif;
-  letter-spacing: -0.02em;
+  font-family: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  font-weight: 650;
+  letter-spacing: -0.025em;
+  line-height: 1.25;
 }
 
 .post-header .post-description {
-  font-size: 0.95rem;
+  font-family: "Source Serif 4", Georgia, serif;
+  font-size: 1.02rem;
   line-height: 1.55;
-  max-width: 42em;
+  max-width: 40em;
+  opacity: 0.82;
 }
 
-/* Bilingual notes: Chinese default, manual ZH/EN switch */
+/* Bilingual notes: English default, manual EN/ZH switch */
 .note-lang-switch {
   display: inline-flex;
-  gap: 0.35rem;
-  margin: 0 0 1.1rem;
-  padding: 0.2rem;
-  border: 1px solid rgba(42, 157, 143, 0.28);
-  border-radius: 999px;
-  background: rgba(42, 157, 143, 0.06);
+  gap: 0.25rem;
+  margin: 0 0 1rem;
+  padding: 0.15rem;
+  border: 1px solid rgba(130, 130, 130, 0.35);
+  border-radius: 6px;
+  background: transparent;
 }
 
 .note-lang-btn {
@@ -97,15 +105,15 @@
   background: transparent;
   color: inherit;
   cursor: pointer;
-  font-family: "Source Sans 3", Roboto, system-ui, sans-serif;
-  font-size: 0.82rem;
+  font-family: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  font-size: 0.8rem;
   font-weight: 600;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
   line-height: 1;
-  padding: 0.45rem 0.85rem;
-  border-radius: 999px;
-  opacity: 0.72;
-  transition: background 0.15s ease, opacity 0.15s ease, color 0.15s ease;
+  padding: 0.4rem 0.75rem;
+  border-radius: 4px;
+  opacity: 0.65;
+  transition: background 0.12s ease, opacity 0.12s ease;
 }
 
 .note-lang-btn:hover {
@@ -114,8 +122,7 @@
 
 .note-lang-btn.is-active,
 .note-lang-btn[aria-pressed="true"] {
-  background: rgba(42, 157, 143, 0.9);
-  color: #fafbfc;
+  background: rgba(42, 157, 143, 0.16);
   opacity: 1;
 }
 
@@ -128,23 +135,15 @@
   min-height: 1px;
 }
 
-.note-page[data-bilingual] article table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 1.4em 0;
-  font-size: 0.95em;
+.note-page[data-bilingual] article strong {
+  font-weight: 650;
 }
 
-.note-page[data-bilingual] article th,
-.note-page[data-bilingual] article td {
-  border-bottom: 1px solid rgba(130, 130, 130, 0.28);
-  padding: 0.55em 0.65em;
-  text-align: left;
-  vertical-align: top;
+.note-page[data-bilingual] article li {
+  margin-bottom: 0.65em;
 }
 
-.note-page[data-bilingual] article th {
-  font-family: "Source Sans 3", Roboto, system-ui, sans-serif;
-  font-weight: 600;
-  font-size: 0.9em;
+.note-page[data-bilingual] article li > ul,
+.note-page[data-bilingual] article li > ol {
+  margin-top: 0.45em;
 }

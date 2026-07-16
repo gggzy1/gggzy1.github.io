@@ -3,11 +3,11 @@
   if (!root) return;
 
   const storageKey = "note-lang";
-  const defaultLang = root.dataset.defaultLang || "zh";
+  const defaultLang = root.dataset.defaultLang || "en";
   const buttons = root.querySelectorAll(".note-lang-btn");
 
   function applyLang(lang) {
-    const next = lang === "en" ? "en" : "zh";
+    const next = lang === "zh" ? "zh" : "en";
     root.dataset.lang = next;
     try {
       localStorage.setItem(storageKey, next);

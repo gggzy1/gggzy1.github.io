@@ -1,259 +1,227 @@
 ---
 layout: note
-title: "为什么优化研究锥，而不是柱体？"
-title_en: "Why Optimization Studies Cones, Not Cylinders"
+title: "Why Cones, Not Cylinders?"
+title_zh: "为什么优化研究锥，而不是柱体？"
 permalink: /notes/optimization/basics/why-cone/
 math: true
 bilingual: true
-default_lang: zh
-description: 从序结构、下降方向、回收锥与对偶理论，说明锥为何是优化的自然语言。
-description_en: Cones encode order, descent directions, recession, and duality — cylinders do not.
+default_lang: en
+description: A short Q&A on cones, cylinders, and homogeneity in optimization.
+description_zh: 关于优化里为什么是锥、而不是柱体，以及齐次性从何而来。
 ---
-
-<div class="lang-block lang-zh" markdown="1">
-
-一个朴素却值得认真对待的问题是：优化里几乎处处是**锥（cone）**，却很少专门谈论**柱体（cylinder）**。原因并不神秘——优化问题的结构天然是方向性与齐次性的，而锥恰好刻画了这种结构；柱体则不然。
-
-下面分两个问题展开。
-
-## 1. 为什么研究锥，而不是柱体？
-
-> **一句话。** 锥能定义与线性结构相容的序、局部下降方向与对偶；柱体做不到，在优化学家眼里它往往只是「紧底面 + 回收锥」。
-
-### 1.1 最根本：锥定义了「序」
-
-优化的核心是比较两点的好坏，这需要一个**序结构**。在向量空间里，这个序通常由一个闭凸锥给出：在锥规划中，
-
-$$
-x \succeq_K y \iff x - y \in K.
-$$
-
-这里的 \(K\) 必须是**凸锥**。原因可以直接从序公理读出来：
-
-| 序公理 | 对 \(K\) 的要求 |
-| --- | --- |
-| 自反性 \(x \succeq_K x\) | \(0 \in K\) |
-| 正齐次性：\(x \succeq_K y \Rightarrow \alpha x \succeq_K \alpha y\)（\(\alpha>0\)） | \(K\) 对正数乘法封闭 |
-| 保序加法：\(x\succeq_K y\) 且 \(u\succeq_K v\) \(\Rightarrow\) \(x+u\succeq_K y+v\) | \(K\) 对加法封闭 |
-
-这三条合起来，恰是**凸锥**的定义。
-
-柱体——例如平移圆柱 \(C=\{x:\|x-c\|\le r\}\)—既不包含原点，也不对正数乘法封闭，因此无法定义贯穿整个空间、并与线性结构相容的序。一旦试图用柱体定义序，正数缩放就会立刻破坏整个结构。
-
-### 1.2 局部极小：锥刻画下降方向
-
-判断 \(x^\star\) 是否局部极小，关键是：从 \(x^\star\) 出发，沿哪些方向 \(d\) 目标会下降。由此自然出现
-
-- **可行方向锥**：指向可行域内部的射线方向；
-- **切锥**：可行域在 \(x^\star\) 的局部锥状近似；
-- **法锥**：切锥的极锥，由「向外排斥」的方向组成。
-
-为什么是锥而不是柱体？因为局部观察等价于把该点附近无限放大：光滑边界在极限下像切空间，可行扇区则以该点为顶点张开成**锥**。柱体携带平移信息，无法描述这种附着于一点的局部方向结构。
-
-### 1.3 无穷远处：回收锥
-
-任何无界闭凸集在无穷远处的「形状」都是一个锥，称为**回收锥（recession cone）**：
-
-$$
-C_\infty = \{ d \mid x + \alpha d \in C,\ \forall x\in C,\ \forall \alpha\ge 0\}.
-$$
-
-它收集了所有可以在 \(C\) 内一路走到无穷远而不碰到边界的**方向**。
-
-以无穷长圆柱 \(C=\{(x,y,z):x^2+y^2\le 1\}\) 为例：其回收锥是 \(z\) 轴方向上的直线 \(\{(0,0,z)\}\)—一个一维子空间，本身就是**退化的锥**。
-
-因此，柱体在优化语言里通常被读作
-
-> **紧致底面 + 回收锥。**
-
-理论分析关心的是那个刻画无穷延伸的回收锥（有界性、强制性、可行性等），而不是单独发明一套「柱约束」的术语。
-
-### 1.4 对偶：锥是自对偶的温床
-
-现代优化的核心支柱之一是对偶。在锥规划（半定规划、二阶锥规划等）中，Lagrange 对偶取得了形式上的统一：
-
-- 非负象限、二阶锥、半正定矩阵锥，都是**自对偶锥**；
-- 自对偶性使原问题与对偶问题结构对称，理论和算法都更干净。
-
-「柱体的对偶」没有同样自然的代数对象。锥的对偶仍是锥，并形成一个封闭优美的体系——这正是优化以锥为基石的深层原因。
-
----
-
-## 2. 为什么优化问题是齐次的？
-
-> **递进答案。** 方向本身齐次；局部线性化把最优性条件变成齐次；凸结构与对偶进一步要求齐次。
-
-### 2.1 第一层：优化关心的是方向
-
-给定当前点，核心问题是：往哪个方向走、走多远能改善目标。「方向」的几何载体是**射线**：
-
-$$
-d\in\mathbb{R}^n,\qquad \text{考虑所有正倍数 }\alpha d\ (\alpha>0).
-$$
-
-往东北走 1 公里与走 10 公里，方向本身不变——这就是齐次性。于是可行方向锥、切锥、下降方向集从定义上就是锥：
-
-$$
-d\in\mathrm{Cone}\ \Longrightarrow\ \alpha d\in\mathrm{Cone},\quad\forall\alpha>0.
-$$
-
-不是我们「选择」了锥，而是研究对象（方向的集合）天然正齐次。柱体不满足这一点，因而无法描述方向。
-
-### 2.2 第二层：局部线性化把问题变成齐次问题
-
-对光滑目标 \(f\) 与约束在 \(x_0\) 做一阶展开：
-
-- **下降条件。** \(f(x_0+\alpha d)\approx f(x_0)+\alpha\nabla f(x_0)^\top d\)。若 \(\nabla f(x_0)^\top d<0\)，则充分小的 \(\alpha>0\) 使目标下降。该条件只依赖方向，且对 \(\alpha>0\) 齐次。
-- **可行域局部逼近。** 等式 \(h_i(x)=0\) 线性化为 \(\nabla h_i(x_0)^\top d=0\)；边界上的不等式 \(g_i(x)\le 0\) 线性化为 \(\nabla g_i(x_0)^\top d\le 0\)。这些都是关于 \(d\) 的线性齐次条件。
-
-因此 KKT 条件本身是齐次的：它们由切线与梯度半空间所成的**锥**描述。几何上，负梯度必须落在可行域线性化锥的法锥中——线性不等式组的解集永远是锥。
-
-### 2.3 第三层：凸结构与对偶中的齐次性
-
-在凸优化中，齐次性常从局部延展到全局。凸集 \(X\) 若无界，其无穷延伸方向构成回收锥 \(X_\infty\)；它回答的是「能否永远朝某方向走下去」这类全局问题。锥规划更显式地依赖齐次结构：
-
-- **线性规划**：\(Ax=b,\ x\ge 0\)，非负象限是锥；
-- **半定规划**：\(x_1A_1+\cdots+x_nA_n\preceq B\)，半正定锥 \(S_+^n\) 在正缩放下封闭。
-
-偏爱这些结构，是因为对偶锥、极锥等概念只在齐次设定下保持代数对称，并支撑内点法等通用算法。
-
----
-
-## 小结
-
-| 视角 | 锥能做什么 | 柱体缺什么 |
-| --- | --- | --- |
-| 序 | 定义 \(\succeq_K\) | 不含原点、不正齐次 |
-| 局部最优性 | 可行/切/法锥 | 无法附着于一点的方向扇区 |
-| 无界性 | 回收锥 | 本身可分解为底面 + 回收锥 |
-| 对偶 | 自对偶锥与对称对偶 | 无自然对偶对象 |
-
-优化研究锥，不是审美偏好，而是因为**方向、齐次性与对偶**共同指向同一种几何对象。
-
-[返回 Basics](/notes/optimization/basics/) · [全部笔记](/notes/)
-
-</div>
 
 <div class="lang-block lang-en" markdown="1">
 
-A naive but serious question: optimization talks about **cones** everywhere, yet almost never about **cylinders**. The reason is structural. Optimization is fundamentally about *directions* and *homogeneity*; cones encode that structure, cylinders do not.
+## A naive question: why don't we study cylinders?
 
-We unpack this in two parts.
+**Q.** Why does optimization talk about cones all the time, but almost never about cylinders?
 
-## 1. Why cones, not cylinders?
+**A.** Cones show up everywhere in optimization; cylinders almost never do. The core reason is that optimization is about *directions* and *homogeneity*, and cones encode that structure. Cylinders do not. A few layers:
 
-> **In one line.** Cones define order compatible with linear structure, local descent geometry, and duality. Cylinders do not — to an optimizer they are usually just “a compact base plus a recession cone.”
+1. **The basic mathematical reason: cones define order.**
 
-### 1.1 Fundamentally: cones define order
+   Comparing two points needs an **order**. In a vector space this is usually induced by a closed convex cone. In cone programming,
 
-Optimization compares points, which requires an **order**. In a vector space this order is typically induced by a closed convex cone. In cone programming,
+   $$
+   x \succeq_K y \iff x - y \in K.
+   $$
 
-$$
-x \succeq_K y \iff x - y \in K.
-$$
+   Here $K$ has to be a **convex cone**. Why a cone?
 
-The set \(K\) must be a **convex cone**, as the order axioms force:
+   - **Reflexivity needs the origin:** $x \succeq_K x$ forces $0 \in K$.
+   - **Homogeneity of the order:** if $x \succeq_K y$, then for every $\alpha > 0$ we need $\alpha x \succeq_K \alpha y$, i.e. $\alpha(x-y) \in K$. So $K$ is closed under positive scaling.
+   - **Order-preserving addition:** if $x \succeq_K y$ and $u \succeq_K v$, then $x+u \succeq_K y+v$, so $K$ is closed under addition.
 
-| Order axiom | Requirement on \(K\) |
-| --- | --- |
-| Reflexivity \(x \succeq_K x\) | \(0 \in K\) |
-| Positive homogeneity: \(x \succeq_K y \Rightarrow \alpha x \succeq_K \alpha y\) (\(\alpha>0\)) | closed under positive scaling |
-| Order-preserving addition | closed under addition |
+   These three properties (contains $0$, closed under positive scaling, closed under addition) are exactly the definition of a convex cone.
 
-These three properties are exactly the definition of a convex cone.
+   A cylinder — e.g. a translated ball $C = \{x : \|x-c\| \le r\}$ — **does not contain the origin** and is **not closed under positive scaling**, so it cannot define a space-wide order compatible with the linear structure. If you try to build an order from a cylinder, positive scaling breaks it immediately.
 
-A cylinder — e.g. a translated ball \(C=\{x:\|x-c\|\le r\}\)— neither contains the origin nor is closed under positive scaling, so it cannot define a space-wide order compatible with the linear structure. Positive scaling immediately breaks any order built from a cylinder.
+2. **Local vs global minima: cones describe descent directions.**
 
-### 1.2 Local minima: cones describe descent directions
+   For optimality at $x^*$, the question is along which directions $d$ the objective decreases. This produces a few standard cones:
 
-To decide whether \(x^\star\) is a local minimizer, ask which directions \(d\) decrease the objective. This produces
+   - **feasible-direction cone:** rays from $x^*$ into the feasible set;
+   - **tangent cone:** all rays “tangent” to the feasible set at $x^*$ — a local conical approximation;
+   - **normal cone:** the polar of the tangent cone; outward “repelling” directions.
 
-- the **cone of feasible directions**;
-- the **tangent cone** (local conical approximation of the feasible set);
-- the **normal cone** (polar of the tangent cone).
+   Why cones rather than cylinders? Local analysis at $x^*$ is like zooming in infinitely. A smooth boundary looks like its tangent plane/space, and the feasible sector from that point is naturally a **cone** with vertex there. A cylinder carries translation; it cannot describe directional structure attached to a single point.
 
-Why cones rather than cylinders? Local analysis zooms in at \(x^\star\): a smooth boundary looks like its tangent space, and the feasible sector opens as a **cone** with vertex at that point. A cylinder carries translational bulk and cannot describe directional structure attached to a single point.
+3. **Behavior of convex sets at infinity: the recession cone.**
 
-### 1.3 Behavior at infinity: the recession cone
+   Every unbounded closed convex set has a conical shape at infinity — the **recession cone**
 
-Every unbounded closed convex set has a conical “shape at infinity,” the **recession cone**
+   $$
+   C_\infty = \{ d \mid x + \alpha d \in C,\ \forall x \in C,\ \forall \alpha \ge 0 \}.
+   $$
 
-$$
-C_\infty = \{ d \mid x + \alpha d \in C,\ \forall x\in C,\ \forall \alpha\ge 0\}.
-$$
+   So $C_\infty$ collects every direction along which you can walk forever inside $C$ without hitting the boundary.
 
-It collects directions along which one can travel forever inside \(C\).
+   Take the infinite cylinder $C = \{(x,y,z) : x^2+y^2 \le 1\}$. Its recession cone is the $z$-axis line $\{(0,0,z)\}$ — a one-dimensional subspace, already a **degenerate cone**.
 
-For the infinite cylinder \(C=\{(x,y,z):x^2+y^2\le 1\}\), the recession cone is the \(z\)-axis line \(\{(0,0,z)\}\)—a one-dimensional subspace, already a **degenerate cone**.
+   To an optimizer, a cylinder is essentially **“a compact base + its recession cone.”** Theory talks about the recession cone (directions you can grow forever while staying feasible), which matters for unboundedness. We do not say “this is a cylinder constraint”; we say “the recession cone of the feasible set contains such-and-such direction,” and stay in the language of cones.
 
-So a cylinder is read in optimization language as
+4. **Duality wants cones.**
 
-> **a compact base + a recession cone.**
+   Duality is central. Lagrange duality becomes formally clean in cone programs (SDP, SOCP, …):
 
-Theory tracks the recession cone (boundedness, coercivity, feasibility), rather than inventing a separate vocabulary of “cylinder constraints.”
+   - the nonnegative orthant, the second-order cone, and the PSD cone are all **self-dual** (equal to their dual cones);
+   - that self-duality makes primal and dual structurally symmetric.
 
-### 1.4 Duality: cones are the natural dual objects
-
-Duality is a pillar of modern optimization. In cone programs (SDP, SOCP, …), Lagrange duality is formally unified:
-
-- the nonnegative orthant, the second-order cone, and the PSD cone are **self-dual**;
-- self-duality makes primal and dual structurally symmetric.
-
-There is no equally natural “dual of a cylinder.” The dual of a cone is again a cone, closing a clean algebraic circle — which is why cones, not cylinders, sit at the foundation.
+   There is no natural “dual of a cylinder.” The dual of a cone is again a cone, and the algebra closes. That is why cones sit at the foundation.
 
 ---
 
-## 2. Why are optimization problems homogeneous?
+**Q.** Why are optimization problems homogeneous?
 
-> **Progressive answer.** Directions are homogeneous; local linearization makes optimality conditions homogeneous; convexity and duality reinforce homogeneity.
+**A.** Three layers: directions are homogeneous; local linearization makes things homogeneous; duality and convex structure push in the same direction.
 
-### 2.1 Layer one: optimization cares about directions
+1. **Most basic: we care about directions, and directions are homogeneous.**
 
-Given a current point, the question is which way to move and how far. A direction is a **ray**:
+   Given a current point: which way to move, and how far? A direction is a **ray**
 
-$$
-d\in\mathbb{R}^n,\qquad \text{all positive multiples }\alpha d\ (\alpha>0).
-$$
+   $$
+   d \in \mathbb{R}^n,\qquad \text{all positive multiples }\alpha d,\ \alpha > 0.
+   $$
 
-Walking one kilometer northeast or ten kilometers northeast is the same direction — that is homogeneity. Feasible-direction cones, tangent cones, and descent sets are cones by definition:
+   One kilometer northeast and ten kilometers northeast are the same direction. That is homogeneity: rays are invariant under positive scaling. So feasible-direction cones, tangent cones, descent sets are cones by definition:
 
-$$
-d\in\mathrm{Cone}\ \Longrightarrow\ \alpha d\in\mathrm{Cone},\quad\forall\alpha>0.
-$$
+   $$
+   d \in \mathrm{Cone} \implies \alpha d \in \mathrm{Cone},\quad \forall \alpha > 0.
+   $$
 
-We did not “choose” cones; the objects we study (sets of directions) are positively homogeneous. Cylinders fail this test and cannot describe directions.
+   We did not “choose” cones; the objects (sets of directions) are positively homogeneous. Cylinders are not, so they cannot describe directions.
 
-### 2.2 Layer two: local linearization yields homogeneous problems
+2. **Local linearization turns everything into a homogeneous problem.**
 
-First-order expand a smooth objective \(f\) and constraints at \(x_0\):
+   First principle: expand a smooth $f$ (and the constraints) to first order at $x_0$.
 
-- **Descent.** \(f(x_0+\alpha d)\approx f(x_0)+\alpha\nabla f(x_0)^\top d\). If \(\nabla f(x_0)^\top d<0\), small \(\alpha>0\) decreases \(f\). The condition depends only on direction and is homogeneous in \(\alpha>0\).
-- **Local feasible set.** Equalities \(h_i(x)=0\) linearize to \(\nabla h_i(x_0)^\top d=0\); active inequalities \(g_i(x)\le 0\) to \(\nabla g_i(x_0)^\top d\le 0\). All are linear-homogeneous in \(d\).
+   - **Descent.** Along $d$,
+     $$
+     f(x_0 + \alpha d) \approx f(x_0) + \alpha \nabla f(x_0)^\top d.
+     $$
+     If $\nabla f(x_0)^\top d < 0$, then $f$ decreases for small $\alpha > 0$. The condition depends only on the direction of $d$, not on the size of $\alpha$, and it is homogeneous: if $d$ works, so does $\alpha d$ for all $\alpha > 0$.
 
-Hence KKT conditions are homogeneous: they are described by cones built from tangent and gradient halfspaces. Geometrically, \(-\nabla f\) must lie in the normal cone to the linearized feasible cone — and solution sets of linear inequalities are always cones.
+   - **Local feasible set.** Equalities $h_i(x)=0$ linearize to $\nabla h_i(x_0)^\top d = 0$ (a tangent space). Inequalities $g_i(x)\le 0$ active at the boundary ($g_i(x_0)=0$) linearize to $\nabla g_i(x_0)^\top d \le 0$. All of these conditions are **linear-homogeneous** in $d$.
 
-### 2.3 Layer three: convexity and duality
+   So local optimality / KKT is homogeneous: it is described by cones built from tangents and gradient halfspaces. Geometrically: $-\nabla f$ must lie in the normal cone to the linearized feasible cone. Solution sets of linear inequalities are always cones.
 
-In convex optimization, homogeneity often extends from local to global. If a convex set \(X\) is unbounded, its directions of unboundedness form the recession cone \(X_\infty\), answering global feasibility questions. Cone programming makes the structure explicit:
+3. **Convexity and global structure.**
 
-- **LP**: \(Ax=b,\ x\ge 0\) — the orthant is a cone;
-- **SDP**: \(x_1A_1+\cdots+x_nA_n\preceq B\) — the PSD cone is closed under positive scaling.
+   In convex optimization, homogeneity often extends beyond the local picture. If a convex set $X$ is unbounded, the directions of unboundedness form the recession cone $X_\infty$ — the object that answers “can I walk forever this way?” Cone programs make the homogeneous structure explicit:
 
-Dual cones and polar cones keep their algebraic symmetry only under homogeneous structure, which in turn supports general-purpose algorithms such as interior-point methods.
+   - **LP:** $Ax = b$, $x \ge 0$. The orthant $\{x : x \ge 0\}$ is a cone. The objective is linear.
+   - **SDP:** $x_1 A_1 + \cdots + x_n A_n \preceq B$, with $\preceq$ from the PSD cone $S_+^n$. Positive-semidefiniteness is homogeneous: $X \succeq 0$ implies $\alpha X \succeq 0$ for $\alpha > 0$.
 
----
-
-## Takeaway
-
-| Viewpoint | What cones give | What cylinders lack |
-| --- | --- | --- |
-| Order | \(\succeq_K\) | no origin, no positive homogeneity |
-| Local optimality | feasible / tangent / normal cones | no point-attached directional sector |
-| Unboundedness | recession cone | already “base + recession cone” |
-| Duality | self-dual cones | no natural dual object |
-
-Optimization studies cones not as aesthetic preference, but because **direction, homogeneity, and duality** point to the same geometric object.
+   Dual cones and polar cones keep clean algebraic symmetry under this homogeneous setup, which is also what interior-point methods lean on.
 
 [Back to Basics](/notes/optimization/basics/) · [All notes](/notes/)
+
+</div>
+
+<div class="lang-block lang-zh" markdown="1">
+
+## 一个 naive 的问题：为什么优化不研究柱体？
+
+**Q.** 为啥优化经常研究锥（cone），却很少提柱体？
+
+**A.** “锥”在优化里无处不在，但很少专门提“柱体”。核心原因在于：**优化问题的结构天然是“方向性”和“齐次性”的，而锥恰好刻画了这种结构，柱体则不然。** 可以从几个层次来理解：
+
+1. **最根本的数学原因：锥定义了“序”。**
+
+   优化的核心是比较两个点的“好坏”，这需要一个**序结构**。在向量空间里，这个序往往由一个闭凸锥来定义。比如在锥规划里，
+
+   $$
+   x \succeq_K y \iff x - y \in K.
+   $$
+
+   这里的 $K$ 必须是一个**凸锥**。为什么是锥？
+
+   - **自反性要求零元素：** $x \succeq_K x \implies 0 \in K$。
+   - **齐次性要求：** 如果 $x \succeq_K y$，那么对任意 $\alpha > 0$，必须有 $\alpha x \succeq_K \alpha y$。这意味着 $\alpha(x-y) \in K$，所以 $K$ 必须对正数乘法封闭。
+   - **保序加法：** 如果 $x \succeq_K y$ 且 $u \succeq_K v$，则 $x+u \succeq_K y+v$，这要求 $K$ 对加法封闭。
+
+   这三个性质（包含 $0$、正数乘封闭、加法封闭）合起来，就是**凸锥**的定义。
+
+   柱体（比如一个平移的圆柱 $C = \{x \mid \|x - c\| \le r\}$）**不包含原点**，也**对正数乘法不封闭**，所以无法用来定义这种贯穿整个空间的、与线性结构相容的序。一旦你试图用柱体定义序，正数乘法这个简单操作就能破坏整个序结构。
+
+2. **局部极小与全局极小：锥刻画了下降方向。**
+
+   在最优性条件里，我们考虑一个点 $x^*$ 是否为局部极小点。关键要看从 $x^*$ 出发，沿哪些方向 $d$，函数值会下降。这引出了几个核心的锥：
+
+   - **可行方向锥：** 从 $x^*$ 出发，朝向可行域内部的射线方向；
+   - **切锥：** 在 $x^*$ 点与可行域“相切”的所有射线方向，是对可行域的局部锥状近似；
+   - **法锥：** 切锥的极锥，由指向可行域外部的“排斥”方向组成。
+
+   为什么这里的几何对象都是锥，而不是柱体？因为当你在一个点 $x^*$ **局部**地观察一个集合时，你是在无限放大该点附近。任何光滑（或可微）的边界，在无限放大后看起来都像它的切平面或切空间，而从这个点出发的“可行扇区”就自然表现为一个以该点为顶点的**锥**。柱体有“平移”的属性，无法描述这种附着于一点的局部方向结构。
+
+3. **凸集在无穷远处的行为：回收锥。**
+
+   任何无界的闭凸集，它在无穷远处的“形状”都是一个锥，叫**回收锥**：
+
+   $$
+   C_\infty = \{ d \mid x + \alpha d \in C,\ \forall x \in C,\ \forall \alpha \ge 0 \}.
+   $$
+
+   也就是说，$C_\infty$ 包含了所有你可以在 $C$ 内部“一路走到无穷远”而不会碰到边界的**方向**。
+
+   一个无穷长的圆柱 $C = \{(x,y,z) \mid x^2+y^2 \le 1\}$ 是典型的“柱体”。它的回收锥 $C_\infty$ 是什么？是 $z$ 轴方向（上下两个方向）的射线，也就是直线 $\{(0,0,z)\}$。这是一个一维子空间，本身就是一个**退化的锥**。
+
+   所以，一个柱体在优化学家眼里，本质上是 **“一个底面（紧致集） + 它的回收锥”**。优化理论直接去研究那个刻画其无穷延伸方向的回收锥，因为它代表了决策变量可以无限增大而不影响可行性的方向，这在无界优化问题的理论分析（如有界性条件）中至关重要。我们不会说“这是一个柱约束”，而是说“这个可行域的回收锥包含某个方向”，从而用锥的语言统一处理。
+
+4. **对偶理论的要求：锥适合做对偶。**
+
+   现代优化的一个核心是对偶理论。Lagrange 对偶在锥规划（如半定规划、二阶锥规划）中形式上很干净：
+
+   - 非负象限、二阶锥、半正定矩阵锥，都是**自对偶锥**（等于自己的对偶锥）；
+   - 这种自对偶性使得原问题和对偶问题在结构上对称。
+
+   你无法自然地定义“柱体”的对偶。锥的对偶还是锥，并能形成一个封闭的代数体系。优化理论选择以锥为基石，因为这正是通往对偶理论的自然语言。
+
+---
+
+**Q.** 为什么优化问题是齐次性的？
+
+**A.** 三个递进的层次：**本质上是因为“方向”是齐次的；进而，局部线性化带来了齐次性；最后，对偶性等深层结构也要求齐次性。**
+
+1. **最根本的——优化关心的是“方向”，而方向天然是齐次的。**
+
+   优化的核心任务是：给定一个当前点，判断往哪个方向走、走多远能改善目标函数。“方向”的几何载体是一条**射线**：
+
+   $$
+   d \in \mathbb{R}^n,\qquad \text{考虑所有正数倍 }\alpha d,\ \alpha > 0.
+   $$
+
+   你往东北方向走 1 公里，和走 10 公里，**方向本身没有变**。这就是齐次性：射线在正数乘法下保持不变。所以，一切用来刻画局部最优性的对象——可行方向锥、切锥、下降方向集合——从定义上就是锥：
+
+   $$
+   d \in \mathrm{Cone} \implies \alpha d \in \mathrm{Cone},\quad \forall \alpha > 0.
+   $$
+
+   这不是我们“选择”锥，而是我们研究的对象（方向的集合）天然满足正齐次性。柱体不满足这个性质，所以它无法描述“方向”。
+
+2. **局部线性化把一切问题变成了齐次问题。**
+
+   做优化的第一性原理是：对光滑函数在一点附近做一阶泰勒展开。设目标 $f(x)$ 在 $x_0$ 附近可微，约束也可微。那么：
+
+   - **目标下降条件：** 往方向 $d$ 走一小步，
+     $$
+     f(x_0 + \alpha d) \approx f(x_0) + \alpha \nabla f(x_0)^\top d.
+     $$
+     若 $\nabla f(x_0)^\top d < 0$，则 $f$ 会下降。注意：这个条件只依赖 $d$ 的方向，不依赖 $\alpha$ 的大小（只要 $\alpha>0$ 足够小）。而且这个条件是**齐次的**：若 $d$ 满足 $\nabla f^\top d < 0$，则 $\alpha d$ 也满足，对所有 $\alpha>0$。
+
+   - **可行域局部逼近：** 等式约束 $h_i(x)=0$ 局部线性化为 $\nabla h_i(x_0)^\top d = 0$，这定义了切空间。不等式约束 $g_i(x)\le 0$ 在边界上（$g_i(x_0)=0$）局部线性化为 $\nabla g_i(x_0)^\top d \le 0$。所有这些条件都是关于 $d$ **线性齐次**的。
+
+   因此，局部最优性条件（KKT）本身就是齐次的：它们完全由在 $x_0$ 点各种切线和梯度半空间所构成的**锥**来描述。几何含义是：目标函数的负梯度必须落在可行域的线性化锥的法锥里。这一切都是锥，因为它们是线性不等式组的解，线性不等式组的解集永远是锥。
+
+3. **凸优化和全局结构的齐次性。**
+
+   在凸优化中，齐次性不仅局部成立，往往还能延展到全局结构。考虑一个凸集（比如可行域 $X$）。如果 $X$ 无界，那么当点趋于无穷远时，所有可能的“无穷延伸方向”构成一个锥——**回收锥** $X_\infty$。只有这个锥能回答“在这个集合里，我能永远朝某个方向走下去吗？”这种全局可行性问题。在锥规划中，我们更是显式地要求约束的齐次结构：
+
+   - **线性规划：** $Ax = b,\ x \ge 0$。非负象限 $\{x \mid x \ge 0\}$ 是一个锥。目标函数是线性的。
+   - **半定规划：** $x_1 A_1 + \dots + x_n A_n \preceq B$，其中 $\preceq$ 由半正定锥 $S_+^n$ 定义。半正定性是齐次的：若 $X \succeq 0$ 则 $\alpha X \succeq 0$ 对所有 $\alpha>0$。
+
+   为什么偏爱这些锥结构？因为对偶锥、极锥这些概念，只有在齐次结构下才能保持干净的代数对称性，这也支撑了内点法等算法。
+
+[返回 Basics](/notes/optimization/basics/) · [全部笔记](/notes/)
 
 </div>
