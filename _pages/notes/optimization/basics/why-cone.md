@@ -225,39 +225,3 @@ $$
 [返回 Basics](/notes/optimization/basics/) · [全部笔记](/notes/)
 
 </div>
-
-<div id="cone-explorer" class="cone-explorer" markdown="0">
-  <div class="cone-explorer__head">
-    <span class="lang-en">Geometry sketches</span>
-    <span class="lang-zh">几何示意</span>
-  </div>
-  <div class="cone-explorer__tabs" role="tablist">
-    <button type="button" class="cone-tab is-active" data-cone-tab="compare" aria-pressed="true">
-      <span class="lang-en">Cone vs cylinder</span>
-      <span class="lang-zh">锥 vs 柱</span>
-    </button>
-    <button type="button" class="cone-tab" data-cone-tab="tangent" aria-pressed="false">
-      <span class="lang-en">Tangent cone</span>
-      <span class="lang-zh">切锥</span>
-    </button>
-    <button type="button" class="cone-tab" data-cone-tab="recession" aria-pressed="false">
-      <span class="lang-en">Recession</span>
-      <span class="lang-zh">回收锥</span>
-    </button>
-  </div>
-  <p id="cone-caption" class="cone-explorer__caption"></p>
-  <div id="cone-scale-row" class="cone-explorer__scale">
-    <label for="cone-scale">
-      <span class="lang-en">scale α</span>
-      <span class="lang-zh">缩放 α</span>
-      = <span id="cone-scale-val">1.4</span>
-    </label>
-    <input id="cone-scale" type="range" min="0.6" max="2.4" step="0.1" value="1.4" />
-  </div>
-  <div id="cone-viewport" class="cone-explorer__viewport" role="img" aria-label="3D cone geometry visualization"></div>
-  <p class="cone-explorer__hint">
-    <span class="lang-en">Drag to orbit · scroll to zoom</span>
-    <span class="lang-zh">拖动旋转 · 滚轮缩放</span>
-  </p>
-</div>
-<script type="module" src="{{ '/assets/js/cone-explorer.js' | relative_url }}"></script>
