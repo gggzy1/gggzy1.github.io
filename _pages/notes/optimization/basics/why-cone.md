@@ -254,6 +254,10 @@ $$
     </label>
     <input id="cone-scale" type="range" min="0.6" max="2.4" step="0.1" value="1.4" />
   </div>
-  <canvas id="cone-canvas" width="640" height="340" aria-label="Cone geometry visualization"></canvas>
+  <div id="cone-viewport" class="cone-explorer__viewport" role="img" aria-label="3D cone geometry visualization"></div>
+  <p class="cone-explorer__hint">
+    <span class="lang-en">Drag to orbit · scroll to zoom</span>
+    <span class="lang-zh">拖动旋转 · 滚轮缩放</span>
+  </p>
 </div>
-<script src="{{ '/assets/js/cone-explorer.js' | relative_url }}" defer></script>
+<script type="module" src="{{ '/assets/js/cone-explorer.js' | relative_url }}"></script>

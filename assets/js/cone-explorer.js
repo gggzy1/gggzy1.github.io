@@ -1,313 +1,413 @@
+import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js";
+import { OrbitControls } from "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/controls/OrbitControls.js";
+
 (function () {
   const root = document.getElementById("cone-explorer");
   if (!root) return;
 
-  const canvas = root.querySelector("#cone-canvas");
-  const ctx = canvas.getContext("2d");
+  const viewport = root.querySelector("#cone-viewport");
   const caption = root.querySelector("#cone-caption");
   const tabs = root.querySelectorAll("[data-cone-tab]");
   const scaleSlider = root.querySelector("#cone-scale");
   const scaleVal = root.querySelector("#cone-scale-val");
   const scaleRow = root.querySelector("#cone-scale-row");
+  if (!viewport) return;
 
   let mode = "compare";
   let scale = 1.4;
-  let angle = 0.55; // half-angle for ice-cream cone in radians from vertical? use wedge from origin
 
-  const teal = "#2a9d8f";
-  const tealFill = "rgba(42, 157, 143, 0.22)";
-  const coral = "#c45c26";
-  const coralFill = "rgba(196, 92, 38, 0.18)";
-  const ink = "#2c3338";
-  const muted = "#6b7280";
-  const grid = "#e8eaed";
+  const TEAL = 0x2a9d8f;
+  const CORAL = 0xc45c26;
+  const BLUE = 0x2563eb;
+  const INK = 0x2c3338;
+
+  const copy = {
+    en: {
+      compare:
+        "Drag to rotate. Scale a point inside each set: the ice-cream cone stays closed under α > 0; the cylinder does not.",
+      tangent:
+        "Drag to rotate. At boundary point x* on the ball, feasible directions form a half-space cone; the blue arrow is a descent direction.",
+      recession:
+        "Drag to rotate. An infinite cylinder = compact disk base + recession cone along ±z (the teal axis).",
+    },
+    zh: {
+      compare:
+        "拖动旋转。把集合内一点做正缩放：冰淇淋锥在 α>0 下封闭；圆柱则否。",
+      tangent:
+        "拖动旋转。球边界点 x* 处，可行方向是半空间锥；蓝色箭头是一个下降方向。",
+      recession:
+        "拖动旋转。无穷圆柱 = 紧致圆盘底面 + 沿 ±z 的回收锥（青色轴）。",
+    },
+  };
 
   function pageLang() {
     const page = document.querySelector(".note-page[data-bilingual]");
     return page && page.dataset.lang === "zh" ? "zh" : "en";
   }
 
-  const copy = {
-    en: {
-      compare:
-        "Scale a point inside each set. The cone (teal) stays closed under positive scaling; the strip / cylinder (coral) does not.",
-      tangent:
-        "At a boundary point x*, the local feasible directions form a cone (half-plane). Drag is not needed — the shaded wedge is the tangent cone.",
-      recession:
-        "An infinite strip is a 2D cylinder. You can walk forever only along ± vertical — that line is already its recession cone.",
-    },
-    zh: {
-      compare:
-        "把集合里的一点做正数缩放。锥（青色）在正缩放下封闭；条带/柱体（橙色）则不行。",
-      tangent:
-        "在边界点 x* 处，局部可行方向构成一个锥（半平面）。阴影扇区就是切锥。",
-      recession:
-        "无穷条带是二维的柱体。你只能沿竖直 ± 方向一直走下去——那条直线就是它的回收锥。",
-    },
-  };
+  function updateCaption() {
+    caption.textContent = copy[pageLang()][mode];
+  }
+
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.setClearColor(0xfbfcfd, 1);
+  viewport.appendChild(renderer.domElement);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 100);
+  camera.position.set(4.2, 2.8, 5.2);
+
+  const controls = new OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
+  controls.dampingFactor = 0.08;
+  controls.minDistance = 3;
+  controls.maxDistance = 14;
+  controls.target.set(0, 0.6, 0);
+
+  scene.add(new THREE.AmbientLight(0xffffff, 0.7));
+  const key = new THREE.DirectionalLight(0xffffff, 0.85);
+  key.position.set(4, 8, 5);
+  scene.add(key);
+  const fill = new THREE.DirectionalLight(0xffffff, 0.25);
+  fill.position.set(-3, 2, -2);
+  scene.add(fill);
+
+  const content = new THREE.Group();
+  scene.add(content);
+
+  // persistent refs for scale mode
+  let pointP = null;
+  let pointAlpha = null;
+  let linkLine = null;
+  let cylPointP = null;
+  let cylPointAlpha = null;
+  let cylLink = null;
+
+  function clearContent() {
+    const kids = content.children.slice();
+    kids.forEach(function (obj) {
+      content.remove(obj);
+      obj.traverse(function (child) {
+        if (child.geometry) child.geometry.dispose();
+        if (child.material) {
+          if (Array.isArray(child.material)) {
+            child.material.forEach(function (m) {
+              m.dispose();
+            });
+          } else {
+            child.material.dispose();
+          }
+        }
+      });
+    });
+    pointP = pointAlpha = linkLine = null;
+    cylPointP = cylPointAlpha = cylLink = null;
+  }
+
+  function axesHelper(size) {
+    const g = new THREE.Group();
+    const mat = new THREE.LineBasicMaterial({ color: 0xc5cad1 });
+    const pts = [
+      [-size, 0, 0], [size, 0, 0],
+      [0, 0, 0], [0, size, 0],
+      [0, 0, -size], [0, 0, size],
+    ];
+    for (let i = 0; i < pts.length; i += 2) {
+      const geo = new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector3().fromArray(pts[i]),
+        new THREE.Vector3().fromArray(pts[i + 1]),
+      ]);
+      g.add(new THREE.Line(geo, mat));
+    }
+    return g;
+  }
+
+  function makeArrow(dir, origin, length, color, radius) {
+    const group = new THREE.Group();
+    const d = dir.clone().normalize();
+    const shaftLen = length * 0.78;
+    const headLen = length - shaftLen;
+    const shaft = new THREE.Mesh(
+      new THREE.CylinderGeometry(radius, radius, shaftLen, 12),
+      new THREE.MeshStandardMaterial({ color: color, roughness: 0.45, metalness: 0.05 })
+    );
+    shaft.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), d);
+    shaft.position.copy(origin).addScaledVector(d, shaftLen / 2);
+    group.add(shaft);
+    const head = new THREE.Mesh(
+      new THREE.ConeGeometry(radius * 2.4, headLen, 16),
+      new THREE.MeshStandardMaterial({ color: color, roughness: 0.4, metalness: 0.05 })
+    );
+    head.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), d);
+    head.position.copy(origin).addScaledVector(d, shaftLen + headLen / 2);
+    group.add(head);
+    return group;
+  }
+
+  function iceCreamCone() {
+    // Second-order cone: radius grows with height, apex at origin, opens along +y
+    const group = new THREE.Group();
+    const height = 2.4;
+    const radius = 1.15;
+    const geo = new THREE.ConeGeometry(radius, height, 48, 1, true);
+    const mat = new THREE.MeshStandardMaterial({
+      color: TEAL,
+      transparent: true,
+      opacity: 0.38,
+      side: THREE.DoubleSide,
+      roughness: 0.35,
+      metalness: 0.05,
+      depthWrite: false,
+    });
+    const mesh = new THREE.Mesh(geo, mat);
+    // ConeGeometry apex at +y/2 by default with base at -y/2; flip so apex at origin
+    mesh.rotation.x = Math.PI;
+    mesh.position.y = height / 2;
+    group.add(mesh);
+    const wire = new THREE.LineSegments(
+      new THREE.WireframeGeometry(geo),
+      new THREE.LineBasicMaterial({ color: TEAL, transparent: true, opacity: 0.35 })
+    );
+    wire.rotation.x = Math.PI;
+    wire.position.y = height / 2;
+    group.add(wire);
+    return group;
+  }
+
+  function cylinderMesh(radius, height, color, opacity) {
+    const geo = new THREE.CylinderGeometry(radius, radius, height, 48, 1, true);
+    const mat = new THREE.MeshStandardMaterial({
+      color: color,
+      transparent: true,
+      opacity: opacity,
+      side: THREE.DoubleSide,
+      roughness: 0.4,
+      metalness: 0.05,
+      depthWrite: false,
+    });
+    const mesh = new THREE.Mesh(geo, mat);
+    const edges = new THREE.LineSegments(
+      new THREE.EdgesGeometry(new THREE.CylinderGeometry(radius, radius, height, 24)),
+      new THREE.LineBasicMaterial({ color: color, transparent: true, opacity: 0.55 })
+    );
+    const g = new THREE.Group();
+    g.add(mesh);
+    g.add(edges);
+    return g;
+  }
+
+  function sphereAt(pos, color, r) {
+    const m = new THREE.Mesh(
+      new THREE.SphereGeometry(r || 0.08, 20, 20),
+      new THREE.MeshStandardMaterial({ color: color, roughness: 0.35, metalness: 0.1 })
+    );
+    m.position.copy(pos);
+    return m;
+  }
+
+  function link(a, b, color) {
+    const geo = new THREE.BufferGeometry().setFromPoints([a.clone(), b.clone()]);
+    return new THREE.Line(geo, new THREE.LineBasicMaterial({ color: color, linewidth: 2 }));
+  }
+
+  // Point on ice-cream cone interior: direction with angle < opening
+  const coneDir = new THREE.Vector3(0.35, 1, 0.15).normalize();
+  const coneP0 = coneDir.clone().multiplyScalar(0.95);
+
+  // Point inside cylinder (offset from axis)
+  const cylP0 = new THREE.Vector3(0.35, 0.55, 0.2);
+
+  function buildCompare() {
+    clearContent();
+    controls.target.set(0, 0.9, 0);
+    camera.position.set(5.2, 3.2, 5.8);
+
+    const left = new THREE.Group();
+    left.position.x = -1.7;
+    left.add(axesHelper(1.6));
+    left.add(iceCreamCone());
+    pointP = sphereAt(coneP0, TEAL, 0.09);
+    pointAlpha = sphereAt(coneP0.clone().multiplyScalar(scale), TEAL, 0.09);
+    linkLine = link(coneP0, coneP0.clone().multiplyScalar(scale), TEAL);
+    left.add(pointP);
+    left.add(pointAlpha);
+    left.add(linkLine);
+    content.add(left);
+
+    const right = new THREE.Group();
+    right.position.x = 1.7;
+    right.add(axesHelper(1.6));
+    const cyl = cylinderMesh(0.7, 2.8, CORAL, 0.32);
+    cyl.position.y = 1.2;
+    right.add(cyl);
+    // closed bottom disk for visual base
+    const disk = new THREE.Mesh(
+      new THREE.CircleGeometry(0.7, 48),
+      new THREE.MeshStandardMaterial({
+        color: CORAL,
+        transparent: true,
+        opacity: 0.45,
+        side: THREE.DoubleSide,
+        roughness: 0.5,
+      })
+    );
+    disk.rotation.x = -Math.PI / 2;
+    disk.position.y = 1.2 - 1.4;
+    right.add(disk);
+
+    cylPointP = sphereAt(cylP0, CORAL, 0.09);
+    cylPointAlpha = sphereAt(cylP0.clone().multiplyScalar(scale), 0xcf222e, 0.09);
+    cylLink = link(cylP0, cylP0.clone().multiplyScalar(scale), CORAL);
+    right.add(cylPointP);
+    right.add(cylPointAlpha);
+    right.add(cylLink);
+    content.add(right);
+
+    applyScale();
+  }
+
+  function applyScale() {
+    if (!pointP) return;
+    const q = coneP0.clone().multiplyScalar(scale);
+    pointAlpha.position.copy(q);
+    linkLine.geometry.setFromPoints([coneP0, q]);
+
+    const cq = cylP0.clone().multiplyScalar(scale);
+    cylPointAlpha.position.copy(cq);
+    // outside cylinder if radial > 0.7
+    const radial = Math.hypot(cq.x, cq.z);
+    cylPointAlpha.material.color.setHex(radial <= 0.7 ? CORAL : 0xcf222e);
+    cylLink.geometry.setFromPoints([cylP0, cq]);
+    cylLink.material.color.setHex(radial <= 0.7 ? CORAL : 0xcf222e);
+  }
+
+  function buildTangent() {
+    clearContent();
+    controls.target.set(0.4, 0.2, 0);
+    camera.position.set(4.5, 2.4, 4.2);
+
+    content.add(axesHelper(1.8));
+
+    const ball = new THREE.Mesh(
+      new THREE.SphereGeometry(1, 64, 48),
+      new THREE.MeshStandardMaterial({
+        color: TEAL,
+        transparent: true,
+        opacity: 0.28,
+        roughness: 0.35,
+        metalness: 0.05,
+        depthWrite: false,
+      })
+    );
+    content.add(ball);
+    content.add(
+      new THREE.LineSegments(
+        new THREE.WireframeGeometry(new THREE.SphereGeometry(1, 20, 12)),
+        new THREE.LineBasicMaterial({ color: TEAL, transparent: true, opacity: 0.2 })
+      )
+    );
+
+    const xStar = new THREE.Vector3(1, 0, 0);
+    content.add(sphereAt(xStar, INK, 0.1));
+
+    // Tangent half-space: large disk through x*, normal = +x
+    const plane = new THREE.Mesh(
+      new THREE.CircleGeometry(2.2, 64),
+      new THREE.MeshStandardMaterial({
+        color: TEAL,
+        transparent: true,
+        opacity: 0.22,
+        side: THREE.DoubleSide,
+        roughness: 0.5,
+        depthWrite: false,
+      })
+    );
+    plane.position.copy(xStar);
+    plane.lookAt(xStar.clone().add(new THREE.Vector3(1, 0, 0)));
+    content.add(plane);
+
+    // hemisphere of tangent directions (inward half) for conical look
+    const hemi = new THREE.Mesh(
+      new THREE.SphereGeometry(1.35, 32, 16, 0, Math.PI, 0, Math.PI),
+      new THREE.MeshStandardMaterial({
+        color: TEAL,
+        transparent: true,
+        opacity: 0.18,
+        side: THREE.DoubleSide,
+        depthWrite: false,
+      })
+    );
+    hemi.position.copy(xStar);
+    hemi.rotation.z = Math.PI / 2;
+    content.add(hemi);
+
+    content.add(makeArrow(new THREE.Vector3(1, 0, 0), xStar, 1.1, CORAL, 0.035));
+    content.add(makeArrow(new THREE.Vector3(-0.75, 0.45, 0.2), xStar, 1.25, BLUE, 0.035));
+  }
+
+  function buildRecession() {
+    clearContent();
+    controls.target.set(0, 0.2, 0);
+    camera.position.set(4.8, 2.6, 4.6);
+
+    content.add(axesHelper(2));
+
+    const cyl = cylinderMesh(0.85, 3.6, CORAL, 0.3);
+    content.add(cyl);
+
+    const base = new THREE.Mesh(
+      new THREE.CircleGeometry(0.85, 48),
+      new THREE.MeshStandardMaterial({
+        color: INK,
+        transparent: true,
+        opacity: 0.55,
+        side: THREE.DoubleSide,
+        roughness: 0.45,
+      })
+    );
+    base.rotation.x = -Math.PI / 2;
+    base.position.y = 0;
+    content.add(base);
+
+    // recession cone = line along ±y (cylinder axis)
+    content.add(makeArrow(new THREE.Vector3(0, 1, 0), new THREE.Vector3(0, 0.15, 0), 1.9, TEAL, 0.04));
+    content.add(makeArrow(new THREE.Vector3(0, -1, 0), new THREE.Vector3(0, -0.15, 0), 1.9, TEAL, 0.04));
+
+    // thin axis line
+    const axisGeo = new THREE.BufferGeometry().setFromPoints([
+      new THREE.Vector3(0, -2.1, 0),
+      new THREE.Vector3(0, 2.1, 0),
+    ]);
+    content.add(new THREE.Line(axisGeo, new THREE.LineBasicMaterial({ color: TEAL, transparent: true, opacity: 0.7 })));
+  }
+
+  function setMode(next) {
+    mode = next;
+    tabs.forEach(function (btn) {
+      const on = btn.dataset.coneTab === mode;
+      btn.classList.toggle("is-active", on);
+      btn.setAttribute("aria-pressed", on ? "true" : "false");
+    });
+    scaleRow.style.display = mode === "compare" ? "flex" : "none";
+    if (mode === "compare") buildCompare();
+    else if (mode === "tangent") buildTangent();
+    else buildRecession();
+    updateCaption();
+  }
 
   function resize() {
-    const dpr = window.devicePixelRatio || 1;
-    const w = Math.min(640, root.clientWidth - 2);
-    const h = 340;
-    canvas.style.width = w + "px";
-    canvas.style.height = h + "px";
-    canvas.width = Math.round(w * dpr);
-    canvas.height = Math.round(h * dpr);
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    draw();
-  }
-
-  function clear(w, h) {
-    ctx.clearRect(0, 0, w, h);
-    ctx.fillStyle = "#fbfcfd";
-    ctx.fillRect(0, 0, w, h);
-  }
-
-  function axes(ox, oy, w, h) {
-    ctx.strokeStyle = grid;
-    ctx.lineWidth = 1;
-    for (let x = ox % 40; x < w; x += 40) {
-      ctx.beginPath();
-      ctx.moveTo(x, 0);
-      ctx.lineTo(x, h);
-      ctx.stroke();
-    }
-    for (let y = oy % 40; y < h; y += 40) {
-      ctx.beginPath();
-      ctx.moveTo(0, y);
-      ctx.lineTo(w, y);
-      ctx.stroke();
-    }
-    ctx.strokeStyle = "#c5cad1";
-    ctx.lineWidth = 1.5;
-    ctx.beginPath();
-    ctx.moveTo(0, oy);
-    ctx.lineTo(w, oy);
-    ctx.moveTo(ox, 0);
-    ctx.lineTo(ox, h);
-    ctx.stroke();
-  }
-
-  function label(text, x, y, color) {
-    ctx.fillStyle = color || muted;
-    ctx.font = '600 12px "Source Sans 3", "Segoe UI", sans-serif';
-    ctx.fillText(text, x, y);
-  }
-
-  function drawArrow(x1, y1, x2, y2, color) {
-    const ang = Math.atan2(y2 - y1, x2 - x1);
-    ctx.strokeStyle = color;
-    ctx.fillStyle = color;
-    ctx.lineWidth = 2.2;
-    ctx.beginPath();
-    ctx.moveTo(x1, y1);
-    ctx.lineTo(x2, y2);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.moveTo(x2, y2);
-    ctx.lineTo(x2 - 9 * Math.cos(ang - 0.4), y2 - 9 * Math.sin(ang - 0.4));
-    ctx.lineTo(x2 - 9 * Math.cos(ang + 0.4), y2 - 9 * Math.sin(ang + 0.4));
-    ctx.closePath();
-    ctx.fill();
-  }
-
-  function drawCompare(w, h) {
-    const mid = w / 2;
-    axes(mid / 2, h * 0.72, mid - 8, h);
-    axes(mid + mid / 2, h * 0.72, mid - 8, h);
-
-    // divider
-    ctx.strokeStyle = "#d8dce2";
-    ctx.setLineDash([4, 4]);
-    ctx.beginPath();
-    ctx.moveTo(mid, 12);
-    ctx.lineTo(mid, h - 12);
-    ctx.stroke();
-    ctx.setLineDash([]);
-
-    // --- left: cone (ice-cream / angle cone) ---
-    const ox1 = mid / 2;
-    const oy1 = h * 0.72;
-    const R = Math.min(mid, h) * 0.42;
-    const a = 0.62; // half-angle from +y axis? use from +x for orthant-like wedge in first quadrant style — use symmetric wedge around +y for "cone"
-
-    // wedge around the upward axis: angles from -a to +a relative to -Y (screen up)
-    ctx.beginPath();
-    ctx.moveTo(ox1, oy1);
-    ctx.lineTo(ox1 + R * Math.sin(-a), oy1 - R * Math.cos(-a));
-    ctx.arc(ox1, oy1, R, -Math.PI / 2 - a, -Math.PI / 2 + a);
-    ctx.closePath();
-    ctx.fillStyle = tealFill;
-    ctx.fill();
-    ctx.strokeStyle = teal;
-    ctx.lineWidth = 2;
-    ctx.stroke();
-
-    // base point in cone and scaled point
-    const pAngle = -0.25;
-    const pLen = 55;
-    const px = ox1 + pLen * Math.sin(pAngle);
-    const py = oy1 - pLen * Math.cos(pAngle);
-    const qx = ox1 + pLen * scale * Math.sin(pAngle);
-    const qy = oy1 - pLen * scale * Math.cos(pAngle);
-
-    ctx.fillStyle = teal;
-    ctx.beginPath();
-    ctx.arc(px, py, 5, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.beginPath();
-    ctx.arc(qx, qy, 5, 0, Math.PI * 2);
-    ctx.fill();
-    drawArrow(px, py, qx, qy, teal);
-    label("p", px + 8, py + 4, teal);
-    label("αp", qx + 8, qy + 4, teal);
-    label("cone K", 16, 28, teal);
-    label("0 ∈ K, αK ⊂ K", 16, 46, muted);
-
-    // --- right: cylinder / strip ---
-    const ox2 = mid + mid / 2;
-    const oy2 = h * 0.72;
-    const halfW = 38;
-    ctx.fillStyle = coralFill;
-    ctx.fillRect(ox2 - halfW, 18, halfW * 2, h - 36);
-    ctx.strokeStyle = coral;
-    ctx.lineWidth = 2;
-    ctx.strokeRect(ox2 - halfW, 18, halfW * 2, h - 36);
-
-    const cx = ox2 + 12;
-    const cy = oy2 - 40;
-    const sx = ox2 + 12 * scale;
-    const sy = oy2 - 40 * scale;
-
-    ctx.fillStyle = coral;
-    ctx.beginPath();
-    ctx.arc(cx, cy, 5, 0, Math.PI * 2);
-    ctx.fill();
-    // scaled point may leave strip
-    const inside = Math.abs(sx - ox2) <= halfW;
-    ctx.beginPath();
-    ctx.arc(sx, sy, 5, 0, Math.PI * 2);
-    ctx.fillStyle = inside ? coral : "#cf222e";
-    ctx.fill();
-    drawArrow(cx, cy, sx, sy, inside ? coral : "#cf222e");
-    label("p", cx + 8, cy + 4, coral);
-    label("αp", sx + 8, sy + 4, inside ? coral : "#cf222e");
-    label("cylinder / strip", mid + 16, 28, coral);
-    label(inside ? "still inside" : "αp leaves the set", mid + 16, 46, muted);
-  }
-
-  function drawTangent(w, h) {
-    const ox = w * 0.42;
-    const oy = h * 0.55;
-    axes(ox, oy, w, h);
-
-    const r = 78;
-    // feasible disk
-    ctx.beginPath();
-    ctx.arc(ox, oy, r, 0, Math.PI * 2);
-    ctx.fillStyle = "rgba(42, 157, 143, 0.12)";
-    ctx.fill();
-    ctx.strokeStyle = teal;
-    ctx.lineWidth = 2;
-    ctx.stroke();
-    label("feasible set", ox - 34, oy + r + 18, teal);
-
-    // boundary point on the right
-    const xStar = { x: ox + r, y: oy };
-    // tangent cone = half-plane x <= x* (inward), i.e. left half from x*
-    ctx.beginPath();
-    ctx.moveTo(xStar.x, 0);
-    ctx.lineTo(xStar.x, h);
-    ctx.lineTo(0, h);
-    ctx.lineTo(0, 0);
-    ctx.closePath();
-    ctx.fillStyle = "rgba(42, 157, 143, 0.16)";
-    ctx.fill();
-
-    // clip highlight near x* as a cone wedge for intuition
-    ctx.beginPath();
-    ctx.moveTo(xStar.x, xStar.y);
-    ctx.arc(xStar.x, xStar.y, 95, Math.PI / 2, (3 * Math.PI) / 2);
-    ctx.closePath();
-    ctx.fillStyle = tealFill;
-    ctx.fill();
-    ctx.strokeStyle = teal;
-    ctx.lineWidth = 1.5;
-    ctx.stroke();
-
-    // x*
-    ctx.fillStyle = ink;
-    ctx.beginPath();
-    ctx.arc(xStar.x, xStar.y, 5.5, 0, Math.PI * 2);
-    ctx.fill();
-    label("x*", xStar.x + 10, xStar.y - 8, ink);
-
-    // normal (outward)
-    drawArrow(xStar.x, xStar.y, xStar.x + 70, xStar.y, coral);
-    label("normal", xStar.x + 42, xStar.y - 10, coral);
-
-    // descent direction inside tangent cone
-    drawArrow(xStar.x, xStar.y, xStar.x - 70, xStar.y - 45, "#2563eb");
-    label("descent d", xStar.x - 95, xStar.y - 52, "#2563eb");
-
-    label("tangent cone at x*", 16, 28, teal);
-  }
-
-  function drawRecession(w, h) {
-    const ox = w * 0.5;
-    const oy = h * 0.5;
-    axes(ox, oy, w, h);
-
-    const halfW = 52;
-    ctx.fillStyle = coralFill;
-    ctx.fillRect(ox - halfW, 16, halfW * 2, h - 32);
-    ctx.strokeStyle = coral;
-    ctx.lineWidth = 2;
-    ctx.strokeRect(ox - halfW, 16, halfW * 2, h - 32);
-    label("cylinder C  (infinite strip)", 16, 28, coral);
-
-    // base (compact cross-section)
-    ctx.strokeStyle = ink;
-    ctx.lineWidth = 3;
-    ctx.beginPath();
-    ctx.moveTo(ox - halfW, oy);
-    ctx.lineTo(ox + halfW, oy);
-    ctx.stroke();
-    label("compact base", ox + halfW + 10, oy + 4, ink);
-
-    // recession directions
-    drawArrow(ox - 18, oy, ox - 18, 36, teal);
-    drawArrow(ox + 18, oy, ox + 18, h - 36, teal);
-    label("C∞", ox + 28, 52, teal);
-    label("recession cone = vertical line", 16, 48, muted);
-  }
-
-  function updateCaption() {
-    const lang = pageLang();
-    caption.textContent = copy[lang][mode];
-  }
-
-  function draw() {
-    const w = canvas.clientWidth;
-    const h = canvas.clientHeight;
-    clear(w, h);
-    if (mode === "compare") drawCompare(w, h);
-    else if (mode === "tangent") drawTangent(w, h);
-    else drawRecession(w, h);
-    updateCaption();
-    scaleRow.style.display = mode === "compare" ? "flex" : "none";
+    const w = viewport.clientWidth || 640;
+    const h = Math.max(360, Math.round(w * 0.58));
+    viewport.style.height = h + "px";
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+    renderer.setSize(w, h, false);
   }
 
   tabs.forEach(function (btn) {
     btn.addEventListener("click", function () {
-      mode = btn.dataset.coneTab;
-      tabs.forEach(function (b) {
-        const on = b === btn;
-        b.classList.toggle("is-active", on);
-        b.setAttribute("aria-pressed", on ? "true" : "false");
-      });
-      draw();
+      setMode(btn.dataset.coneTab);
     });
   });
 
@@ -315,17 +415,26 @@
     scaleSlider.addEventListener("input", function () {
       scale = parseFloat(scaleSlider.value);
       if (scaleVal) scaleVal.textContent = scale.toFixed(1);
-      draw();
+      if (mode === "compare") applyScale();
     });
   }
 
-  // refresh caption when language toggles
   const page = document.querySelector(".note-page[data-bilingual]");
   if (page) {
-    const obs = new MutationObserver(draw);
-    obs.observe(page, { attributes: true, attributeFilter: ["data-lang"] });
+    new MutationObserver(updateCaption).observe(page, {
+      attributes: true,
+      attributeFilter: ["data-lang"],
+    });
   }
 
   window.addEventListener("resize", resize);
+
+  setMode("compare");
   resize();
+
+  (function animate() {
+    requestAnimationFrame(animate);
+    controls.update();
+    renderer.render(scene, camera);
+  })();
 })();

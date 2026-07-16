@@ -228,3 +228,26 @@
   border-radius: 6px;
   background: #fbfcfd;
 }
+
+.cone-explorer__viewport {
+  width: 100%;
+  min-height: 360px;
+  border: 1px solid rgba(130, 130, 130, 0.28);
+  border-radius: 6px;
+  overflow: hidden;
+  background: #fbfcfd;
+  touch-action: none;
+}
+
+.cone-explorer__viewport canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.cone-explorer__hint {
+  margin: 0.45rem 0 0;
+  font-family: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  font-size: 0.75rem;
+  opacity: 0.65;
+}
