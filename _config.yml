@@ -2,10 +2,10 @@
 # Site settings
 # -----------------------------------------------------------------------------
 
-title: blank # the website title (if blank, full name will be used instead)
-first_name: Zhiyun
+title: z.guo # the website title (if blank, full name will be used instead)
+first_name: z.guo
 middle_name: ""
-last_name: Guo
+last_name: ""
 contact_note: >
   Feel free to reach out via GitHub.
 description: > # the ">" symbol means to ignore newlines until "footer_text:"

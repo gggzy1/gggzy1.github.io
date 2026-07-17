@@ -25,7 +25,7 @@ latest_posts:
   enabled: false
 ---
 
-Hello! This is **Zhiyun Guo**.
+Hello! This is **z.guo**.
 
 This website is currently under construction :)
 

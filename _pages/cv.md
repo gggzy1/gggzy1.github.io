@@ -7,7 +7,7 @@ nav: true
 nav_order: 5
 ---
 
-## Zhiyun Guo
+## z.guo
 
 Research interests: optimization (stochastic optimization and first/second-order algorithms), machine learning, and EconCS.
 
