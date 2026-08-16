@@ -4,7 +4,7 @@ title: about
 permalink: /
 redirect_from:
   - /about/
-subtitle: Optimization · Machine Learning · EconCS
+subtitle:
 nav: true
 nav_order: 1
 
