@@ -10,7 +10,7 @@ nav_order: 1
 
 profile:
   align: right
-  image: a1.png
+  image:
   image_circular: true
   # more_info: >
   #   <p>Technical notes & research thoughts</p>
