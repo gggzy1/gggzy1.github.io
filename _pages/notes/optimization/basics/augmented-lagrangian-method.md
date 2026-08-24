@@ -3,61 +3,61 @@ layout: note
 title: "A Note on the Augmented Lagrangian Method"
 permalink: /notes/optimization/basics/augmented-lagrangian-method/
 math: true
-description: Augmented Lagrangian for equality constraints, multiplier updates, and why ALM avoids pure penalty ill-conditioning.
+description: Augmented Lagrangian for equality constraints, multiplier updates, and the proximal dual interpretation.
 ---
 
-The **augmented Lagrangian method (ALM)** is a standard approach to equality-constrained optimization. It can be read as a shifted penalty method, as a multiplier method, or — in the convex case — as proximal point on the dual. This note focuses on equalities, the update $\lambda \leftarrow \lambda + \rho\, c(x)$, and the link to KKT.
-
-For classical Lagrange duality, see [A Note on Lagrangian Duality](/notes/optimization/basics/lagrangian-duality/).
+Equality-constrained ALM as a shifted penalty / multiplier method. Duality background: [Lagrangian Duality](/notes/optimization/basics/lagrangian-duality/).
 
 ---
 
-## 1. Equality-constrained problem
+## 1. Problem and KKT
 
 $$
-\min_{x \in \mathbb{R}^n} \; f(x)
+\min_{x\in\mathbb{R}^n} f(x)
 \quad\text{s.t.}\quad
 c(x)=0,
 \qquad
-c(x)=\bigl(c_1(x),\ldots,c_m(x)\bigr)^\top \in \mathbb{R}^m.
+c:\mathbb{R}^n\to\mathbb{R}^m.
 $$
 
-The ordinary Lagrangian is
+Lagrangian and Jacobian:
 
 $$
 \mathcal{L}(x,\lambda)=f(x)+\lambda^\top c(x),
-\qquad \lambda\in\mathbb{R}^m.
-$$
-
-Under a constraint qualification, a local minimizer $x^*$ admits a multiplier $\lambda^*$ with KKT
-
-$$
-\nabla_x \mathcal{L}(x^*,\lambda^*)
-=
-\nabla f(x^*)+J_c(x^*)^\top\lambda^*=0,
 \qquad
-c(x^*)=0,
+J_c(x)=\nabla c(x)^\top\in\mathbb{R}^{m\times n}.
 $$
 
-where $J_c(x)$ is the Jacobian of $c$.
+KKT (under a CQ): $\exists\,\lambda^\star$ such that
+
+$$
+\nabla_x\mathcal{L}(x^\star,\lambda^\star)
+=\nabla f(x^\star)+J_c(x^\star)^\top\lambda^\star=0,
+\qquad
+c(x^\star)=0.
+$$
 
 ---
 
-## 2. Pure penalty and ill-conditioning
-
-A quadratic penalty ignores multipliers and solves
+## 2. Quadratic penalty
 
 $$
-\min_x
-\Bigl(
-f(x)+\tfrac{\rho}{2}\|c(x)\|^2
-\Bigr),
-\qquad \rho>0.
+P_\rho(x)=f(x)+\tfrac{\rho}{2}\|c(x)\|^2,
+\qquad\rho>0.
 $$
 
-Large $\rho$ forces $c(x)\approx 0$, but the Hessian of the penalized objective contains a term $\rho\, J_c(x)^\top J_c(x)$. For linear constraints $c(x)=Ax-b$ this is $\nabla^2 f(x)+\rho A^\top A$, which becomes severely ill-conditioned as $\rho\to\infty$.
+$$
+\nabla P_\rho(x)=\nabla f(x)+\rho\, J_c(x)^\top c(x),
+$$
 
-ALM keeps a moderate $\rho$ and lets the multiplier estimate absorb most of the constraint force.
+$$
+\nabla^2 P_\rho(x)
+=\nabla^2 f(x)
++\rho\, J_c(x)^\top J_c(x)
++\rho\sum_{i=1}^m c_i(x)\,\nabla^2 c_i(x).
+$$
+
+For $c(x)=Ax-b$: $\nabla^2 P_\rho=\nabla^2 f+\rho A^\top A$. As $\rho\to\infty$, this is ill-conditioned.
 
 ---
 
@@ -65,37 +65,23 @@ ALM keeps a moderate $\rho$ and lets the multiplier estimate absorb most of the 
 
 $$
 \mathcal{L}_\rho(x,\lambda)
-=
-f(x)+\lambda^\top c(x)+\tfrac{\rho}{2}\|c(x)\|^2.
+=f(x)+\lambda^\top c(x)+\tfrac{\rho}{2}\|c(x)\|^2
+=f(x)+\tfrac{\rho}{2}\Bigl\|c(x)+\tfrac{\lambda}{\rho}\Bigr\|^2-\tfrac{1}{2\rho}\|\lambda\|^2.
 $$
 
-Completing the square gives the equivalent (in $x$) form
+Gradients in $x$:
 
 $$
-\mathcal{L}_\rho(x,\lambda)
-=
-f(x)
-+\tfrac{\rho}{2}\Bigl\|c(x)+\tfrac{\lambda}{\rho}\Bigr\|^2
--\tfrac{1}{2\rho}\|\lambda\|^2.
+\nabla_x\mathcal{L}_\rho(x,\lambda)
+=\nabla f(x)+J_c(x)^\top\bigl(\lambda+\rho\, c(x)\bigr)
+=\nabla_x\mathcal{L}\bigl(x,\,\lambda+\rho\, c(x)\bigr).
 $$
 
-So minimizing in $x$ is a **shifted** quadratic penalty: the target for $c(x)$ is $-\lambda/\rho$ rather than $0$. Good $\lambda$ means a smaller residual is enough, and $\rho$ need not explode.
-
-The $x$-gradient is
-
-$$
-\nabla_x \mathcal{L}_\rho(x,\lambda)
-=
-\nabla f(x)+J_c(x)^\top\bigl(\lambda+\rho\, c(x)\bigr).
-$$
-
-Compare with stationarity $\nabla f+J_c^\top\lambda^*=0$: at a minimizer of $\mathcal{L}_\rho(\,\cdot\,,\lambda)$, the vector $\lambda+\rho\, c(x)$ plays the role of an updated multiplier.
+Hessian (schematic): same $\rho\, J_c^\top J_c$ term as the penalty, but with a **shifted** residual $c(x)+\lambda/\rho$; accurate $\lambda$ keeps $\|c\|$ smaller for moderate $\rho$.
 
 ---
 
-## 4. Basic ALM iteration
-
-Given $\lambda^0$ and $\rho_0>0$, iterate
+## 4. ALM iteration
 
 $$
 \begin{aligned}
@@ -103,76 +89,54 @@ x^{k+1}
 &\in
 \arg\min_x\,
 \mathcal{L}_{\rho_k}(x,\lambda^k),
-\\[0.35em]
+\\
 \lambda^{k+1}
 &=
 \lambda^k+\rho_k\, c(x^{k+1}).
 \end{aligned}
 $$
 
-Optionally increase $\rho_k$ if $\|c(x^{k+1})\|$ stagnates (e.g. fails to decrease by a fixed factor).
-
-**Why the multiplier update.** If $x^{k+1}$ is an exact minimizer of $\mathcal{L}_{\rho_k}(\,\cdot\,,\lambda^k)$, then
+If the $x$-step is exact,
 
 $$
-\nabla f(x^{k+1})
-+
-J_c(x^{k+1})^\top
-\bigl(\lambda^k+\rho_k\, c(x^{k+1})\bigr)
-=
-0,
+\nabla_x\mathcal{L}_\rho(x^{k+1},\lambda^k)=0
+\;\Longleftrightarrow\;
+\nabla_x\mathcal{L}(x^{k+1},\lambda^{k+1})=0.
 $$
 
-i.e.
-
-$$
-\nabla_x \mathcal{L}\bigl(x^{k+1},\lambda^{k+1}\bigr)=0
-\quad\text{with}\quad
-\lambda^{k+1}=\lambda^k+\rho_k\, c(x^{k+1}).
-$$
-
-Each exact subproblem solve produces a point that is **stationary for the ordinary Lagrangian** at the new multiplier. The remaining task is to drive $c(x^k)\to 0$ (and, under standard second-order conditions, $\lambda^k\to\lambda^*$).
-
-In practice the $x$-step is solved only approximately; the same update is kept, and $\rho$ is adjusted for progress on feasibility.
+Thus each exact subproblem yields **Lagrangian stationarity** at $\lambda^{k+1}$. Feasibility $c(x^{k+1})\to 0$ (and $\lambda^k\to\lambda^\star$ under standard SOSC/CQ) is driven by the update and optional $\rho$-increase when $\|c(x^{k+1})\|$ does not decrease sufficiently.
 
 ---
 
-## 5. Dual / proximal reading (convex case)
+## 5. Dual / proximal form (convex case)
 
-Define the dual function $g(\lambda)=\inf_x \mathcal{L}(x,\lambda)$. For convex problems with enough structure, maximizing $g$ is equivalent to the original constrained problem (strong duality). One can show that
+Dual function: $g(\lambda)=\inf_x\mathcal{L}(x,\lambda)$. Then
 
 $$
-\inf_x \mathcal{L}_\rho(x,\lambda)
-=
-\sup_{u}
-\Bigl(
-g(u)-\tfrac{1}{2\rho}\|u-\lambda\|^2
-\Bigr)
-=
-g^\rho(\lambda),
+\inf_x\mathcal{L}_\rho(x,\lambda)
+=\sup_{u\in\mathbb{R}^m}
+\Bigl(g(u)-\tfrac{1}{2\rho}\|u-\lambda\|^2\Bigr).
 $$
 
-the **Moreau envelope** of $-g$ (up to sign conventions): ALM is proximal point on the dual. The multiplier update is then a proximal / dual-ascent step. This explains stability for moderate $\rho$ and global convergence results in the convex setting (Rockafellar).
+So the outer ALM loop is **proximal point** on maximizing $g$ (Rockafellar): a dual ascent with Moreau smoothing of parameter $\rho$.
 
 ---
 
-## 6. Inequalities (brief)
+## 6. Inequalities
 
-For inequalities $g(x)\le 0$, one common device is to introduce a slack $s\ge 0$ with $g(x)+s=0$, or to use a projected multiplier update
+For $g(x)\le 0$, a standard multiplier step is
 
 $$
-\lambda^{k+1}
-=
-\bigl[\lambda^k+\rho_k\, g(x^{k+1})\bigr]_+.
+\lambda^{k+1}=\bigl[\lambda^k+\rho_k\, g(x^{k+1})\bigr]_+.
 $$
 
-The equality case above is the core; inequality variants keep the same shifted-penalty intuition with a nonnegativity projection on $\lambda$.
+(Equivalently: slack $s\ge 0$, $g(x)+s=0$, then apply the equality ALM.)
 
 ---
 
 ## References
 
-1. D. P. Bertsekas, *Constrained Optimization and Lagrange Multiplier Methods*, Academic Press, 1982 (classical ALM / method of multipliers).
-2. J. Nocedal and S. J. Wright, *Numerical Optimization*, 2nd ed., Springer, 2006, Ch. 17 (practical ALM and SQP context).
+1. D. P. Bertsekas, *Constrained Optimization and Lagrange Multiplier Methods*, Academic Press, 1982.
+2. J. Nocedal and S. J. Wright, *Numerical Optimization*, 2nd ed., Springer, 2006, Ch. 17.
 3. R. T. Rockafellar, “Augmented Lagrangians and applications of the proximal point algorithm in convex programming,” *Math. Oper. Res.* 1 (1976), 97–116.
-4. S. Boyd and L. Vandenberghe, *Convex Optimization*, Cambridge University Press, 2004, Ch. 5 (Lagrange duality background).
+4. S. Boyd and L. Vandenberghe, *Convex Optimization*, Cambridge University Press, 2004, Ch. 5.
