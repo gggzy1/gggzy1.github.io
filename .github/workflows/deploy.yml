@@ -48,39 +48,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: "3.3.5"
-          bundler-cache: true
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.13"
-          cache: pip
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-          cache: npm
-      - name: Install JS deps
-        run: npm ci
-      - name: Install and Build
+      - name: Prepare closed site
         run: |
-          sudo apt-get update && sudo apt-get install -y imagemagick
-          pip3 install --upgrade nbconvert
-          export JEKYLL_ENV=production
-          bundle exec jekyll build
-      - name: Purge unused CSS
-        run: |
-          npm install -g purgecss
-          purgecss -c purgecss.config.js
+          mkdir -p _closed_site
+          printf '%s\n' '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="robots" content="noindex, nofollow"><title>404 Not Found</title></head><body><h1>404 Not Found</h1></body></html>' > _closed_site/404.html
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: _site
+          path: _closed_site
       - name: Deploy to GitHub Pages
         id: deployment
         continue-on-error: true
