@@ -2,25 +2,34 @@
 layout: note
 title: Notes
 permalink: /notes/
-description: Selected expository notes on optimization, economics, and computation.
+description: Technical notes and exposition.
 nav: true
 nav_order: 4
 ---
 
-The notes below are **expository notes** on established ideas and results; they are not claims of original research. Any research notes will be identified separately when they are ready to share.
-
 ## Optimization
 
-- [A Note on Lagrangian Duality](/notes/optimization/basics/lagrangian-duality/)
-- [A Note on the Augmented Lagrangian Method](/notes/optimization/basics/augmented-lagrangian-method/)
-- [A Note on Coerciveness](/notes/optimization/basics/coercive/)
-- [Why Cones, Not Cylinders?](/notes/optimization/basics/why-cone/)
+### [Basics](/notes/optimization/basics/)
 
-## Economics and Computation
+1. [A Note on Coerciveness](/notes/optimization/basics/coercive/)
+2. [A Note on Lagrangian Duality](/notes/optimization/basics/lagrangian-duality/)
+3. [A Note on the Augmented Lagrangian Method](/notes/optimization/basics/augmented-lagrangian-method/)
+4. [Why Cones, Not Cylinders?](/notes/optimization/basics/why-cone/)
+
+## [EconCS](/notes/econcs/)
 
 - [A Note on Fisher Markets](/notes/econcs/fisher-market/)
 
-## Other Expository Notes
+## [Generalization](/notes/generalization/)
 
-- [Generalization theory notes](/notes/generalization/)
-- [Other optimization notes](/notes/optimization/basics/)
+1. [Generalization Setup and Uniform Convergence](/notes/generalization/setup-uniform-convergence/)
+2. [A Note on VC Dimension](/notes/generalization/vc-dimension/)
+3. [A Note on Rademacher Complexity](/notes/generalization/rademacher-complexity/)
+4. [A Note on Covering Numbers and Entropy Bounds](/notes/generalization/covering-numbers/)
+5. [A Note on Stability-Based Generalization](/notes/generalization/stability-generalization/)
+6. [A Note on PAC-Bayes Bounds](/notes/generalization/pac-bayes/)
+
+## LLM
+
+- [LLM Basics](/notes/llm/basic/)
+- [LLM Agents](/notes/llm/agent/)
