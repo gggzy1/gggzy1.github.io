@@ -27,7 +27,7 @@ I am an undergraduate student at Shanghai Jiao Tong University, studying in the 
 
 My research interests are in **optimization algorithms** and **economics and computation (EconCS)**. Within optimization, I am interested in first-order methods for stochastic and large-scale problems. In EconCS, I study revealed preferences, market equilibrium, and algorithmic approaches to learning economic behavior.
 
-[Email](mailto:gzy7777@sjtu.edu.cn) · [GitHub](https://github.com/gggzy1) · [Download CV](/assets/pdf/CV_Zhiyun_Guo.pdf)
+[Email](mailto:gzy7777@sjtu.edu.cn) · [GitHub](https://github.com/gggzy1)
 
 ## Selected Research
 

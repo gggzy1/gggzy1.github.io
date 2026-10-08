@@ -25,4 +25,4 @@ This ongoing project studies adaptive stochastic approximation methods for two-s
 
 With Chuwen Zhang, Zizhuo Wang, and Yinyu Ye, I work on learning collective revealed preferences through a computationally tractable surrogate market. My contributions include developing the Frank–Wolfe-based surrogate-consumer framework, deriving generalization bounds for several surrogate-consumer classes, and designing synthetic experiments. **arXiv preprint; submitted to ICLR 2027.**
 
-[Download my CV](/assets/pdf/CV_Zhiyun_Guo.pdf) · [Email](mailto:gzy7777@sjtu.edu.cn)
+[Email](mailto:gzy7777@sjtu.edu.cn)
