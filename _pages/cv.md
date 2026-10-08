@@ -7,20 +7,10 @@ nav: true
 nav_order: 5
 ---
 
-## z.guo
+## Zhiyun Guo
 
-Research interests: optimization (stochastic optimization and first/second-order algorithms), machine learning, and EconCS.
+Undergraduate student at Shanghai Jiao Tong University.
 
-## Education
+Research interests: first-order, stochastic, and large-scale optimization; economics and computation, including revealed preferences and market equilibrium.
 
-*To be added.*
-
-## Research Interests
-
-- Optimization
-- Machine Learning
-- EconCS
-
-## Selected Work
-
-*Publications, projects, teaching, and service — to be added.*
+[Download my current CV (PDF)](/assets/pdf/CV_Zhiyun_Guo.pdf)

@@ -2,38 +2,25 @@
 layout: note
 title: Notes
 permalink: /notes/
-description: Technical notes and exposition.
+description: Selected expository notes on optimization, economics, and computation.
 nav: true
 nav_order: 4
 ---
 
+The notes below are **expository notes** on established ideas and results; they are not claims of original research. Any research notes will be identified separately when they are ready to share.
+
 ## Optimization
 
-### [Basics](/notes/optimization/basics/)
+- [A Note on Lagrangian Duality](/notes/optimization/basics/lagrangian-duality/)
+- [A Note on the Augmented Lagrangian Method](/notes/optimization/basics/augmented-lagrangian-method/)
+- [A Note on Coerciveness](/notes/optimization/basics/coercive/)
+- [Why Cones, Not Cylinders?](/notes/optimization/basics/why-cone/)
 
-1. [A Note on Coerciveness](/notes/optimization/basics/coercive/)
-2. [A Note on Lagrangian Duality](/notes/optimization/basics/lagrangian-duality/)
-3. [A Note on the Augmented Lagrangian Method](/notes/optimization/basics/augmented-lagrangian-method/)
-4. [Why Cones, Not Cylinders?](/notes/optimization/basics/why-cone/)
-
-### [First-order methods](/notes/optimization/first-order/) — roadmap
-
-### [Stochastic optimization](/notes/optimization/stochastic/) — roadmap
-
-## [EconCS](/notes/econcs/)
+## Economics and Computation
 
 - [A Note on Fisher Markets](/notes/econcs/fisher-market/)
 
-## [Generalization](/notes/generalization/)
+## Other Expository Notes
 
-1. [Generalization Setup and Uniform Convergence](/notes/generalization/setup-uniform-convergence/)
-2. [A Note on VC Dimension](/notes/generalization/vc-dimension/)
-3. [A Note on Rademacher Complexity](/notes/generalization/rademacher-complexity/)
-4. [A Note on Covering Numbers and Entropy Bounds](/notes/generalization/covering-numbers/)
-5. [A Note on Stability-Based Generalization](/notes/generalization/stability-generalization/)
-6. [A Note on PAC-Bayes Bounds](/notes/generalization/pac-bayes/)
-
-## LLM
-
-- [LLM Basics](/notes/llm/basic/)
-- [LLM Agents](/notes/llm/agent/)
+- [Generalization theory notes](/notes/generalization/)
+- [Other optimization notes](/notes/optimization/basics/)

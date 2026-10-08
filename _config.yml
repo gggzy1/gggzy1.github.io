@@ -7,12 +7,12 @@ first_name: z.guo
 middle_name: ""
 last_name: ""
 contact_note: >
-  Feel free to reach out via GitHub.
+  Feel free to reach out by email or through GitHub.
 description: > # the ">" symbol means to ignore newlines until "footer_text:"
-  Personal academic website. Research interests: optimization, machine learning, and EconCS.
+  Personal academic website. Research in optimization algorithms and economics and computation.
 footer_text: >
   Powered by <a href="https://jekyllrb.com/" target="_blank">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio">al-folio</a> theme.
-keywords: optimization, operations-research, machine-learning, econcs, academic-website
+keywords: stochastic optimization, large-scale optimization, first-order methods, econcs, academic-website
 lang: en # the language of your site (for example: en, fr, cn, ru, etc.)
 icon: favicon.svg # the emoji used as the favicon (alternatively, provide image name in /assets/img/)
 
@@ -121,7 +121,7 @@ bing_site_verification: # out your bing-site-verification ID (Bing Webmaster)
 # -----------------------------------------------------------------------------
 
 blog_name: notes # blog_name will be displayed in your blog page
-blog_description: Technical notes on optimization and machine learning
+blog_description: Expository notes on optimization and economics and computation
 permalink: /blog/:year/:title/
 lsi: false # produce an index for related posts
 

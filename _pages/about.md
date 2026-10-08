@@ -12,8 +12,6 @@ profile:
   align: right
   image:
   image_circular: true
-  # more_info: >
-  #   <p>Technical notes & research thoughts</p>
 
 selected_papers: false
 social: true
@@ -25,24 +23,30 @@ latest_posts:
   enabled: false
 ---
 
-Hello! This is **z.guo**.
+I am an undergraduate student at Shanghai Jiao Tong University, studying in the Antai College of Economics and Management.
 
-This website is currently under construction :)
+My research interests are in **optimization algorithms** and **economics and computation (EconCS)**. Within optimization, I am interested in first-order methods for stochastic and large-scale problems. In EconCS, I study revealed preferences, market equilibrium, and algorithmic approaches to learning economic behavior.
 
-## Research Interests
+[Email](mailto:gzy7777@sjtu.edu.cn) · [GitHub](https://github.com/gggzy1) · [Download CV](/assets/pdf/CV_Zhiyun_Guo.pdf)
 
-- Optimization
-- Machine learning
-- Economics and computation (EconCS)
+## Selected Research
 
-## Current Focus
+### Learning Collective Revealed Preferences
 
-I am organizing notes around optimization and EconCS. More content coming soon.
+I contributed to a surrogate-market framework for learning collective revealed preferences, including a Frank–Wolfe method for selecting surrogate consumers, generalization bounds, and synthetic experiments. [arXiv preprint](https://arxiv.org/abs/2606.23985) · Submitted to ICLR 2027.
 
-## Selected Notes
+### Tuning-Free First-Order Algorithms
 
-- [A Note on Coerciveness](/notes/optimization/basics/coercive/)
-- [Why Cones, Not Cylinders?](/notes/optimization/basics/why-cone/)
+I designed a parameter-free method for nonsmooth convex optimization and established convergence guarantees for deterministic and stochastic settings. The work was evaluated on L1 regression and SVM benchmarks; the manuscript is in preparation.
+
+### Stochastic Optimization
+
+I am studying adaptive stochastic approximation methods for two-stage and multi-stage stochastic programs, with computational comparisons to Dynamic Stochastic Approximation (DSA) and related methods. Manuscripts are in preparation.
+
+## Selected Expository Notes
+
+- [Lagrangian Duality](/notes/optimization/basics/lagrangian-duality/)
 - [A Note on Fisher Markets](/notes/econcs/fisher-market/)
+- [A Note on Coerciveness](/notes/optimization/basics/coercive/)
 
-See all notes on the [Notes](/notes/) page.
+See the full [Research](/research/) and [Notes](/notes/) pages.
