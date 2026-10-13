@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <title>
+      {% if page.title and page.title != 'Home' %}{{ page.title | escape }} — {% endif %}
+      Zhiyun Guo
+    </title>
+    <link rel="stylesheet" href="{{ '/assets/css/academic.css' | relative_url }}">
+    {% if page.math %}
+      <script>
+        window.MathJax = {
+          tex: {
+            inlineMath: [
+              ['$', '$'],
+              ['\\(', '\\)'],
+            ],
+            displayMath: [
+              ['$$', '$$'],
+              ['\\[', '\\]'],
+            ],
+          },
+        };
+      </script>
+      <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
+    {% endif %}
+  </head>
+  <body>
+    <div class="page">
+      <header class="site-header">
+        <div>
+          {% if page.title == 'Home' %}<h1 class="site-name">{% else %}<p class="site-name">{% endif -%}
+          <a href="{{ '/' | relative_url }}">Zhiyun Guo</a>
+          {%- if page.title == 'Home' %}</h1>{% else %}</p>{% endif %}
+          <p class="affiliation"><em>Live the questions now. — Rainer Maria Rilke</em></p>
+        </div>
+        <nav aria-label="Main navigation">
+          <a
+            href="{{ '/' | relative_url }}"
+            {% if page.title == 'Home' %}
+              aria-current="page"
+            {% endif %}
+            >Home</a
+          >
+          <a
+            href="{{ '/notes/' | relative_url }}"
+            {% if page.url contains '/notes/' %}
+              aria-current="page"
+            {% endif %}
+            >Notes</a
+          >
+          <a href="mailto:gzy7777@sjtu.edu.cn?subject=CV%20request" title="Request CV by email">CV</a>
+        </nav>
+      </header>
+      <main>
+        {% if page.show_title %}
+          <h1>{{ page.title | escape }}</h1>
+        {% endif %}
+        {{ content }}
+      </main>
+    </div>
+  </body>
+</html>

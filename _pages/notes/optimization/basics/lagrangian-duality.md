@@ -1,5 +1,5 @@
 ---
-layout: note
+layout: academic-note
 title: "A Note on Lagrangian Duality"
 permalink: /notes/optimization/basics/lagrangian-duality/
 math: true

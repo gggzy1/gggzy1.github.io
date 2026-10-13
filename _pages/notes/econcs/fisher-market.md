@@ -1,5 +1,5 @@
 ---
-layout: note
+layout: academic-note
 title: "A Note on Fisher Markets"
 permalink: /notes/econcs/fisher-market/
 math: true

@@ -1,5 +1,5 @@
 ---
-layout: note
+layout: academic-note
 title: "A Note on PAC-Bayes Bounds"
 permalink: /notes/generalization/pac-bayes/
 math: true

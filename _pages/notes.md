@@ -1,35 +1,22 @@
 ---
-layout: note
+layout: academic
 title: Notes
+show_title: true
 permalink: /notes/
-description: Technical notes and exposition.
+description: Personal reading notes on optimization and markets.
 nav: true
-nav_order: 4
+nav_order: 2
 ---
 
+Writing helps me slow down and work through the details. I keep some notes here on questions that come up in my reading.
+
 ## Optimization
+- [What We Talk About When We Talk About Optimization](/notes/optimization/what-is-optimization/)
+- [Black-Box Optimization](/assets/pdf/notes/black-box-optimization.pdf?v=20261013) (PDF)
+- [Local Methods in Unconstrained Minimization](/assets/pdf/notes/local-methods.pdf?v=20261013) (PDF)
+- [First-Order Methods: Iteration and Oracle Complexity](/assets/pdf/notes/first-order-methods.pdf?v=20261013) (PDF)
 
-### [Basics](/notes/optimization/basics/)
+## Markets and computation
+- [Fisher Markets and Convex Programming](/assets/pdf/notes/fisher-markets.pdf?v=20261013) (working note, PDF)
 
-1. [A Note on Coerciveness](/notes/optimization/basics/coercive/)
-2. [A Note on Lagrangian Duality](/notes/optimization/basics/lagrangian-duality/)
-3. [A Note on the Augmented Lagrangian Method](/notes/optimization/basics/augmented-lagrangian-method/)
-4. [Why Cones, Not Cylinders?](/notes/optimization/basics/why-cone/)
-
-## [EconCS](/notes/econcs/)
-
-- [A Note on Fisher Markets](/notes/econcs/fisher-market/)
-
-## [Generalization](/notes/generalization/)
-
-1. [Generalization Setup and Uniform Convergence](/notes/generalization/setup-uniform-convergence/)
-2. [A Note on VC Dimension](/notes/generalization/vc-dimension/)
-3. [A Note on Rademacher Complexity](/notes/generalization/rademacher-complexity/)
-4. [A Note on Covering Numbers and Entropy Bounds](/notes/generalization/covering-numbers/)
-5. [A Note on Stability-Based Generalization](/notes/generalization/stability-generalization/)
-6. [A Note on PAC-Bayes Bounds](/notes/generalization/pac-bayes/)
-
-## LLM
-
-- [LLM Basics](/notes/llm/basic/)
-- [LLM Agents](/notes/llm/agent/)
+[Earlier notes](/notes/earlier/) collect the older entries.

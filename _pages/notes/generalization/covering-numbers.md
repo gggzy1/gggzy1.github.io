@@ -1,5 +1,5 @@
 ---
-layout: note
+layout: academic-note
 title: "A Note on Covering Numbers and Entropy Bounds"
 permalink: /notes/generalization/covering-numbers/
 math: true

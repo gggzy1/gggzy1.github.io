@@ -1,5 +1,5 @@
 ---
-layout: note
+layout: academic-note
 title: "A Note on Rademacher Complexity"
 permalink: /notes/generalization/rademacher-complexity/
 math: true

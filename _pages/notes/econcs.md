@@ -1,5 +1,5 @@
 ---
-layout: note
+layout: academic-note
 title: "EconCS"
 permalink: /notes/econcs/
 description: Economics and computation — markets, equilibria, and algorithms.

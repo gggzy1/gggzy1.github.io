@@ -1,5 +1,5 @@
 ---
-layout: note
+layout: academic-note
 title: "Generalization Setup and Uniform Convergence"
 permalink: /notes/generalization/setup-uniform-convergence/
 math: true

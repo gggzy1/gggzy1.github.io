@@ -1,0 +1,54 @@
+\documentclass[11pt]{article}
+\usepackage{optstyle}
+
+\title{\textbf{\sffamily \Huge What We Talk About \\When We Talk About Optimization}}
+% \author{\sffamily Based on Lectures by Yurii Nesterov}
+\date{February 1, 2026}\fancyhead[R]{\sffamily\footnotesize What Is Optimization?}
+\author{Zhiyun Guo}
+\begin{document}
+
+\maketitle
+\section{Optimization: What First Comes to Mind}
+
+According to the \href{https://dictionary.cambridge.org/us/dictionary/english/optimization}{Cambridge Business English Dictionary}, \textit{optimization} is defined as 
+\textit{“the process of making something as good or effective as possible.”} 
+In real-world decision-making, we are almost always confronted with limited resources and a goal we seek to achieve. 
+Such situations naturally give rise to optimization problems. Mathematically, these problems are often formulated as:
+\begin{align*}
+    &\min_{\mathbf{x}} \;/\; \max_{\mathbf{x}} \quad f(\mathbf{x}) \\
+    &\;\text{s.t.} \quad\quad\quad\quad\;\;\; g(\mathbf{x}) \leq (\text{or } \geq \text{ or } =) \; b .
+\end{align*}
+
+This formulation reflects the standard way optimization is introduced in textbooks and classrooms. 
+An optimization problem, in its most basic form, consists of:
+\begin{enumerate}
+    \item $\mathbf{x}$: the decision variable,
+    \item $f(\cdot)$: the objective function,
+    \item $g(\cdot)$: the constraint(s).
+\end{enumerate}
+
+This classical representation serves as a natural starting point for understanding optimization. 
+However, as we move beyond introductory examples, it quickly becomes clear that optimization encompasses a much richer set of ideas. 
+This is where the story truly begins.
+\section{Optimized Target: What Is Being Optimized}
+
+\textit{“Optimization is not always just about variables.”}
+
+\subsection{Decision Variables}
+
+At the most elementary level, optimization seeks a best decision variable. 
+Depending on the modeling context, decision variables can take various forms, which leads to different classes of optimization problems. 
+Some common distinctions include:
+\subsubsection{Scalar, Vector, Matrix, and Tensor Variables}
+What sets them apart is the dimensionality of the domain that we work upon. 
+\subsubsection{Continuous, Discrete, and Mixed Variables}
+If the decision variables are continuous, the problem could have some good mathematical structure like Lipschitz continuity, smoothness, convexity and so on, which supports further information query like (sub)gradient, Hessian and so on. However, if we have some discrete variables, like integer variables, boolean variables, etc, there are some other techniques that we apply, which we commonly see in Integer Programming (IP) or Mixed-Integer Programming (MIP).
+\subsubsection{Finite- and Infinite-Dimensional Variables}
+This distinction often appears when optimization problems are posed over function spaces rather than finite-dimensional vectors.
+
+
+
+
+\paragraph{Where this leads.}
+A formulation specifies what we want to optimize. The next question is what information an algorithm can obtain about the objective, and how much information is needed to find an approximate solution. This is the starting point of the next note on black-box optimization.
+\end{document}

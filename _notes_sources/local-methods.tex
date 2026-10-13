@@ -1,0 +1,298 @@
+\documentclass[11pt]{article}
+\usepackage{optstyle}
+
+\title{\textbf{\sffamily Local Methods in Unconstrained Minimization}}
+
+\date{January 22, 2026}\fancyhead[R]{\sffamily\footnotesize Local Methods}
+\author{Zhiyun Guo}
+\begin{document}
+
+\maketitle
+
+\section{Local Methods in Unconstrained Minimization}
+\subsection{Geometric Foundations}
+Before discussing algorithms, we try to define the geometric landscape of the optimization problem $\min_{x \in \mathbb{R}^n} f(x)$:
+\begin{itemize}
+        \item The \textbf{Sublevel Set} of $f$ at value $\alpha$: $\mathcal{L}_f(\alpha) = \{ x \in \mathbb{R}^n \mid f(x) \le \alpha \}$.
+        \item The \textbf{set of tangent directions} $S_f(\bar{x})$ to the level set surface at $\bar{x}$:
+        \[ S_f(\bar{x}) = \left\{ s \in \mathbb{R}^n \mid s = \lim_{k\to\infty} \frac{y_k - \bar{x}}{\|y_k - \bar{x}\|}, \{y_k\}\to\bar{x},\ y_k\ne\bar{x},\ f(y_k)=f(\bar{x}) \right\}. \]
+\end{itemize}
+With these concepts, we have the following fundamental theorem:
+\begin{theorem}{Gradient is Orthogonal to Level Set}{grad_ortho}
+    If $f$ is differentiable at $\bar x$ and $s\in S_f(\bar x)$, then $\langle \nabla f(\bar{x}), s \rangle = 0$.
+\end{theorem}
+
+\begin{proof}
+    For a sequence defining $s\in S_f(\bar{x})$, we have $f(y_k) = f(\bar{x})$. Using the first-order Taylor expansion:
+    \[ 0 = f(y_k) - f(\bar{x}) = \langle \nabla f(\bar{x}), y_k - \bar{x} \rangle + o(\|y_k - \bar{x}\|). \]
+    Dividing by $\|y_k - \bar{x}\|$ and taking the limit $k \to \infty$:
+    \[ \lim_{k \to \infty} \left\langle \nabla f(\bar{x}), \frac{y_k - \bar{x}}{\|y_k - \bar{x}\|} \right\rangle + \frac{o(\|y_k - \bar{x}\|)}{\|y_k - \bar{x}\|} = \langle \nabla f(\bar{x}), s \rangle = 0. \]
+\end{proof}
+
+\subsection{Optimality Conditions}
+
+How do we recognize a local minimum $x^*$?
+
+\begin{theorem}{First-Order Necessary Condition}{fo}
+Let \(f \in C^1\) in a neighborhood of \(x^*\).  
+If \(x^*\) is a local minimizer of \(f\), then
+\[
+\nabla f(x^*) = 0.
+\]
+\end{theorem}
+
+\begin{proof}
+Assume by contradiction that \(\nabla f(x^*) \neq 0\).  
+Define \(d := -\nabla f(x^*)\) and consider the function
+\[
+\phi(t) := f(x^* + t d),
+\]
+for \(t\) sufficiently small. Since \(f \in C^1\), \(\phi\) is differentiable and
+\[
+\phi'(0) = \nabla f(x^*)^\top d = -\|\nabla f(x^*)\|^2 < 0.
+\]
+Hence, there exists \(\varepsilon > 0\) such that for all \(t \in (0,\varepsilon)\),
+\[
+\phi(t) < \phi(0),
+\]
+that is,
+\[
+f(x^* + t d) < f(x^*),
+\]
+which contradicts the local minimality of \(x^*\). Therefore, \(\nabla f(x^*) = 0\).
+\end{proof}
+
+\begin{theorem}{Second-Order Necessary Condition}{so-necessary}
+Let \(f \in C^2\) in a neighborhood of \(x^*\).  
+If \(x^*\) is a local minimizer of \(f\), then
+\[
+\nabla f(x^*) = 0
+\quad \text{and} \quad
+\nabla^2 f(x^*) \succeq 0.
+\]
+\end{theorem}
+
+\begin{proof}
+By Theorem~\ref{thm:fo}, \(\nabla f(x^*) = 0\).  
+For any direction \(v \in \mathbb{R}^n\), define
+\[
+\psi(t) := f(x^* + t v).
+\]
+Since \(f \in C^2\), Taylor's theorem yields
+\[
+\psi(t)
+= \psi(0) + \psi'(0)t + \frac{1}{2}\psi''(0)t^2 + o(t^2)
+= f(x^*) + \frac{1}{2} t^2 \, v^\top \nabla^2 f(x^*) v + o(t^2),
+\]
+where \(\psi'(0) = \nabla f(x^*)^\top v = 0\).
+If there exists a vector \(v\) such that
+\[
+v^\top \nabla^2 f(x^*) v < 0,
+\]
+then for sufficiently small \(|t|\) the quadratic term dominates the remainder
+and implies \(\psi(t) < \psi(0)\), contradicting the local minimality of \(x^*\).
+Hence,
+\[
+v^\top \nabla^2 f(x^*) v \ge 0 \quad \forall v \in \mathbb{R}^n,
+\]
+which is equivalent to \(\nabla^2 f(x^*) \succeq 0\).
+\end{proof}
+
+\begin{theorem}{Second-Order Sufficient Condition}{so-sufficient}
+Let \(f \in C^2\) in a neighborhood of \(x^*\).
+If
+\[
+\nabla f(x^*) = 0
+\quad \text{and} \quad
+\nabla^2 f(x^*) \succ 0,
+\]
+then \(x^*\) is a strict local minimizer of \(f\).
+\end{theorem}
+
+\begin{proof}
+Since \(\nabla^2 f(x^*) \succ 0\), there exists \(m > 0\) such that
+\[
+v^\top \nabla^2 f(x^*) v \ge m \|v\|^2
+\quad \forall v \in \mathbb{R}^n.
+\]
+By Taylor's theorem,
+\[
+f(x^* + h)
+= f(x^*) + \frac{1}{2} h^\top \nabla^2 f(x^*) h + o(\|h\|^2)
+\ge f(x^*) + \frac{m}{2} \|h\|^2 + o(\|h\|^2).
+\]
+For sufficiently small \(\|h\|\), the remainder term is dominated by
+\(\frac{m}{4}\|h\|^2\), implying
+\[
+f(x^* + h) \ge f(x^*) + \frac{m}{4}\|h\|^2,
+\]
+which proves that \(x^*\) is a strict local minimizer.
+\end{proof}
+
+\paragraph{Other Well-Known Optimality Conditions.}
+
+\begin{itemize}
+\item \textbf{Convex optimality condition.}
+If \(f\) is convex and differentiable, then
+\[
+\nabla f(x^*) = 0
+\quad \Longleftrightarrow \quad
+x^* \text{ is a global minimizer}.
+\]
+
+\item \textbf{Higher-order necessary conditions.}
+If \(\nabla f(x^*) = 0\) and \(\nabla^2 f(x^*)\) is singular, higher-order derivatives
+along directions in the null space of the Hessian may be required to characterize
+the nature of the stationary point.
+
+\item \textbf{Nonsmooth optimality (subgradient condition).}
+For a convex, possibly nondifferentiable function \(f\),
+\[
+0 \in \partial f(x^*)
+\]
+is necessary and sufficient for \(x^*\) to be a global minimizer.
+
+\item \textbf{Karush--Kuhn--Tucker (KKT) conditions.}
+For constrained optimization problems, under appropriate constraint qualifications,
+any local minimizer satisfies stationarity, primal feasibility, dual feasibility,
+and complementary slackness conditions.
+
+\item \textbf{Second-order conditions for constrained problems.}
+For a twice continuously differentiable constrained problem, a KKT point with its specified multipliers is a strict local minimizer under the standard second-order sufficient condition: the Lagrangian Hessian is positive on every nonzero direction in the critical cone. The critical cone is not generally a linear subspace.
+
+\item \textbf{Strong convexity.}
+A finite continuous $\mu$-strongly convex function on $\mathbb R^n$ is coercive and has a unique minimizer. If it is also twice differentiable, its Hessian satisfies $\nabla^2f(x)\succeq\mu I$. For other domains, existence requires separate assumptions.
+\end{itemize}
+
+\subsection{The Gradient Method}
+Before introducing algorithms, we first try to quantify how much the function changes.
+\begin{definition}{$C_L^{1,1}$ Function}{cl11}
+    A function $f \in C_L^{1,1}(\mathbb{R}^n)$ if its gradient is Lipschitz continuous with constant $L$:
+    \[ \|\nabla f(x) - \nabla f(y)\| \le L \|x-y\|, \quad \forall x, y. \]
+\end{definition}
+For $C_L^{1,1}$ functions, we have a fundamental lemma:
+\begin{lemma}{The Descent Lemma}{descent_lemma}
+    If $f \in C_L^{1,1}(\mathbb{R}^n)$, then for any $x, y$:
+    \[ |f(y) - f(x) - \langle \nabla f(x), y-x \rangle| \le \frac{L}{2}\|y-x\|^2. \]
+\end{lemma}
+
+\begin{proof}
+Put $d=y-x$. By the fundamental theorem of calculus,
+\[
+f(y)-f(x)-\langle\nabla f(x),d\rangle
+=\int_0^1\langle\nabla f(x+\tau d)-\nabla f(x),d\rangle\,d\tau.
+\]
+Cauchy--Schwarz and gradient Lipschitz continuity give
+\[
+\left|f(y)-f(x)-\langle\nabla f(x),d\rangle\right|
+\le\int_0^1L\tau\|d\|^2\,d\tau
+=\frac L2\|y-x\|^2.
+\]
+\end{proof}
+\noindent This lemma is the cornerstone of first-order methods. It guarantees that the function $f(x)$ is always bounded above by a quadratic "cup" with curvature $L$. Minimizing this cup gives the Gradient Descent step.
+
+\begin{algobox}{Gradient Descent}
+\begin{algorithmic}[1]
+    \State \textbf{Choose} $x_0\in\mathbb{R}^n$.
+    \State \textbf{Iterate} $x_{k+1} = x_k - h_k \nabla f(x_k)$, with step size $h_k\geq0$, $k=0,1,\dots$
+\end{algorithmic}
+\end{algobox}
+\paragraph{Stepsize Strategies.}
+\begin{itemize}
+    \item Constant step: $h_k=h>0$.
+    \item Diminishing step: $h_k=\frac{h}{\sqrt{k+1}}$.
+    \item Full relaxation (completely theoretical): $h_k=\arg\min_{h\geq0} f(x_k-h\nabla f(x_k))$.
+    \item Armijo backtracking: decrease a trial step geometrically until
+    \[
+    f(x_k-h\nabla f(x_k))\le f(x_k)-\alpha h\|\nabla f(x_k)\|^2,
+    \qquad 0<\alpha<1.
+    \]
+    This is a one-sided sufficient-decrease condition.
+    \item The two-sided Goldstein rule: Find $x_{k+1}=x_k-h\nabla f(x_k)$ with $h>0$ such that
+    \begin{align*}
+        \alpha\langle\nabla f(x_k),\;x_k-x_{k+1}\rangle&\leq f(x_k)-f(x_{k+1}),\\
+        \beta\langle\nabla f(x_k),\;x_k-x_{k+1}\rangle&\geq f(x_k)-f(x_{k+1}),
+    \end{align*}
+    where $0<\alpha<\beta<1$ are some fixed parameters. Geometric interpretation:  
+    \begin{align*}
+        &\phi(h):=f(x-h\nabla f(x)),\;\;h\geq 0\\
+        &\phi_1(h):=f(x)-\alpha h\|\nabla f(x)\|^2,\; \phi_2(h):=f(x)-\beta h\|\nabla f(x)\|^2\\
+        &\phi_2(h)\leq \phi(h)\leq\phi_1(h)
+    \end{align*}
+\end{itemize}
+\begin{theorem}{Convergence of Gradient Descent}{gd_conv}
+    For $f \in C_L^{1,1}$ bounded below by $f^*$, gradient descent with $h=1/L$ satisfies:
+    \[ \sum_{k=0}^N \|\nabla f(x_k)\|^2 \le 2L(f(x_0) - f^*). \]
+    This implies $\min_{0\le k \le N} \|\nabla f(x_k)\| \le O(1/\sqrt{N})$.
+\end{theorem}
+
+\begin{proof}[Proof]
+    Apply the Descent Lemma with $y = x-h\nabla f(x)$:
+    \begin{align*}
+        f(y) &\le f(x) + \langle \nabla f(x), y-x \rangle + \frac{L}{2} \left\| y-x \right\|^2\\
+        &=f(x)-h\|\nabla f(x)\|^2 +\frac{h^2}{2}L\|\nabla f(x)\|^2\\
+        &=f(x)-h(1-\frac{h}{2}L)\|\nabla f(x)\|^2.
+    \end{align*} 
+    \textbf{1. Full constant step}.\quad
+    To get the best upper bound for the possible decrease of the objective function, we solve:
+    $$\min_{h\geq0}\Delta (h)=\min_{h\geq0}-h(1-\frac{h}{2}L)\Rightarrow h^\star=\frac{1}{L}$$
+    Thus, one step of the Gradient Method decreases the value of the objective function at least as follows:
+    $$f(y)\leq f(x)-\frac{1}{2L}\|\nabla f(x)\|^2$$
+    \textbf{2. Constant step}.\quad
+    Instead, if we choose $h_k=\frac{2\alpha}{L}$ with $\alpha\in (0,1)$, then
+    $$f(x_k)-f(x_{k+1})\geq \frac{2}{L}\alpha(1-\alpha)\|\nabla f(x_k)\|^2$$
+    The decrease bound is maximized at $h_k=1/L$.
+    \\\textbf{3. Goldstein rule.}\quad
+    We have
+    \begin{align*}
+    &f(x_k)-f(x_{k+1})\leq \beta\langle\nabla f(x_k),x_k-x_{k+1}\rangle=\beta h_k\|\nabla f(x_k)\|^2\\
+    &f(x_k)-f(x_{k+1})\geq h_k(1-\frac{h_k}{2}L)\|\nabla f(x_k)\|^2\Rightarrow h_k\geq\frac{2}{L}(1-\beta)\\
+    \Rightarrow&f(x_k)-f(x_{k+1})\geq \alpha\langle\nabla f(x_k),x_k-x_{k+1}\rangle=\alpha h_k\|\nabla f (x_k)\|^2.\end{align*}
+For the fixed step $1/L$, summing the one-step decrease gives
+\[
+\frac{1}{2L}\sum_{k=0}^N\|\nabla f(x_k)\|^2
+\le f(x_0)-f(x_{N+1})\le f(x_0)-f^*.
+\]
+This proves the stated bound. For nonzero gradients, an accepted Goldstein step also satisfies $h_k\ge2(1-\beta)/L$, giving a uniform decrease coefficient $2\alpha(1-\beta)/L$. Its gradient squares are summable by the same telescoping argument.
+\end{proof}
+
+\subsection{Newton's Method}
+
+To get faster convergence, we need stronger assumptions.
+
+\begin{definition}{$C_M^{2,2}$ Function (Lipschitz Hessian)}{cm22}
+    $f \in C_M^{2,2}$ if its Hessian is Lipschitz continuous:
+    \[ \|\nabla^2 f(x) - \nabla^2 f(y)\| \le M \|x-y\|. \]
+\end{definition}
+
+\begin{algobox}{Newton's Method}
+    $x_{k+1} = x_k - [\nabla^2 f(x_k)]^{-1} \nabla f(x_k)$.
+\end{algobox}
+
+\begin{theorem}{Local quadratic convergence}{newton_conv}
+Suppose $\nabla f(x^*)=0$, $\nabla^2f(x^*)\succeq\mu I$ with $\mu>0$, and the Hessian is $M$-Lipschitz on a ball $B(x^*,r)$. Take $Mr\le\mu/2$ and $x_0\in B(x^*,r)$. Then Newton iterates remain in this ball, their Hessians are invertible, and
+\[
+\|x_{k+1}-x^*\|
+\le\frac{M}{2(\mu-M\|x_k-x^*\|)}\|x_k-x^*\|^2.
+\]
+\end{theorem}
+\begin{proof}
+Let $e=x_k-x^*$. Hessian Lipschitz continuity implies
+$\nabla^2f(x_k)\succeq(\mu-M\|e\|)I$. Using stationarity at $x^*$ and the integral formula for the gradient,
+\[
+x_{k+1}-x^*
+=[\nabla^2 f(x_k)]^{-1}
+\int_0^1[\nabla^2f(x_k)-\nabla^2f(x^*+te)]e\,dt.
+\]
+The integral has norm at most $M\|e\|^2/2$, and the inverse has norm at most $1/(\mu-M\|e\|)$. This proves the bound. Since $\|e\|\le r$ and $Mr\le\mu/2$, the next error is at most $M\|e\|^2/\mu\le\|e\|/2$, so the iterates stay in the ball by induction. When $M=0$, the next error is zero.
+\end{proof}
+
+\begin{interpretation}
+In this local minimization theorem, positive curvature and a sufficiently close initial point ensure quadratic convergence. The neighborhood and invertibility assumptions matter: the theorem does not provide a global guarantee for an arbitrary initial point.
+\end{interpretation}
+
+\begin{thebibliography}{9}
+\bibitem{nesterov2018} Y. Nesterov. \textit{Lectures on Convex Optimization}. Springer, 2018. \href{https://doi.org/10.1007/978-3-319-91578-4}{Publisher link}.
+\bibitem{nocedal2006} J. Nocedal and S. J. Wright. \textit{Numerical Optimization}, 2nd ed. Springer, 2006. \href{https://doi.org/10.1007/978-0-387-40065-5}{Publisher link}. See the line-search and local Newton convergence chapters.
+\end{thebibliography}
+\end{document}

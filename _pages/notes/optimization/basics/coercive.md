@@ -1,5 +1,5 @@
 ---
-layout: note
+layout: academic-note
 title: "A Note on Coerciveness"
 permalink: /notes/optimization/basics/coercive/
 math: true

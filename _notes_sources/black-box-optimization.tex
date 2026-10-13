@@ -1,0 +1,122 @@
+\documentclass[11pt]{article}
+\usepackage{optstyle}
+
+\title{\textbf{\sffamily \Huge Black-Box Optimization\\\large Based on Lectures by Yurii Nesterov}}
+% \author{\sffamily Based on Lectures by Yurii Nesterov}
+\date{January 18, 2026}\fancyhead[R]{\sffamily\footnotesize Black-Box Optimization}
+\author{Zhiyun Guo}
+\begin{document}
+
+\maketitle
+
+\section{Black-Box Optimization}
+
+\subsection{Basic Concepts}
+
+\paragraph{Performance.} The performance of a method $\mathcal{M}$ is defined as the total amount of computational effort required by $\mathcal{M}$ to solve a problem class $\mathcal{P}$.
+
+\paragraph{Goal.} Since finding an \textit{exact} solution is often impossible in continuous optimization, we accept a relaxed goal: \textit{Solving the problem means finding an approximate solution $\bar{x}$ with accuracy $\epsilon > 0$.} 
+Typically, this implies finding $\bar{x}$ such that $f(\bar{x}) - f^* \leq \epsilon$ or $\|\nabla f(\bar{x})\| \leq \epsilon$.
+
+\paragraph{Complexity.}
+\begin{itemize}
+    \item \textbf{Analytical complexity:} The number of \textit{calls to the oracle} necessary to solve problem $P$ up to accuracy $\epsilon$. This measures the information cost.
+    \item \textbf{Arithmetical complexity:} The total number of arithmetic operations (internal work of the method + work of the oracle).
+\end{itemize}
+
+\paragraph{Local Black Box.} We operate under the standard assumption of a Local Black Box:
+\begin{itemize}
+    \item \textbf{Information Limit:} The method obtains information solely through the oracle (e.g., $f(x)$ and $\nabla f(x)$).
+    \item \textbf{Locality:} The oracle is \textit{local}. A variation of the function far from the test point $x$ does not change the oracle's answer at $x$.
+\end{itemize}
+
+\subsection{Global Optimization}
+
+Consider the constrained minimization problem on a box with no functional constraints:
+
+\begin{definition}{Global Optimization Problem}{glob_opt}
+\begin{equation}
+    \min_{x \in B_n} f(x)
+\end{equation}
+where the domain $B_n$ is the unit box in $\mathbb{R}^n$:
+\[ B_n=\{x\in\mathbb{R}^n \mid 0\leq x^{(i)}\leq1,\ i=1,\dots,n\} \]
+and the objective $f(\cdot)$ is Lipschitz continuous with respect to the $\ell_\infty$-norm:
+\[ |f(x)-f(y)|\leq L\|x-y\|_{\infty}, \quad \forall x,y\in B_n. \]
+\end{definition}
+
+\subsection{Algorithm: Uniform Grid Method}
+
+A natural baseline is to perform an exhaustive search over a discretization of the domain.
+
+\begin{algobox}{Uniform Grid Method $\mathcal{G}(p)$}
+\begin{algorithmic}[1]
+    \Require Integer parameter $p\geq 1$ (grid density).
+    \State Define a multi-index $\alpha = (i_1,\dots,i_n) \in \{1,\dots,p\}^n$.
+    \State Construct a grid of $p^n$ points: 
+    \[ x_\alpha=\left(\frac{2i_1-1}{2p},\dots,\frac{2i_n-1}{2p}\right)^T. \]
+    \State Compute $f(x_\alpha)$ for all $\alpha$.
+    \State Choose $\bar\alpha\in\arg\min_{\alpha}f(x_\alpha)$ and set $\bar x=x_{\bar\alpha}$.
+    \State \textbf{Output}: $(\bar{x},f(\bar{x}))$.
+\end{algorithmic}
+\end{algobox}
+
+\subsection{Complexity Analysis}
+
+\begin{theorem}{Convergence Rate}{conv}
+Let $f^*$ be the global optimal value of problem \ref{def:glob_opt}. Then:
+\begin{align*}
+    f(\bar{x})-f^*\leq \frac{L}{2p}.
+\end{align*}
+\end{theorem}
+
+\begin{proof}
+The grid points $\{x_\alpha\}$ partition the box $B_n$ into $p^n$ smaller sub-boxes, each centered at an $x_\alpha$. Let $x^*$ be a global minimizer. There must exist a multi-index $\alpha^*$ such that $x^*$ lies in the sub-box centered at $x_{\alpha^*}$. 
+By the geometry of the grid, the $\ell_\infty$-distance is bounded:
+\[ \|x^* - x_{\alpha^*}\|_\infty \leq \frac{1}{2p}. \]
+Using the Lipschitz continuity of $f$:
+\[ f(\bar{x}) - f^* \leq f(x_{\alpha^*}) - f(x^*) \leq L \|x_{\alpha^*} - x^*\|_\infty \leq \frac{L}{2p}. \]
+\end{proof}
+
+\begin{corollary}{Upper Complexity Bound}{ub}
+To guarantee an accuracy of $\epsilon$, the analytical complexity (number of oracle calls) of method $\mathcal{G}$, with the displayed choice of grid density, is:
+\begin{align*}
+    \mathcal{A}(\mathcal{G}) = \left( \left\lfloor \frac{L}{2\epsilon} \right\rfloor + 1 \right)^n.
+\end{align*}
+\end{corollary}
+
+\begin{remark}
+    The term $O((1/\epsilon)^n)$ indicates an exponential dependence on the dimension $n$.
+\end{remark}
+
+\subsection{Lower Complexity Bounds}
+
+Is it possible to design a method significantly faster than the Uniform Grid? The following theorem provides a negative answer for the class of general Lipschitz functions.
+
+\begin{theorem}{A deterministic value-oracle lower bound}{inf}
+Let $L>0$, $\epsilon>0$, and $p=\lfloor L/(4\epsilon)\rfloor\ge1$. A deterministic algorithm that guarantees $f(\bar x)-\min_{B_n}f\le\epsilon$ for every $L$-Lipschitz function on $B_n$, using only function-value queries, requires at least $p^n-1$ queries in the worst case. Its output need not be one of the queried points.
+\end{theorem}
+
+\begin{proof}
+Run the algorithm against the oracle that returns zero at every query. These answers are consistent with the zero function, which belongs to the class with Lipschitz constant at most $L$.
+
+Suppose the algorithm stops after $N<p^n-1$ queries and returns $\bar x$. Partition $B_n$ into $p^n$ congruent cells. A query or output point can lie in the interior of at most one cell. Since $N+1<p^n$, some cell has neither a query nor the output in its interior; points on its boundary cause no difficulty.
+
+Let $a$ be the center of this cell, and define
+\[
+\widetilde f(x)=\min\{0,\ L\|x-a\|_\infty-2\epsilon\}.
+\]
+The function is $L$-Lipschitz. Since $p\le L/(4\epsilon)$, the negative bump has radius $2\epsilon/L\le1/(2p)$ and is supported inside the chosen cell. Thus it is zero at every query and at $\bar x$. The algorithm receives exactly the same history, hence returns the same output. But $\widetilde f(a)=-2\epsilon$, so its output gap is $2\epsilon>\epsilon$, a contradiction.
+
+The deeper bump ensures a strict violation of the accuracy criterion. Counting the output point also covers algorithms that return an unqueried point.
+\end{proof}
+
+\begin{interpretation}
+For fixed dimension, the uniform-grid upper bound and this lower bound both scale as $\epsilon^{-n}$, with different constants. At a fixed nontrivial ratio $L/\epsilon$, the query cost grows exponentially with dimension. For example, $n=10$, $L=2$, and $\epsilon=0.01$ give the conservative lower bound $50^{10}-1$, about $9.8\times10^{16}$ value queries.
+
+The obstruction is specific to global optimization over this broad Lipschitz class and this oracle model. Additional structure can change the information requirement. The following notes explore what differentiability, smoothness and convexity allow us to do.
+\end{interpretation}
+
+\begin{thebibliography}{9}
+\bibitem{nesterov2018} Y. Nesterov. \textit{Lectures on Convex Optimization}. Springer, 2018. \href{https://doi.org/10.1007/978-3-319-91578-4}{Publisher link}.
+\end{thebibliography}
+\end{document}

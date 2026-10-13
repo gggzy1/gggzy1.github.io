@@ -1,5 +1,5 @@
 ---
-layout: note
+layout: academic-note
 title: "A Note on VC Dimension"
 permalink: /notes/generalization/vc-dimension/
 math: true

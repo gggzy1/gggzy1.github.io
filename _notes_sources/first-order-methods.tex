@@ -1,0 +1,247 @@
+\documentclass[11pt]{article}
+\usepackage{optstyle}
+\usepackage{float}\usepackage{booktabs} % For professional tables
+
+\title{\sffamily \bfseries \color{thmcolor} First-Order Methods: \\ Iteration and Oracle Complexity}
+\author{Zhiyun Guo}
+\date{April 15, 2026}\fancyhead[R]{\sffamily\footnotesize First-Order Methods}
+
+\begin{document}
+
+\maketitle
+
+% =========================================================
+\section{Setting}
+Write
+\[
+R=\|x_0-x^*\|,\qquad \Delta=f(x_0)-f^*,\qquad \kappa=L/\mu.
+\]
+For convex objectives, accuracy means an objective gap at most $\epsilon$ (in expectation for a random output). For nonconvex objectives, the criterion here is $\mathbb E\|\nabla f(x_{\rm out})\|^2\le\epsilon$; this is a squared-gradient criterion, not $\|\nabla f\|\le\epsilon$.
+A full gradient counts as one call for GD; for a finite sum it costs $n$ component-gradient evaluations. A fresh stochastic oracle call is not the same as an independent training observation in a statistical sample-complexity bound. The tables at the end keep these distinctions explicit.
+
+\section{Fundamental Definitions}
+% =========================================================
+
+Consider the unconstrained optimization problem:
+\begin{equation}
+    \min_{x \in \mathbb{R}^d} f(x)
+\end{equation}
+The convergence rate of first-order methods heavily depends on the geometric properties of the objective function $f$. We assume $f$ is continuously differentiable.
+
+\begin{definition}{$L$-Smoothness}{smooth}
+A function $f: \mathbb{R}^d \to \mathbb{R}$ is $L$-smooth if its gradient is $L$-Lipschitz continuous. That is, for some constant $L > 0$ and all $x, y \in \mathbb{R}^d$:
+\begin{equation}
+    \|\nabla f(x) - \nabla f(y)\| \le L\|x - y\|
+\end{equation}
+This implies the following global quadratic upper bound (the converse requires care outside the convex setting):
+\begin{equation*}
+    f(y) \le f(x) + \langle \nabla f(x), y - x \rangle + \frac{L}{2}\|y - x\|^2
+\end{equation*}
+\end{definition}
+
+\begin{definition}{$\mu$-Strong Convexity}{strong_convex}
+A function $f: \mathbb{R}^d \to \mathbb{R}$ is $\mu$-strongly convex if for some constant $\mu > 0$ and all $x, y \in \mathbb{R}^d$:
+\begin{equation}
+    f(y) \ge f(x) + \langle \nabla f(x), y - x \rangle + \frac{\mu}{2}\|y - x\|^2
+\end{equation}
+\end{definition}
+
+\begin{interpretation}
+Smoothness bounds how fast the gradient can change (limiting the maximum step size), while strong convexity guarantees that the function curves strictly upwards (pulling the iterates toward the unique global minimum). The ratio $\kappa = L / \mu \ge 1$ is known as the \textbf{condition number}.
+\end{interpretation}
+
+% =========================================================
+\section{Deterministic Iteration Complexity}
+% =========================================================
+
+In the deterministic setting, we have access to the exact gradient $\nabla f(x)$. \textbf{Iteration complexity} refers to the number of gradient evaluations $T$ required to guarantee a suboptimality gap $f(x_T) - f(x^*) \le \epsilon$.
+
+\begin{algobox}{Gradient Descent (GD)}
+\begin{algorithmic}[1]
+\Require Initial point $x_0 \in \mathbb{R}^d$, step size $\eta > 0$, number of iterations $T$
+\For{$t = 0, 1, \dots, T-1$}
+    \State $x_{t+1} \gets x_t - \eta \nabla f(x_t)$
+\EndFor
+\Ensure $x_T$
+\end{algorithmic}
+\end{algobox}
+
+\begin{theorem}{Iteration Complexity of GD (Smooth Convex)}{gd_convex}
+Let $f$ be convex and $L$-smooth. If we run Gradient Descent with a fixed step size $\eta = \frac{1}{L}$, the suboptimality after $T$ iterations is bounded by:
+\begin{equation}
+    f(x_T) - f(x^*) \le \frac{L \|x_0 - x^*\|^2}{2T}
+\end{equation}
+Consequently, the iteration complexity is $\mathcal{O}(LR^2/\epsilon)$, retaining the dependence on initial distance.
+\end{theorem}
+
+\begin{proof}
+For $x_{t+1}=x_t-\nabla f(x_t)/L$, the descent lemma and convexity give
+\[
+f(x_{t+1})-f^*\le \frac L2\big(\|x_t-x^*\|^2-\|x_{t+1}-x^*\|^2\big).
+\]
+The objective values are nonincreasing, so summing for $t=0,\ldots,T-1$ gives $T(f(x_T)-f^*)\le LR^2/2$.
+\end{proof}
+
+\begin{theorem}{Iteration Complexity of GD (Strongly Convex)}{gd_strong}
+Let $f$ be $L$-smooth and $\mu$-strongly convex. Running GD with step size $\eta = \frac{1}{L}$ yields \textit{linear convergence}:
+\begin{equation}
+    f(x_T) - f(x^*) \le \frac{L}{2} \left( 1 - \frac{\mu}{L} \right)^T \|x_0 - x^*\|^2
+\end{equation}
+To achieve $f(x_T) - f(x^*) \le \epsilon$, the \textbf{iteration complexity} is $\mathcal{O}\left( \kappa \log\left(\frac{1}{\epsilon}\right) \right)$, where $\kappa = L/\mu$.
+\end{theorem}
+
+\begin{remark}
+The term "linear convergence" refers to the fact that the log-error decreases linearly. Its dependence on $1/\epsilon$ is logarithmic rather than polynomial under strong convexity.
+\end{remark}
+
+\subsection{Lower bounds and acceleration}
+In the usual first-order black-box model, with sufficiently large dimension, smooth convex objectives have a worst-case objective-gap lower bound of order $LR^2/T^2$. For strongly convex objectives, the corresponding complexity is of order $\sqrt{\kappa}\log(C/\epsilon)$ in the standard nondegenerate regime; $C$ denotes an initial-error scale. These are worst-case oracle statements, with the dimension and oracle model specified, rather than lower bounds for every fixed function.
+Nesterov's convex accelerated methods attain these orders; see Nesterov and Bubeck in the references.
+
+\begin{remark}
+The convex acceleration theorem does not apply to arbitrary nonconvex objectives. A nonconvex momentum or accelerated method needs its own algorithm and assumptions. In particular, the convex NAG row below does not assert a universal nonconvex rate.
+\end{remark}
+
+\subsection{A nonconvex GD baseline}
+If $f$ is $L$-smooth and bounded below, GD with step $1/L$ satisfies
+\[
+f(x_{t+1})\le f(x_t)-\frac{1}{2L}\|\nabla f(x_t)\|^2.
+\]
+Telescoping gives $\min_{0\le t<T}\|\nabla f(x_t)\|^2\le 2L\Delta/T$. Thus $\mathcal O(L\Delta/\epsilon)$ calls suffice for the squared-gradient criterion. This does not guarantee a global minimizer.
+
+\section{Stochastic oracle complexity}
+% =========================================================
+
+In machine learning, we often minimize an expectation (population risk) or a massive finite sum (empirical risk):
+\begin{equation}
+    f(x) = \mathbb{E}_{\xi \sim \mathcal{D}}[F(x; \xi)] \quad \text{or} \quad f(x) = \frac{1}{n} \sum_{i=1}^n f_i(x)
+\end{equation}
+Here, we only have access to a \textit{stochastic gradient} $g_t = \nabla F(x_t; \xi_t)$. 
+\textbf{Stochastic oracle complexity} counts calls to an unbiased gradient oracle. The output and criterion depend on the theorem: averaged iterates for convex objectives, and a randomly selected iterate for the nonconvex bound below. 
+
+\begin{definition}{Stochastic Gradient Assumptions}{stoch_assumptions}
+We assume the stochastic gradient $g(x; \xi)$ satisfies:
+\begin{enumerate}
+    \item \textbf{Conditional unbiasedness:} $\mathbb E[g_t\mid x_t]=\nabla f(x_t)$. Fresh oracle randomness is used at each iteration.
+    \item \textbf{Conditional bounded variance:} $\mathbb E[\|g_t-\nabla f(x_t)\|^2\mid x_t]\le\sigma^2$. A bounded second moment $\mathbb E\|g_t\|^2\le G^2$ is a different, stronger condition when used below.
+\end{enumerate}
+\end{definition}
+
+\begin{algobox}{Stochastic Gradient Descent (SGD)}
+\begin{algorithmic}[1]
+\Require Initial $x_0 \in \mathbb{R}^d$, step sizes $\{\eta_t\}_{t=0}^{T-1}$
+\For{$t = 0, 1, \dots, T-1$}
+    \State Sample $\xi_t \sim \mathcal{D}$ (e.g., a mini-batch of data)
+    \State $x_{t+1} \gets x_t - \eta_t \nabla F(x_t; \xi_t)$
+\EndFor
+\Ensure $\bar{x}_T = \frac{1}{T}\sum_{t=0}^{T-1} x_t$ (Polyak-Ruppert averaging)
+\end{algorithmic}
+\end{algobox}
+
+\begin{theorem}{Smooth convex SGD}{sgd_convex}
+Let $f$ be convex, $L$-smooth, and attain its minimum. For $R>0$, under the unbiasedness and variance assumptions above, use a fixed horizon $T$ and constant step
+\[
+\eta=\min\{1/(2L),\ R/(\sigma\sqrt T)\},
+\]
+where $\eta=1/(2L)$ if $\sigma=0$. For $\bar x_T=T^{-1}\sum_{t=0}^{T-1}x_t$,
+\[
+\mathbb E[f(\bar x_T)]-f^*\le \frac{R^2}{\eta T}+\eta\sigma^2
+\le \frac{2LR^2}{T}+\frac{2R\sigma}{\sqrt T}.
+\]
+The resulting oracle complexity is $\mathcal O(LR^2/\epsilon+R^2\sigma^2/\epsilon^2)$.
+\end{theorem}
+\begin{proof}
+Smooth convexity implies $\|\nabla f(x_t)\|^2\le2L(f(x_t)-f^*)$. Expanding the squared-distance recursion, taking conditional expectations, and using $\eta\le1/(2L)$ gives
+\[
+\mathbb E\|x_{t+1}-x^*\|^2\le\mathbb E\|x_t-x^*\|^2
+-\eta\mathbb E[f(x_t)-f^*]+\eta^2\sigma^2.
+\]
+Sum and apply convexity to the average. The final bound follows from the chosen step. If $R=0$, the known initial point is already optimal and no oracle call is needed.
+\end{proof}
+
+\begin{theorem}{Strongly convex SGD: a second-moment bound}{sgd_strong}
+Suppose $f$ is $\mu$-strongly convex, and additionally $\mathbb E\|g_t\|^2\le G^2$ along the iterates. Set $\eta_t=2/(\mu(t+2))$ and return the weighted average
+\[
+\widetilde x_T=\frac{2}{T(T+1)}\sum_{t=0}^{T-1}(t+1)x_t.
+\]
+Then $\mathbb E[f(\widetilde x_T)]-f^*\le2G^2/(\mu(T+1))$.
+The oracle complexity is $\mathcal O(G^2/(\mu\epsilon))$ under this second-moment assumption.
+\end{theorem}
+\begin{proof}
+Write $r_t=\mathbb E\|x_t-x^*\|^2$ and $e_t=\mathbb E[f(x_t)-f^*]$. Strong convexity yields
+$r_{t+1}\le(1-\mu\eta_t)r_t-2\eta_t e_t+\eta_t^2G^2$.
+Multiplying the resulting bound on $e_t$ by $t+1$ makes the distance terms telescope:
+\[
+\sum_{t=0}^{T-1}(t+1)e_t\le \frac{TG^2}{\mu}.
+\]
+Divide by $T(T+1)/2$ and use convexity. The same argument applies to projected SGD on a convex feasible set when the projection is included in the update.
+\end{proof}
+
+\begin{remark}
+Bounded variance alone does not imply a global bound on $\|g_t\|$. The strongly convex theorem just stated therefore has an additional assumption and a different output from plain averaging. With only bounded variance, refined smooth strongly convex analyses separate deterministic transients from the asymptotic noise term $\sigma^2/(\mu T)$; that asymptotic term is not a complete finite-time bound.
+\end{remark}
+
+\subsection{Nonconvex SGD}
+If $f$ is $L$-smooth and bounded below, a constant step $0<\eta\le1/L$ gives
+\[
+\mathbb E f(x_{t+1})\le\mathbb E f(x_t)
+-\frac\eta2\mathbb E\|\nabla f(x_t)\|^2+\frac{L\eta^2\sigma^2}{2}.
+\]
+For an independently and uniformly selected $K\in\{0,\ldots,T-1\}$,
+\[
+\mathbb E\|\nabla f(x_K)\|^2\le\frac{2\Delta}{\eta T}+L\eta\sigma^2.
+\]
+Choosing $\eta=\min\{1/L,\epsilon/(2L\sigma^2)\}$ yields an oracle bound
+$\mathcal O(L\Delta/\epsilon+L\Delta\sigma^2/\epsilon^2)$; when $\sigma=0$, use $\eta=1/L$. The criterion is stationarity, not objective-gap optimality.
+
+\section{Bridging the Gap: Variance Reduction}
+% =========================================================
+
+For finite-sum problems ($f(x)=n^{-1}\sum_i f_i(x)$), variance reduction reduces the noise from sampling a component index while reusing the same dataset. This differs from drawing fresh observations for a population-risk objective.
+
+\begin{remark}[title={SVRG: assumptions and cost}]
+For $f(x)=n^{-1}\sum_i f_i(x)$, suppose each component is convex and $L$-smooth and the average is $\mu$-strongly convex. SVRG uses the unbiased estimator
+\[
+g_t=\nabla f_{i_t}(x_t)-\nabla f_{i_t}(\widetilde x)+\nabla f(\widetilde x).
+\]
+An epoch computes a full gradient at $\widetilde x$ and performs component updates. Suitable epoch lengths and step sizes give
+$\mathcal O((n+\kappa)\log(C/\epsilon))$ component-gradient evaluations, compared with $\mathcal O(n\kappa\log(C/\epsilon))$ for full-gradient descent. See Johnson and Zhang for the algorithm and proof. SAGA is a related method with different state storage; its guarantees should be attached to its own assumptions.
+\end{remark}
+
+For a general convex finite sum, regularizing by $\frac{\epsilon}{2R^2}\|x-x_0\|^2$ introduces a bias at the original optimum of at most $\epsilon/2$. For $R>0$ and an appropriate initial-error scale, solving the regularized problem to $\epsilon/2$ using a strongly convex method gives an upper bound of order
+\[
+\mathcal O\big((n+LR^2/\epsilon)\log(C/\epsilon)\big).
+\]
+
+\section{Summary: compare like with like}
+\begin{table}[H]\centering\small
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{@{}lll@{}}\toprule
+Method & Assumptions / criterion & Full-gradient calls\\\midrule
+GD & Smooth nonconvex, squared gradient & $\mathcal O(L\Delta/\epsilon)$\\
+GD & Smooth convex, objective gap & $\mathcal O(LR^2/\epsilon)$\\
+NAG & Smooth convex, objective gap & $\mathcal O(\sqrt{LR^2/\epsilon})$\\
+GD & Smooth strongly convex & $\mathcal O(\kappa\log(C/\epsilon))$\\
+NAG & Smooth strongly convex & $\mathcal O(\sqrt\kappa\log(C/\epsilon))$\\\bottomrule
+\end{tabular}
+\caption{Deterministic oracle complexity. Lower bounds and accelerated guarantees use the standard first-order model.}
+\end{table}
+
+\begin{table}[H]\centering\small
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{@{}lp{3.1cm}p{6.4cm}@{}}\toprule
+Method & Assumptions / output & Stochastic or component-gradient calls\\\midrule
+SGD & Smooth nonconvex; random iterate & $\mathcal O(L\Delta/\epsilon+L\Delta\sigma^2/\epsilon^2)$\\
+SGD & Smooth convex; average & $\mathcal O(LR^2/\epsilon+R^2\sigma^2/\epsilon^2)$\\
+SGD & Strongly convex, second moment $G^2$; weighted average & $\mathcal O(G^2/(\mu\epsilon))$\\
+SVRG & Convex smooth components; strongly convex average & $\mathcal O((n+\kappa)\log(C/\epsilon))$\\\bottomrule
+\end{tabular}
+\caption{Stochastic and finite-sum costs. $\sigma^2$ bounds noise variance; $G^2$ bounds the full gradient second moment. These quantities are not interchangeable.}
+\end{table}
+
+\begin{thebibliography}{9}
+\bibitem{nesterov2018} Y. Nesterov. \textit{Lectures on Convex Optimization}. Springer, 2018. \href{https://doi.org/10.1007/978-3-319-91578-4}{Publisher link}.
+\bibitem{bubeck2015} S. Bubeck. \textit{Convex Optimization: Algorithms and Complexity}. Foundations and Trends in Machine Learning, 2015. \href{https://arxiv.org/abs/1405.4980}{Author manuscript}.
+\bibitem{johnson2013} R. Johnson and T. Zhang. \textit{Accelerating Stochastic Gradient Descent using Predictive Variance Reduction}. NeurIPS, 2013. \href{https://papers.nips.cc/paper/2013/hash/ac1dd209cbcc5e5d1c6e28598e8cbbe8-Abstract.html}{Paper}.
+\end{thebibliography}
+\end{document}

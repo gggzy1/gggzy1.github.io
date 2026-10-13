@@ -1,5 +1,5 @@
 ---
-layout: note
+layout: academic-note
 title: "Generalization"
 permalink: /notes/generalization/
 description: Statistical learning theory roadmap for generalization guarantees.

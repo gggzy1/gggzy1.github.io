@@ -1,0 +1,369 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1.2in]{geometry}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{mathtools}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{xcolor}
+\definecolor{notelink}{RGB}{49,84,117}
+\usepackage[colorlinks=true,linkcolor=notelink,citecolor=notelink,urlcolor=notelink]{hyperref}
+% \usepackage{Booktabs}
+% Theorem environments
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+
+% Operators
+\DeclareMathOperator{\E}{\mathbb{E}}
+\DeclareMathOperator{\R}{\mathbb{R}}
+\newcommand{\norm}[1]{\left\|#1\right\|}
+\newcommand{\inner}[2]{\left\langle #1,\, #2 \right\rangle}
+
+\title{\textbf{SPO+ as a Two-Stage Stochastic Program}}
+\author{Zhiyun Guo}
+\date{April 21, 2026}
+
+\begin{document}
+\maketitle
+
+\section{SPO+ as a Two-Stage Stochastic Program}
+
+These expository notes connect the SPO+ loss of Elmachtoub and Grigas to a dual recourse formulation, followed by a portfolio example. The first-stage learning decision is the predictor parameter; the second-stage variables are dual certificates chosen after the training outcome is observed.
+
+\paragraph{Scope and assumptions.}
+In the general derivation, take $S$ to be a nonempty compact polyhedron and fix a measurable rule for selecting $w^*(c)\in\arg\min_{w\in S}c^\top w$; write $z^*(c)=\min_{w\in S}c^\top w$. Assume $\mathbb E\|c\|$ and $\mathbb E\|x\|$ are finite, and that $\Theta$ is the specified admissible parameter set. These conditions ensure finite LP values and integrable losses for every fixed finite parameter matrix. For an unbounded or sample-dependent region, finiteness, attainment and integrability must instead be checked for the relevant cost directions.
+
+\subsection{SPO+ objective under a linear predictor}
+
+Let the predictor be parameterized by $\theta$, and define the predicted cost vector by
+\[
+\hat c(x;\theta)=\theta x.
+\]
+Given a feasible region $S \subseteq \mathbb{R}^d$, the population SPO+ objective is
+\begin{align}
+\min_{\theta} \quad 
+\mathbb{E}_{(x,c)}\Big[
+\max_{w\in S} (c-2\hat c(x;\theta))^\top w
++2\hat c(x;\theta)^\top w^*(c)
+-z^*(c)
+\Big].
+\label{eq:spo-pop}
+\end{align}
+Under the linear predictor $\hat c(x;\theta)=\theta x$, this becomes
+\begin{align}
+\min_{\theta} \quad 
+\mathbb{E}_{(x,c)}\Big[
+\max_{w\in S} (c-2\theta x)^\top w
++2(\theta x)^\top w^*(c)
+-z^*(c)
+\Big].
+\label{eq:spo-linear}
+\end{align}
+
+\subsection{Polyhedral feasible region and dual reformulation}
+
+Under the compact-polyhedron assumption above, write
+\[
+S=\{w\in\mathbb{R}^d:Aw\le b\}.
+\]
+Then, for each realization $(x,c)$ and parameter $\theta$, the inner maximization problem in \eqref{eq:spo-linear} is the linear program
+\begin{align}
+\max_{w} \quad & (c-2\theta x)^\top w \qquad
+\text{s.t.}\quad Aw\le b.
+\label{eq:inner-primal}
+\end{align}
+Its dual is
+\begin{align}
+\min_{\lambda\ge 0}\quad & b^\top \lambda\qquad
+\text{s.t.}\quad A^\top \lambda = c-2\theta x.
+\label{eq:inner-dual}
+\end{align}
+The primal is feasible with a finite optimum, so LP strong duality holds: \eqref{eq:inner-primal} and \eqref{eq:inner-dual} have the same optimal value, so that
+\[
+\max_{w\in S}(c-2\theta x)^\top w
+=
+\min_{\lambda\ge 0}
+\left\{
+b^\top \lambda
+\;\middle|\;
+A^\top \lambda = c-2\theta x
+\right\}.
+\]
+Substituting this into \eqref{eq:spo-linear} yields
+\begin{align}
+\min_{\theta}\quad
+\mathbb{E}_{(x,c)}\Bigg[
+2(\theta x)^\top w^*(c)-z^*(c)
++
+\min_{\lambda\ge 0}
+\left\{
+b^\top \lambda
+\;\middle|\;
+A^\top \lambda = c-2\theta x
+\right\}
+\Bigg].
+\label{eq:spo-dual-reform}
+\end{align}
+
+\subsection{Recourse formulation}
+
+Define the second-stage recourse function
+\begin{align}
+\bar\psi(\theta,\xi)
+:=
+\min_{\lambda\ge 0}
+\left\{
+b^\top \lambda
+\;\middle|\;
+A^\top \lambda = c-2\theta x
+\right\},
+\qquad
+\xi=(x,c).
+\label{eq:recourse}
+\end{align}
+Also define the first-stage random cost
+\begin{align}
+\bar\varphi(\theta,\xi)
+:=
+2(\theta x)^\top w^*(c)-z^*(c).
+\label{eq:first-stage-random-cost}
+\end{align}
+Then \eqref{eq:spo-dual-reform} can be written as
+\begin{align}
+\min_{\theta}\quad
+\mathbb{E}_{\xi}\big[\bar\varphi(\theta,\xi)\big]
++
+\mathbb{E}_{\xi}\big[\bar\psi(\theta,\xi)\big].
+\label{eq:two-stage-basic}
+\end{align}
+Equivalently, defining
+\begin{align}
+\varphi(\theta):=\mathbb{E}_{\xi}\big[\bar\varphi(\theta,\xi)\big], \quad \psi(\theta):=\mathbb{E}_{\xi}\big[\bar\psi(\theta,\xi)\big], 
+\end{align}
+we obtain the compact representation
+\begin{align}
+\min_{\theta\in\Theta}\quad \varphi(\theta)+\psi(\theta).
+\label{eq:compact-two-stage}
+\end{align}
+
+\paragraph{What this interpretation establishes.}
+The expected affine term $\varphi(\theta)$ is deterministic once the data distribution is fixed; $\theta$ is chosen before the realization $\xi$, and the recourse certificate depends on $\xi$. With an affine predictor, the SPO+ objective is convex in $\theta$. The representation alone does not establish that every assumption of a particular stochastic-programming algorithm holds; a DSA convergence theorem requires a separate check of its recourse, geometry, and oracle assumptions \cite{lan2021}.
+
+\subsection{Application: CVaR-adjusted Multi-Period Portfolio Optimization}
+
+\indent We consider a multi-period portfolio optimization problem over a horizon
+$h=1,\dots,H$, with $N$ assets and $J$ historical scenarios per period. The
+CVaR confidence level $\alpha\in(0,1)$, the risk-aversion coefficient
+$\gamma>0$, and the turnover penalty coefficient $\lambda>0$ are fixed.
+The historical scenarios are treated as observable inputs at decision time,
+so the only predicted quantity is the future return vector.
+
+Let $x$ denote the contextual information available at the decision epoch,
+including predictive features, scenario matrices, and current holdings.
+Let
+\[
+y=(y_1,\dots,y_H),\qquad y_h\in\mathbb R^N,
+\]
+be the realized future return vectors, and let
+\[
+\hat y(x;\theta)=(\hat y_1(x;\theta),\dots,\hat y_H(x;\theta))
+\]
+be the return forecasts generated by a model parameterized by $\theta$.
+We emphasize that the first-stage decision is the model parameter $\theta$,
+not the realized prediction $\hat y(x;\theta)$ itself.
+
+\paragraph{Downstream Portfolio problem.}
+For each period $h=1,\dots,H$, let $z_h\in\mathbb R^N$ denote the portfolio
+weights, $s_h\in\mathbb R_+^N$ the turnover auxiliaries,
+$\eta_h\in\mathbb R$ the CVaR threshold, and
+$\xi_h=(\xi_{h,1},\dots,\xi_{h,J})^\top\in\mathbb R_+^J$ the CVaR slack
+variables. Given the prediction $\hat y(x;\theta)$, the portfolio problem is
+\begin{align}
+\min_{\{z_h,s_h,\eta_h,\xi_h\}_{h=1}^H}
+\quad
+& \sum_{h=1}^H\left[
+-\hat y_h(x;\theta)^\top z_h
++\lambda \mathbf 1^\top s_h
++\gamma \eta_h
++\frac{\gamma}{(1-\alpha)J}\mathbf 1^\top \xi_h
+\right]
+\label{eq:cvar-main-primal}
+\\
+\text{s.t.}\quad
+& \xi_{h,j}\ge -r_{h,j}(x)^\top z_h-\eta_h,
+\qquad j=1,\dots,J,\; h=1,\dots,H, \notag\\
+& \xi_{h,j}\ge 0,
+\qquad j=1,\dots,J,\; h=1,\dots,H, \notag\\
+& s_{h,i}\ge z_{h,i}-z_{h-1,i},
+\qquad i=1,\dots,N,\; h=1,\dots,H, \notag\\
+& s_{h,i}\ge -(z_{h,i}-z_{h-1,i}),
+\qquad i=1,\dots,N,\; h=1,\dots,H, \notag\\
+& \mathbf 1^\top z_h = 1,\quad z_h\ge 0,
+\qquad h=1,\dots,H. \notag
+\end{align}
+Here $r_{h,j}(x)\in\mathbb R^N$ is the $j$th return scenario at period $h$,
+and $z_0$ is the known current portfolio.
+Since \eqref{eq:cvar-main-primal} is a linear program, there exist a decision
+vector $w\in\mathbb R^d$, a polyhedral feasible region
+\[
+S(x)=\{w:\tilde A(x)w\le \tilde b(x)\},
+\]
+and a predicted cost vector $\hat c(x;\theta)\in\mathbb R^d$ such that
+\begin{align}
+\min_{w\in S(x)}\ \hat c(x;\theta)^\top w.
+\label{eq:compact-predicted-problem}
+\end{align}
+More explicitly, the cost vector is obtained by stacking the stagewise blocks
+\[
+\hat c_h(x;\theta)=
+\begin{bmatrix}
+-\hat y_h(x;\theta)\\
+\lambda \mathbf 1_N\\
+\gamma\\
+\dfrac{\gamma}{(1-\alpha)J}\mathbf 1_J
+\end{bmatrix},
+\qquad h=1,\dots,H,
+\]
+so that only the return block is predicted, while the turnover and CVaR
+coefficients are fixed.
+
+\paragraph{Finite values in the epigraph formulation.}
+Unlike the compact set in the general derivation, $S(x)$ includes unbounded auxiliary variables. For finite scenario and return data, the simplex constraint bounds all $z_h$. Turnover penalties are nonnegative and the CVaR epigraph has a finite optimum for $\alpha\in(0,1)$ and $\gamma>0$. The SPO+ inner maximization has the negatives of these fixed penalty coefficients, so its value is also finite and attained. LP strong duality therefore applies to the specified cost directions. Population expectations additionally require integrable scenario, return, and forecast magnitudes.
+
+\paragraph{True cost vector and SPO+ loss.}
+Using the realized future returns, define the true cost vector
+\[
+c_h(y)=
+\begin{bmatrix}
+-y_h\\
+\lambda \mathbf 1_N\\
+\gamma\\
+\dfrac{\gamma}{(1-\alpha)J}\mathbf 1_J
+\end{bmatrix},
+\qquad
+c(y)=\begin{bmatrix}c_1(y)\\ \vdots\\ c_H(y)\end{bmatrix}.
+\]
+Let
+\[
+z^*(c(y),x):=\min_{w\in S(x)} c(y)^\top w
+\]
+be the optimal value under the true cost vector, and let
+\[
+w^*(c(y),x)\in \arg\min_{w\in S(x)} c(y)^\top w
+\]
+be an optimal solution. Then, for a sample $\xi=(x,y)$, the SPO+ loss is
+\begin{align}
+\ell_{\mathrm{SPO+}}(\theta;\xi)
+:=
+\max_{w\in S(x)}
+\big(c(y)-2\hat c(x;\theta)\big)^\top w
++2\hat c(x;\theta)^\top w^*(c(y),x)
+-z^*(c(y),x).
+\label{eq:spo-cvar-short}
+\end{align}
+The corresponding population problem is
+\begin{align}
+\min_{\theta}\quad
+\mathbb E_{\xi}\big[\ell_{\mathrm{SPO+}}(\theta;\xi)\big].
+\label{eq:spo-cvar-pop-short}
+\end{align}
+
+\paragraph{Dual reformulation.}
+Because $S(x)=\{w:\tilde A(x)w\le \tilde b(x)\}$ is polyhedral, the inner
+maximization in \eqref{eq:spo-cvar-short} is the linear program
+\begin{align}
+\max_w\quad
+& \big(c(y)-2\hat c(x;\theta)\big)^\top w
+\notag\\
+\text{s.t.}\quad
+& \tilde A(x)w\le \tilde b(x).
+\label{eq:spo-inner-primal-short}
+\end{align}
+Its dual is
+\begin{align}
+\min_{\mu\ge 0}\quad
+& \tilde b(x)^\top \mu
+\notag\\
+\text{s.t.}\quad
+& \tilde A(x)^\top \mu = c(y)-2\hat c(x;\theta).
+\label{eq:spo-inner-dual-short}
+\end{align}
+Assuming strong duality, the SPO+ loss becomes
+\begin{align}
+\ell_{\mathrm{SPO+}}(\theta;\xi)
+=
+\min_{\mu\ge 0}
+\Bigg\{
+\tilde b(x)^\top \mu
++2\hat c(x;\theta)^\top w^*(c(y),x)
+-z^*(c(y),x)
+\;\Big|\;
+\tilde A(x)^\top \mu = c(y)-2\hat c(x;\theta)
+\Bigg\}.
+\label{eq:spo-dual-short}
+\end{align}
+
+\paragraph{Two-stage stochastic programming form.}
+Define
+\begin{align}
+\bar\varphi(\theta,\xi)
+&:=
+2\hat c(x;\theta)^\top w^*(c(y),x)-z^*(c(y),x),
+\label{eq:varphi-bar-short}
+\\
+\bar\psi(\theta,\xi)
+&:=
+\min_{\mu\ge 0}
+\left\{
+\tilde b(x)^\top \mu
+\;\middle|\;
+\tilde A(x)^\top \mu = c(y)-2\hat c(x;\theta)
+\right\}.
+\label{eq:psi-bar-short}
+\end{align}
+Then \eqref{eq:spo-cvar-pop-short} can be written as
+\begin{align}
+\min_{\theta}\quad
+\mathbb E_{\xi}[\bar\varphi(\theta,\xi)]
++
+\mathbb E_{\xi}[\bar\psi(\theta,\xi)].
+\label{eq:two-stage-short-1}
+\end{align}
+Equivalently, with
+\[
+\varphi(\theta):=\mathbb E_{\xi}[\bar\varphi(\theta,\xi)],
+\qquad
+\psi(\theta):=\mathbb E_{\xi}[\bar\psi(\theta,\xi)],
+\]
+we obtain the compact formulation
+\begin{align}
+\min_{\theta\in\Theta}\quad \varphi(\theta)+\psi(\theta).
+\label{eq:two-stage-short-compact}
+\end{align}
+
+\paragraph{Information and convexity.}
+This is a horizon-wide portfolio plan using scenarios available at the decision epoch; it does not introduce a multistage scenario-tree policy or future-information nonanticipativity constraints. Here the ``two stages'' concern learning and its dual recourse. If the return predictor is nonlinear in $\theta$, the loss need not be convex in $\theta$, even though each recourse problem remains an LP. The CVaR epigraph is the standard formulation of Rockafellar and Uryasev \cite{cvar2000}.
+
+\begin{thebibliography}{9}
+\bibitem{elmachtoub2022}
+    A.~N.~Elmachtoub and P.~Grigas,
+    ``Smart `Predict, then Optimize',''
+    \textit{Management Science}, 68(1):9--26, 2022. \href{https://arxiv.org/abs/1710.08005}{Author manuscript}.
+\bibitem{lan2021}
+    G.~Lan and Z.~Zhou,
+    \textit{Dynamic stochastic approximation for multi-stage stochastic optimization}.
+    Mathematical Programming, 187:487--532, 2021.
+    \href{https://arxiv.org/abs/1707.03324}{Author manuscript}.
+\bibitem{cvar2000}
+    R.~T.~Rockafellar and S.~Uryasev,
+    \textit{Optimization of Conditional Value-at-Risk}.
+    Journal of Risk, 2(3):21--41, 2000.
+    \href{https://doi.org/10.21314/JOR.2000.038}{Publisher link}.
+\end{thebibliography}
+
+\end{document}

@@ -1,5 +1,5 @@
 ---
-layout: note
+layout: academic-note
 title: "Optimization — First-Order Methods"
 permalink: /notes/optimization/first-order/
 description: Gradient-based and proximal first-order algorithms (roadmap).

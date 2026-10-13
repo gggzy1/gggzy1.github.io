@@ -1,5 +1,5 @@
 ---
-layout: note
+layout: academic-note
 title: "LLM Agents"
 permalink: /notes/llm/agent/
 math: true

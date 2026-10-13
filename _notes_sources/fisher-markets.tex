@@ -1,0 +1,267 @@
+\documentclass[11pt, a4paper]{article}
+
+% ====================================
+% 引入刚才写的宏包
+% ====================================
+\usepackage{optstyle} 
+\usepackage{amsmath}
+\fancyhead[R]{\sffamily\footnotesize Fisher Markets}
+% ====================================
+% 笔记信息
+% ====================================
+\title{\textbf{\Huge Fisher Markets}\\\Large Convex Programming and Duality}
+\author{Zhiyun Guo}
+\date{January 28, 2026}
+
+\begin{document}
+
+\maketitle
+
+% ====================================
+% 正文开始
+% ====================================
+
+\section{Preliminaries}
+
+\subsection{Notation}
+\begin{itemize}
+    \item $M$: a set of $m$ divisible goods
+    \item $N$: a set of $n$ buyers
+    \item $B_i$: Each buyer i's budget (fixed)
+    \item $p_j\in \mathbb{R}_+$: price of good $j$ 
+    \item $x_{ij}\in\mathbb{R}_+$: amount of good $j$ allocated to buyer $i$
+\end{itemize}
+\paragraph{Standing assumptions.} Budgets satisfy $B_i>0$. Goods are divisible and have unit supply after rescaling positive supplies. For the linear-market programs below, each buyer values some good, and each good is valued by some buyer. Nonnegativity is allowed for $v_{ij}$; zero-valued pairs are excluded when taking logarithms or ratios.
+\subsection{Utility}
+\begin{enumerate}
+    \item \textit{Linear}: there are parameters $v_{ij}\in\mathbb{R}_+$ specifying the value derived by buyer $i$ from one unit of good $j$ which guarantees \textbf{Additivity}. i.e., $u_i(x)=\sum_{j\in M}v_{ij}x_{ij}$.
+    \item\textit{Quasi-linear}: agents have utility for the money spent as well, i.e., $u_i(x)=\sum_{j\in M}(v_{ij}-p_j)x_{ij}$.
+    \item \textit{Leontief}: given coefficients $a_{ij}\ge0$, with at least one positive coefficient per buyer, $u_i(x)=\min_{j:a_{ij}>0}x_{ij}/a_{ij}$. Goods with $a_{ij}=0$ are not required inputs.
+    \item \textit{Constant elasticity of substitution (CES)}: for example, when $0<\rho<1$,
+\[
+u_i(x_i)=\left(\sum_j\alpha_{ij}x_{ij}^{\rho}\right)^{1/\rho},
+\]
+with $\alpha_{ij}\ge0$ and some positive coefficient. Other parameter regimes, including complementary goods and the Cobb--Douglas limit, require the corresponding domain/limit conventions. 
+\end{enumerate}
+\section{Market equilibrium}
+An \textit{equilibrium} is formed if the following conditions hold.
+\begin{enumerate}
+    \item The allocation of each buyer $i$ \textbf{maximizes his utility}, subject to the budget constraint $\sum_j p_j x_{ij}\leq B_i$
+    \item Each good $j$ that has a price $p_j>0$ is \textbf{allocated fully}, i.e., $\sum_i x_{ij}=1$. A good is allowed to have $p_j=0$ as long as $\sum_i x_{ij}\leq 1$.
+\end{enumerate}
+\subsection{Generalization of Fisher's model}
+\subsubsection{Spending-Restricted (SR) model}
+\begin{itemize}
+    \item Each seller $j$ has an upper bound on the amount of money he wants to earn: $c_j$
+    \item Once he earns $c_j$, selling the least amount of his good, he wants to take back the unsold portion of his good, i.e., the amount of money spent on the good of seller $j$ is restricted by $c_j$
+    \item In equilibrium, the second equilibrium condition above is modified to $\forall j\in M,\sum_i x_{ij}\leq 1,\sum_i p_j x_{ij}\leq c_j$, and either 
+    \[\sum_i x_{ij} = 1 \text{ or }\sum_i p_j x_{ij}=c_j, \text{ or } p_j=0. \]
+\end{itemize}
+\subsubsection{Utility-Restricted (UR) model}
+\begin{itemize}
+    \item Each buyer $i$ has an upper bound on the utility they want to derive in the market: $d_i$
+    \item Once buyer $i$ derives utility $d_i$, spending the least amount of money at prices $p$, she wants to keep the left-over money. i.e., the utility of buyer $i$ is restricted by $d_i$
+    \item The first equilibrium condition is modified to $\forall i\in N,\; u_i(x)\leq d_i, \text{ and }\sum_j p_j x_{ij}\leq B_i$, and either 
+    \[x\text{ minimizes }\sum_j p_j x_{ij}\; s.t.\; u_i(x)=d_i,\text{ or maximizes }u_i(x)\; s.t. \sum_j p_j x_{ij}\leq B_i.\]
+\end{itemize}
+\section{Convex programming duality}
+\subsection{Fenchel Conjugate}
+\begin{definition}{Fenchel conjugate}{fj}
+For $f:\mathbb R^n\to\mathbb R\cup\{+\infty\}$, its conjugate is
+\[
+f^*(\mu)=\sup_{x\in\operatorname{dom}f}\{\mu^\top x-f(x)\}.
+\]
+The conjugate may be extended-valued. It is convex as a supremum of affine functions; strict convexity and differentiability do not follow in general.
+\end{definition}
+
+\noindent\textbf{Useful rules and assumptions.}
+\begin{itemize}
+\item If $f$ is proper, closed and convex, $f^{**}=f$ (Fenchel--Moreau).
+\item If $f(x)=\sum_i f_i(x_i)$ on a product domain, $f^*(\mu)=\sum_i f_i^*(\mu_i)$.
+\item If $g=cf$ with $c>0$, then $g^*(\mu)=cf^*(\mu/c)$.
+\item If $g(x)=f(cx)$ with scalar $c\ne0$, then $g^*(\mu)=f^*(\mu/c)$.
+\item If $g(x)=f(x+a)$, then $g^*(\mu)=f^*(\mu)-\mu^\top a$.
+\item For proper closed convex $f$, Fenchel equality is equivalent to a subgradient pair:
+\[
+f(x)+f^*(\mu)=\mu^\top x
+\quad\Longleftrightarrow\quad
+\mu\in\partial f(x)
+\quad\Longleftrightarrow\quad
+x\in\partial f^*(\mu).
+\]
+Gradient identities require differentiability at the corresponding points.
+\end{itemize}
+For example, the conjugate of $f(x)=0$ on $\mathbb R$ is $0$ at $\mu=0$ and $+\infty$ elsewhere, illustrating why general differentiability cannot be asserted.
+
+\noindent\textbf{Examples.}
+\begin{itemize}
+\item $f(x)=x^2/2$ on $\mathbb R$: $f^*(\mu)=\mu^2/2$.
+\item $f(x)=-\log x$ for $x>0$: $f^*(\mu)=-1-\log(-\mu)$ for $\mu<0$, and $+\infty$ otherwise.
+\item $f(x)=x\log x$ on $x\ge0$, with $0\log0=0$: the optimizer for finite $\mu$ is $x=e^{\mu-1}$, hence $f^*(\mu)=e^{\mu-1}$.
+\end{itemize}
+See Boyd and Vandenberghe, Section 3.3, for conjugacy rules and domains \cite{boyd2004}.
+
+\subsection{Convex Programs with linear constraints}
+
+\noindent
+\begin{minipage}[t]{0.48\textwidth}
+    \textbf{Primal (Maximization):}
+    \begin{align*}
+        \max \quad & \sum_{i} c_i x_i - f(x) \\
+        \text{s.t.} \quad & \sum_{i} a_{ij} x_i \leq b_j, \quad \forall j \\
+                          & x_i \ge 0, \quad \forall i
+    \end{align*}
+\end{minipage}
+\hfill \vrule{} \hfill
+\begin{minipage}[t]{0.48\textwidth}
+    \textbf{Dual (Minimization):}
+    \begin{align*}
+        \min \quad & \sum_{j} b_j \lambda_j + f^*(\mu) \\
+        \text{s.t.} \quad & \sum_{j} a_{ij} \lambda_j \ge c_i - \mu_i, \quad \forall i \\
+                          & \lambda_j \geq 0, \quad \forall j
+    \end{align*}
+\end{minipage}
+
+\vspace{1em}
+\begin{interpretation}
+    \textbf{Strong Duality \& Slackness.}
+    Under a suitable Slater constraint qualification and finite attained optima, primal and dual values agree. The solution is characterized by:
+    \begin{enumerate}
+        \item \textbf{Complementary Slackness:} 
+        \[ x_i > 0 \implies \text{Dual Constraint is Tight}, \quad \lambda_j > 0 \implies \text{Primal Constraint is Tight}. \]
+        \item \textbf{Conjugate Pair:} $\mu\in\partial f(x)$ and $x\in\partial f^*(\mu)$; write $\mu=\nabla f(x)$ only when $f$ is differentiable at $x$.
+    \end{enumerate}
+\end{interpretation}
+\noindent Alternatively, for a minimization primal, the forms are reversed:
+
+\noindent
+\begin{minipage}[t]{0.48\textwidth}
+    \textbf{Primal (Minimization):}
+    \begin{align*}
+        \min \quad & \sum_{i} c_i x_i + f(x) \\
+        \text{s.t.} \quad & \sum_{i} a_{ij}x_i \ge b_j, \quad \forall j \\
+                          & x_i \ge 0.
+    \end{align*} 
+\end{minipage}
+\hfill \vrule{} \hfill
+\begin{minipage}[t]{0.48\textwidth}
+    \textbf{Dual (Maximization):}
+    \begin{align*}
+        \max \quad & \sum_{j} b_j \lambda_j - f^*(\mu) \\
+        \text{s.t.} \quad & \sum_{j} a_{ij}\lambda_j \le c_i + \mu_i, \quad \forall i \\
+                          & \lambda_j \ge 0.
+    \end{align*}
+\end{minipage}
+
+\section{Fisher Markets: Eisenberg-Gale \& Shmyrev}
+
+The Eisenberg-Gale (EG) program is fundamental in algorithmic game theory as it captures the equilibrium of linear Fisher markets, which maximizes budget-weighted log utilities, equivalently the weighted Nash product $\prod_i u_i^{B_i}$. Its dual variables provide the equilibrium prices.
+
+\subsection{The Eisenberg-Gale (EG) Program}
+
+\begin{lemma}{EG Duality}{eg_dual}
+    The EG Primal and its Dual are related as follows. The dual variables $p_j$ correspond to item prices.
+\end{lemma}
+
+\noindent
+\begin{minipage}[t]{0.48\textwidth}
+    \textbf{Primal (EG Program):}
+    \begin{align*}
+        \max \quad & \sum_{i} B_i \log u_i \\
+        \text{s.t.} \quad & u_i \leq \sum_{j} v_{ij} x_{ij}, \quad \forall i \\
+        & \sum_{i} x_{ij} \leq 1, \quad \forall j \\
+        & x_{ij} \geq 0.
+    \end{align*}
+\end{minipage}
+\hfill \vrule{} \hfill
+\begin{minipage}[t]{0.48\textwidth}
+    \textbf{Dual (Eq. 1):}
+    \begin{align*}
+        \min \quad & \sum_{j} p_j - \sum_{i} B_i \log(\beta_i) \\
+        \text{s.t.} \quad & p_j \geq v_{ij} \beta_i, \quad \forall i, j \\
+        & p_j\ge0,\quad\beta_i>0.
+    \end{align*}
+\end{minipage}
+
+\begin{remark}
+    The displayed dual drops the additive constant $C_B=\sum_i(B_i\log B_i-B_i)$. At an optimum, $\beta_i=\min_{j:v_{ij}>0}p_j/v_{ij}$; this is the reciprocal of buyer $i$'s maximum bang-per-buck.
+\end{remark}
+
+\begin{proof}[Derivation and equilibrium interpretation]
+Introduce multipliers $\beta_i\ge0$ for $u_i\le\sum_jv_{ij}x_{ij}$ and $p_j\ge0$ for supply. Maximizing the Lagrangian over $x_{ij}\ge0$ is finite precisely when $p_j\ge\beta_i v_{ij}$. Maximizing over $u_i>0$ gives
+\[
+\sup_{u_i>0}(B_i\log u_i-\beta_i u_i)
+=B_i\log B_i-B_i-B_i\log\beta_i,
+\]
+with $\beta_i>0$. This yields the displayed dual plus $C_B$. At an optimum, $u_i=B_i/\beta_i$ and complementary slackness gives $x_{ij}>0\Rightarrow p_j=\beta_i v_{ij}$. Thus each buyer uses only maximum bang-per-buck goods and spends $\sum_jp_jx_{ij}=\beta_i u_i=B_i$. Supply complementarity supplies market clearing.
+\end{proof}
+
+\subsection{Connection to Shmyrev's Program}
+
+We can derive the Shmyrev Convex Program by applying a change of variables to the EG Dual.
+
+\begin{interpretation}
+    \textbf{Logarithmic transformation and domains.} Under the standing assumptions, equilibrium prices and $\beta_i$ are positive. Only pairs with $v_{ij}>0$ enter the logarithmic constraints; in the bidding program set $b_{ij}=0$ on zero-valued pairs.
+    To linearize the constraints in the EG Dual, we define:
+    \[ q_j = \log p_j \quad \text{and} \quad \gamma_i = -\log \beta_i \]
+    The constraint $p_j \geq v_{ij} \beta_i$ transforms into $\log p_j \geq \log v_{ij} + \log \beta_i$, which becomes:
+    \[ \gamma_i + q_j \geq \log v_{ij} \]
+\end{interpretation}
+\noindent This transformation leads to a new pair of dual programs:
+
+\noindent
+\begin{minipage}[t]{0.48\textwidth}
+    \textbf{Transformed Dual (Eq. 2):}
+    \begin{align*}
+        \min \quad & \sum_{j} e^{q_j} + \sum_{i} B_i \gamma_i \\
+        \text{s.t.} \quad & \gamma_i + q_j \geq \log v_{ij}, \quad \forall i, j.
+    \end{align*}
+\end{minipage}
+\hfill \vrule{} \hfill
+\begin{minipage}[t]{0.48\textwidth}
+    \textbf{Shmyrev Program (CP):}
+    \begin{align*}
+        \max \quad & \sum_{i,j} b_{ij} \log v_{ij} - \sum_{j} (p_j \log p_j - p_j) \\
+        \text{s.t.} \quad & \sum_{i} b_{ij} = p_j, \quad \forall j \\
+        & \sum_{j} b_{ij} = B_i, \quad \forall i \\
+        & b_{ij} \geq 0.
+    \end{align*}
+\end{minipage}
+
+\vspace{1em}
+\noindent The Shmyrev objective includes $+\sum_jp_j$; this is constant because $\sum_jp_j=\sum_iB_i$ on its feasible set. Consequently dropping this term leaves the same maximizers. The bids recover allocations by $x_{ij}=b_{ij}/p_j$ for positive prices.
+
+\subsection{Quasi-Linear Utilities}
+
+For markets where buyers have \textbf{quasi-linear utilities} (utility form: $\sum_j (v_{ij} - p_j)x_{ij}$), the standard EG Primal is hard to generalize directly. However, the \textit{Dual} generalizes naturally.
+
+\begin{lemma}{Quasi-Linear Duality}{ql_dual}
+    By adding the constraint $\beta_i \leq 1$ to the EG Dual, we capture quasi-linear utilities. The corresponding primal is then derived.
+\end{lemma}
+
+\noindent
+\begin{minipage}[t]{0.48\textwidth}
+    \textbf{Dual (Modified EG Type):}
+    \begin{align*}
+        \min \quad & \sum_{j} p_j - \sum_{i} B_i \log(\beta_i) \\
+        \text{s.t.} \quad & p_j \geq v_{ij} \beta_i, \quad \forall i, j \\
+        & p_j\ge0,\quad 0<\beta_i\leq1, \quad \forall i.
+    \end{align*}
+\end{minipage}
+\hfill \vrule{} \hfill
+\begin{minipage}[t]{0.48\textwidth}
+    \textbf{Primal (Derived for Quasi-Linear):}
+    \begin{align*}
+        \max \quad & \sum_{i} B_i \log u_i - \sum_i m_i \\
+        \text{s.t.} \quad & u_i \leq \sum_{j} v_{ij} x_{ij} + m_i, \quad \forall i \\
+        & \sum_{i} x_{ij} \leq 1, \quad \forall j \\
+        & x_{ij}, m_i \geq 0.
+    \end{align*}
+\end{minipage}
+\noindent Here $m_i$ represents retained money in the utility expression (up to the additive constant $B_i$). The penalty is summed over buyers. As above, the displayed dual omits $C_B$; it is equivalent up to an additive constant, rather than equal in objective value as written.
+
+\begin{thebibliography}{9}
+\bibitem{devanur2016} N. R. Devanur, K. Jain, T. Mai, V. V. Vazirani, and S. Yazdanbod. \textit{New Convex Programs for Fisher's Market Model and its Generalizations}. 2016. \href{https://arxiv.org/abs/1603.01257}{Author manuscript}.
+\bibitem{boyd2004} S. Boyd and L. Vandenberghe. \textit{Convex Optimization}. Cambridge University Press, 2004. \href{https://web.stanford.edu/~boyd/cvxbook/}{Author's book page}.
+\end{thebibliography}
+\end{document}

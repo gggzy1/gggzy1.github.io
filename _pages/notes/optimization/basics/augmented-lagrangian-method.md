@@ -1,5 +1,5 @@
 ---
-layout: note
+layout: academic-note
 title: "A Note on the Augmented Lagrangian Method"
 permalink: /notes/optimization/basics/augmented-lagrangian-method/
 math: true

@@ -1,5 +1,5 @@
 ---
-layout: note
+layout: academic-note
 title: "Optimization — Basics"
 permalink: /notes/optimization/basics/
 description: Foundations — well-posedness, duality, and constrained problem structure.
@@ -17,6 +17,5 @@ Foundational notes on existence of minimizers, Lagrangian duality, and the mathe
 ## Sibling tracks
 
 - [First-order methods](/notes/optimization/first-order/) — coming soon
-- [Stochastic optimization](/notes/optimization/stochastic/) — coming soon
 
 [Back to all notes](/notes/)

@@ -1,5 +1,5 @@
 ---
-layout: note
+layout: academic-note
 title: "Why Cones, Not Cylinders?"
 title_zh: "为什么优化研究锥，而不是柱体？"
 permalink: /notes/optimization/basics/why-cone/

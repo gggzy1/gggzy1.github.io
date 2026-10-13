@@ -1,0 +1,35 @@
+---
+layout: academic
+---
+<div
+  class="post note-page{% if page.bilingual %} note-bilingual{% endif %}"
+  {% if page.bilingual %}
+    data-bilingual="true"
+    data-default-lang="{{ page.default_lang | default: 'en' }}"
+    data-lang="{{ page.default_lang | default: 'en' }}"
+  {% endif %}
+>
+  {% if page.bilingual %}
+    <div class="note-lang-switch" role="group" aria-label="Language">
+      <button type="button" class="note-lang-btn" data-lang="en" aria-pressed="true">English</button>
+      <button type="button" class="note-lang-btn" data-lang="zh" aria-pressed="false">中文</button>
+    </div>
+  {% endif %}
+
+  <header class="post-header">
+    {% if page.bilingual %}
+      <h1 class="post-title lang-en">{{ page.title }}</h1>
+      <h1 class="post-title lang-zh">{{ page.title_zh | default: page.title }}</h1>
+    {% else %}
+      <h1 class="post-title">{{ page.title }}</h1>
+    {% endif %}
+  </header>
+
+  <article>
+    {{ content }}
+  </article>
+</div>
+
+{% if page.bilingual %}
+  <script src="{{ '/assets/js/note-lang.js' | relative_url }}" defer></script>
+{% endif %}

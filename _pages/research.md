@@ -3,7 +3,7 @@ layout: page
 title: Research
 permalink: /research/
 description: Research in optimization algorithms and economics and computation.
-nav: true
+nav: false
 nav_order: 2
 ---
 

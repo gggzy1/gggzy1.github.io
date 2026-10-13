@@ -1,5 +1,5 @@
 ---
-layout: note
+layout: academic-note
 title: "A Note on Stability-Based Generalization"
 permalink: /notes/generalization/stability-generalization/
 math: true

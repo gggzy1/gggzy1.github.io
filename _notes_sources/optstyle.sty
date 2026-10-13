@@ -1,0 +1,185 @@
+% =========================================================
+%  Optimization Notes Style Package (optstyle.sty)
+%  Revised for aesthetic and rigorous academic notes
+% =========================================================
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{optstyle}[2024/01/20 Optimization Notes Custom Style]
+
+% ---------------------------------------------------------
+% 1. Dependencies
+% ---------------------------------------------------------
+\RequirePackage[utf8]{inputenc}
+\RequirePackage[T1]{fontenc}
+\RequirePackage{amsmath, amssymb, amsthm, amsfonts}
+\RequirePackage{mathrsfs}
+\RequirePackage{mathtools} % 改进数学排版
+\RequirePackage[margin=1in]{geometry}
+\RequirePackage{xcolor}
+\RequirePackage[colorlinks=true, linkcolor=thmcolor, citecolor=algcolor, urlcolor=thmcolor]{hyperref}
+\RequirePackage[nameinlink]{cleveref}
+\RequirePackage{fancyhdr}
+\RequirePackage{enumitem} % 更好的列表控制
+
+% ---------------------------------------------------------
+% 2. Color Palette (Professional Tone)
+% ---------------------------------------------------------
+\definecolor{thmcolor}{RGB}{0, 76, 153}     % Deep Blue - Theorem
+\definecolor{defcolor}{RGB}{0, 153, 153}    % Teal - Definition
+\definecolor{lemcolor}{RGB}{102, 51, 153}   % Deep Purple - Lemma/Corollary
+\definecolor{algcolor}{RGB}{204, 85, 0}     % Burnt Orange - Algorithm
+\definecolor{remcolor}{RGB}{80, 80, 80}     % Dark Gray - Remark
+\definecolor{intcolor}{RGB}{165, 42, 42}    % Burgundy - Interpretation/Insight
+
+% ---------------------------------------------------------
+% 3. tcolorbox Settings
+% ---------------------------------------------------------
+\RequirePackage[most]{tcolorbox}
+
+% --- Definition ---
+\newtcbtheorem[auto counter, number within=section]{definition}{Definition}{
+  enhanced,
+  attach boxed title to top left={xshift=5mm,yshift=-3mm},
+  colback=white, 
+  colframe=defcolor,
+  colbacktitle=defcolor,
+  coltitle=white,
+  fonttitle=\bfseries\sffamily,
+  boxed title style={size=small,colframe=defcolor,sharp corners},
+  rounded corners,
+  arc=3mm,
+  boxrule=1pt,
+  separator sign none,
+  description font=\mdseries\itshape
+}{def}
+
+% --- Theorem ---
+\newtcbtheorem[auto counter, number within=section]{theorem}{Theorem}{
+  enhanced,
+  attach boxed title to top left={xshift=5mm,yshift=-3mm},
+  colback=blue!3!white,
+  colframe=thmcolor,
+  colbacktitle=thmcolor,
+  coltitle=white,
+  fonttitle=\bfseries\sffamily,
+  boxed title style={size=small,colframe=thmcolor,sharp corners=downhill},
+  sharp corners=downhill,
+  arc=3mm,
+  boxrule=1pt,
+  drop fuzzy shadow=black!30!white,
+  separator sign dash
+}{thm}
+
+% --- Lemma/Corollary ---
+\newtcbtheorem[auto counter, number within=section]{corollary}{Corollary}{
+  enhanced,
+  attach boxed title to top left={xshift=5mm,yshift=-3mm},
+  colback=lemcolor!5!white,
+  colframe=lemcolor,
+  colbacktitle=lemcolor,
+  coltitle=white,
+  fonttitle=\bfseries\sffamily,
+  boxed title style={size=small,colframe=lemcolor},
+  arc=3mm,
+  boxrule=1pt,
+  separator sign dash
+}{cor}
+\newtcbtheorem[auto counter, number within=section]{lemma}{lemma}{
+  enhanced,
+  attach boxed title to top left={xshift=5mm,yshift=-3mm},
+  colback=lemcolor!5!white,
+  colframe=lemcolor,
+  colbacktitle=lemcolor,
+  coltitle=white,
+  fonttitle=\bfseries\sffamily,
+  boxed title style={size=small,colframe=lemcolor},
+  arc=3mm,
+  boxrule=1pt,
+  separator sign dash
+}{lem}
+% --- Remark (For supplementary info) ---
+\newtcolorbox{remark}[1][]{
+  enhanced,
+  breakable,
+  colback=gray!5!white,
+  colframe=remcolor,
+  coltitle=remcolor,
+  title={\textbf{Remark.}},
+  fonttitle=\bfseries\sffamily,
+  attach title to upper,
+  after title={\ },
+  boxrule=0pt,
+  leftrule=3mm,
+  arc=0mm,
+  sharp corners,
+  parbox=false,
+  #1
+}
+
+% --- Interpretation (For Intuition/Takeaway) ---
+\newtcolorbox{interpretation}[1][]{
+  enhanced,
+  breakable,
+  colback=white,
+  colframe=intcolor,
+  coltitle=intcolor,
+  title={\textbf{Interpretation \& Insight.}},
+  fonttitle=\bfseries\sffamily,
+  attach title to upper,
+  after title={\ },
+  boxrule=0pt,
+  rightrule=3mm,
+  arc=0mm,
+  sharp corners,
+  parbox=false,
+  #1
+}
+
+% ---------------------------------------------------------
+% 4. Algorithm Environment
+% ---------------------------------------------------------
+\RequirePackage{algorithm}
+\RequirePackage{algpseudocode}
+
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+
+% Algorithm Box
+\newtcolorbox{algobox}[2][]{
+  enhanced,
+  colback=white,
+  colframe=algcolor,
+  coltitle=white,
+  title={\textbf{#2}},
+  fonttitle=\bfseries\sffamily,
+  attach boxed title to top center={yshift=-3mm},
+  boxed title style={colframe=algcolor, colback=algcolor, rounded corners},
+  arc=4mm,
+  boxrule=1pt,
+  drop lifted shadow,
+  #1
+}
+
+% ---------------------------------------------------------
+% 5. Proof Environment
+% ---------------------------------------------------------
+\renewenvironment{proof}[1][\proofname]{%
+  \par\pushQED{\qed}\normalfont%
+  \topsep6\p@\@plus6\p@ \trivlist%
+  \item[\hskip\labelsep\bfseries\sffamily\color{thmcolor}#1\@addpunct{.}]\ignorespaces%
+}{%
+  \popQED\endtrivlist\@endpefalse%
+}
+\renewcommand\qedsymbol{\textcolor{thmcolor}{$\blacksquare$}}
+
+% ---------------------------------------------------------
+% 6. Header/Footer
+% ---------------------------------------------------------
+\pagestyle{fancy}
+\fancyhf{}
+\setlength{\headheight}{15pt}
+\fancyhead[L]{\sffamily\footnotesize \slshape Learning Notes}
+\fancyhead[R]{\sffamily\footnotesize \leftmark}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.5pt}
+
+\endinput
