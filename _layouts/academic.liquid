@@ -8,7 +8,7 @@
       {% if page.title and page.title != 'Home' %}{{ page.title | escape }} — {% endif %}
       Zhiyun Guo
     </title>
-    <link rel="stylesheet" href="{{ '/assets/css/academic.css' | relative_url }}">
+    <link rel="stylesheet" href="{{ '/assets/css/academic.css' | relative_url | bust_file_cache }}">
     {% if page.math %}
       <script>
         window.MathJax = {
