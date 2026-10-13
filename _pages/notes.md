@@ -24,10 +24,10 @@ wide: true
     <p class="eyebrow">WORKING NOTES</p>
     <h2 id="working-notes-heading">PDF notes</h2>
     <ul class="notes-list">
-      <li><a href="/assets/pdf/notes/black-box-optimization.pdf?v=20261013"><span class="notes-title">Black-Box Optimization</span><span class="notes-meta">PDF</span></a></li>
-      <li><a href="/assets/pdf/notes/local-methods.pdf?v=20261013"><span class="notes-title">Local Methods in Unconstrained Minimization</span><span class="notes-meta">PDF</span></a></li>
-      <li><a href="/assets/pdf/notes/first-order-methods.pdf?v=20261013"><span class="notes-title">First-Order Methods: Iteration and Oracle Complexity</span><span class="notes-meta">PDF</span></a></li>
-      <li><a href="/assets/pdf/notes/fisher-markets.pdf?v=20261013"><span class="notes-title">Fisher Markets and Convex Programming</span><span class="notes-meta">PDF</span></a></li>
+      <li><a href="/assets/pdf/notes/black-box-optimization.pdf?v=20261013">Black-Box Optimization</a><span class="notes-meta">PDF</span></li>
+      <li><a href="/assets/pdf/notes/local-methods.pdf?v=20261013">Local Methods in Unconstrained Minimization</a><span class="notes-meta">PDF</span></li>
+      <li><a href="/assets/pdf/notes/first-order-methods.pdf?v=20261013">First-Order Methods: Iteration and Oracle Complexity</a><span class="notes-meta">PDF</span></li>
+      <li><a href="/assets/pdf/notes/fisher-markets.pdf?v=20261013">Fisher Markets and Convex Programming</a><span class="notes-meta">PDF</span></li>
     </ul>
   </section>
 </div>

@@ -14,25 +14,23 @@ nav_order: 1
 
     <p>I'm currently working as a research assistant with the <a href="https://iic.sjtu.edu.cn/institute-overview/introduction">Institute of Intelligent Computing</a> at <a href="https://www.acem.sjtu.edu.cn/en/about.html">Antai College of Economics and Management</a>, Shanghai Jiao Tong University (SJTU), where I've been fortunate to learn from and work with Professors <a href="https://web.stanford.edu/~yyye/index.html">Yinyu Ye</a>, <a href="https://acem.sjtu.edu.cn/en/faculty/gedongdong.html">Dongdong Ge</a>, and <a href="https://www.acem.sjtu.edu.cn/en/faculty/dengqi.html">Qi Deng</a>.</p>
 
-    <p>I enjoy clearing my thoughts by writing things down. Here are some <a href="/notes/">notes</a> on what I've been reading and studying. Thanks for dropping by!</p>
-
-    <p class="contact-links"><a href="mailto:gzy7777@sjtu.edu.cn">Email</a><a href="mailto:gzy7777@sjtu.edu.cn?subject=CV%20request" title="Request CV by email">CV</a><a href="https://github.com/gggzy1">GitHub</a></p>
-  </section>
-
-  <aside class="home-aside" aria-label="Research interests and selected writing">
-    <p class="eyebrow">RESEARCH INTERESTS</p>
-    <h2>Mathematical optimization</h2>
+    <p class="topics-intro">My current interest lies in optimization. Several topics I'm exploring:</p>
     <ul class="interest-list">
       <li>Stochastic optimization</li>
       <li>Large-scale optimization</li>
-      <li>Economics and computation</li>
+      <li>Economics and computation (EconCS)</li>
     </ul>
-    <div class="aside-rule"></div>
-    <p class="eyebrow">SELECTED WRITING</p>
-    <a class="aside-note" href="/notes/optimization/what-is-optimization/">
-      <strong>What We Talk About When We Talk About Optimization</strong>
-      <span>Read the essay <span aria-hidden="true">&rarr;</span></span>
-    </a>
+
+    <p>I enjoy clearing my thoughts by writing things down. Here are some <a href="/notes/">notes</a> on what I've been reading and studying. Thanks for dropping by!</p>
+  </section>
+
+  <aside class="home-aside" aria-label="Portrait and contact links">
+    <img class="home-portrait" src="/assets/img/prof_pic.svg" alt="Abstract illustration of an optimization path" width="200" height="200">
+    <ul class="home-contact-list">
+      <li><a href="mailto:gzy7777@sjtu.edu.cn">Email</a></li>
+      <li><a href="mailto:gzy7777@sjtu.edu.cn?subject=CV%20request" title="Request CV by email">CV</a></li>
+      <li><a href="https://github.com/gggzy1">GitHub</a></li>
+    </ul>
   </aside>
 </div>
 
