@@ -25,7 +25,6 @@ nav_order: 1
   </section>
 
   <aside class="home-aside" aria-label="Portrait and contact links">
-    <img class="home-portrait" src="/assets/img/prof_pic.svg" alt="Abstract illustration of an optimization path" width="200" height="200">
     <ul class="home-contact-list">
       <li><a href="mailto:gzy7777@sjtu.edu.cn">Email</a></li>
       <li><a href="mailto:gzy7777@sjtu.edu.cn?subject=CV%20request" title="Request CV by email">CV</a></li>
