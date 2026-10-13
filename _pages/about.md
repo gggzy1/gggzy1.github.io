@@ -14,7 +14,7 @@ nav_order: 1
 
     <p>I'm currently working as a research assistant with the <a href="https://iic.sjtu.edu.cn/institute-overview/introduction">Institute of Intelligent Computing</a> at <a href="https://www.acem.sjtu.edu.cn/en/about.html">Antai College of Economics and Management</a>, Shanghai Jiao Tong University (SJTU), where I've been fortunate to learn from and work with Professors <a href="https://web.stanford.edu/~yyye/index.html">Yinyu Ye</a>, <a href="https://acem.sjtu.edu.cn/en/faculty/gedongdong.html">Dongdong Ge</a>, and <a href="https://www.acem.sjtu.edu.cn/en/faculty/dengqi.html">Qi Deng</a>.</p>
 
-    <p class="topics-intro">My current interest lies in optimization. Several topics I'm exploring:</p>
+    <p class="topics-intro">My current interest lies in <strong>optimization</strong>. Several topics I'm exploring:</p>
     <ul class="interest-list">
       <li>Stochastic optimization</li>
       <li>Large-scale optimization</li>
