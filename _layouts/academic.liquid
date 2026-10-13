@@ -54,7 +54,9 @@
           <a href="mailto:gzy7777@sjtu.edu.cn?subject=CV%20request" title="Request CV by email">CV</a>
         </nav>
       </header>
-      <main>
+      <main
+        class="{% if page.title == 'Home' %}home-main{% elsif page.wide %}wide-main{% else %}reading-main{% endif %}"
+      >
         {% if page.show_title %}
           <h1>{{ page.title | escape }}</h1>
         {% endif %}

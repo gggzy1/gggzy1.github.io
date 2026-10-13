@@ -8,19 +8,33 @@ nav: true
 nav_order: 1
 ---
 
-Hi! I'm Zhiyun from [Shanghai Jiao Tong University](https://en.sjtu.edu.cn/). I'm a senior undergraduate majoring in Big Data & Management Science and minoring in Computer Science.
+<div class="home-grid">
+  <section class="home-copy" aria-label="About">
+    <p>Hi! I'm Zhiyun from <a href="https://en.sjtu.edu.cn/">Shanghai Jiao Tong University</a>. I'm a senior undergraduate majoring in Big Data &amp; Management Science and minoring in Computer Science.</p>
 
-I'm currently working as a research assistant with the [Institute of Intelligent Computing](https://iic.sjtu.edu.cn/institute-overview/introduction) at [Antai College of Economics and Management](https://www.acem.sjtu.edu.cn/en/about.html), Shanghai Jiao Tong University (SJTU), where I've been fortunate to learn from and work with Professors [Yinyu Ye](https://web.stanford.edu/~yyye/index.html), [Dongdong Ge](https://acem.sjtu.edu.cn/en/faculty/gedongdong.html), and [Qi Deng](https://www.acem.sjtu.edu.cn/en/faculty/dengqi.html).
+    <p>I'm currently working as a research assistant with the <a href="https://iic.sjtu.edu.cn/institute-overview/introduction">Institute of Intelligent Computing</a> at <a href="https://www.acem.sjtu.edu.cn/en/about.html">Antai College of Economics and Management</a>, Shanghai Jiao Tong University (SJTU), where I've been fortunate to learn from and work with Professors <a href="https://web.stanford.edu/~yyye/index.html">Yinyu Ye</a>, <a href="https://acem.sjtu.edu.cn/en/faculty/gedongdong.html">Dongdong Ge</a>, and <a href="https://www.acem.sjtu.edu.cn/en/faculty/dengqi.html">Qi Deng</a>.</p>
 
-<p class="topics-intro">My current interests include mathematical optimization. A few topics I am exploring:</p>
+    <p>I enjoy clearing my thoughts by writing things down. Here are some <a href="/notes/">notes</a> on what I've been reading and studying. Thanks for dropping by!</p>
 
-- Stochastic optimization
-- Large-scale optimization
-- Economics and computation (EconCS)
+    <p class="contact-links"><a href="mailto:gzy7777@sjtu.edu.cn">Email</a><a href="mailto:gzy7777@sjtu.edu.cn?subject=CV%20request" title="Request CV by email">CV</a><a href="https://github.com/gggzy1">GitHub</a></p>
+  </section>
 
-I enjoy clearing my thoughts by writing things down. Here are some [notes](/notes/) on what I've been reading and studying. Thanks for dropping by!
-
-<p class="contact-links"><a href="mailto:gzy7777@sjtu.edu.cn">Email</a> · <a href="mailto:gzy7777@sjtu.edu.cn?subject=CV%20request" title="Request CV by email">CV</a> · <a href="https://github.com/gggzy1">GitHub</a></p>
+  <aside class="home-aside" aria-label="Research interests and selected writing">
+    <p class="eyebrow">RESEARCH INTERESTS</p>
+    <h2>Mathematical optimization</h2>
+    <ul class="interest-list">
+      <li>Stochastic optimization</li>
+      <li>Large-scale optimization</li>
+      <li>Economics and computation</li>
+    </ul>
+    <div class="aside-rule"></div>
+    <p class="eyebrow">SELECTED WRITING</p>
+    <a class="aside-note" href="/notes/optimization/what-is-optimization/">
+      <strong>What We Talk About When We Talk About Optimization</strong>
+      <span>Read the essay <span aria-hidden="true">&rarr;</span></span>
+    </a>
+  </aside>
+</div>
 
 <section class="news" aria-labelledby="news-heading">
   <h2 id="news-heading">News</h2>
