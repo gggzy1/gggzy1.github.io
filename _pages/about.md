@@ -45,7 +45,7 @@ nav_order: 1
   <h2 id="news-heading">News</h2>
   <dl class="news-list">
     <dt><time datetime="2026-06">Jun 2026</time></dt>
-    <dd>Our paper, “<a href="https://arxiv.org/abs/2606.23985">Rationalizing collective revealed preferences with an application in fair resource allocation</a>” (<a href="https://bzhangcw.io/">Chuwen Zhang</a>, <strong>Zhiyun Guo</strong>, <a href="https://sds.cuhk.edu.cn/en/teacher/59">Zizhuo Wang</a>, and <a href="https://web.stanford.edu/~yyye/index.html">Yinyu Ye</a>) is now up on <a href="https://arxiv.org/abs/2606.23985">arXiv</a>.</dd>
+    <dd>Our paper, “Rationalizing collective revealed preferences with an application in fair resource allocation” (<a href="https://bzhangcw.io/">Chuwen Zhang</a>, <strong>Zhiyun Guo</strong>, <a href="https://sds.cuhk.edu.cn/en/teacher/59">Zizhuo Wang</a>, and <a href="https://web.stanford.edu/~yyye/index.html">Yinyu Ye</a>) is now up on <a href="https://arxiv.org/abs/2606.23985">arXiv</a>.</dd>
     <dt><time datetime="2024-07">Jul 2024</time></dt>
     <dd>I interned at <a href="https://www.shanshu.ai/">Cardinal Operations</a> from July 2024 to March 2025, working on large language models for operations research.</dd>
   </dl>
