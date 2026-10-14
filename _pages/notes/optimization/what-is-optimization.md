@@ -65,7 +65,7 @@ Boundedness of $X$ and boundedness of the objective value are different properti
 
 Smoothness describes how regularly the objective changes and supports derivative-based methods when the required derivatives exist. Lipschitz continuity, differentiability, and a Lipschitz gradient are different assumptions.
 
-Convexity describes another aspect of the problem. In convex minimization, the feasible set is convex and the objective is convex on that set; local minimizers are then global minimizers. Convexity and smoothness need not come together: $|x|$ is convex but not differentiable at zero, while $\sin x$ is smooth but not convex on $\mathbb R$.
+Convexity describes another aspect of the problem. In convex minimization, the feasible set is convex and the objective is convex on that set; local minimizers are then global minimizers. Convexity and smoothness need not come together: $\lvert x\rvert$ is convex but not differentiable at zero, while $\sin x$ is smooth but not convex on $\mathbb R$.
 
 ### Deterministic and Stochastic Problems
 
