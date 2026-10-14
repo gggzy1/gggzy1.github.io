@@ -8,7 +8,7 @@ nav: true
 nav_order: 2
 ---
 
-Writing helps me slow down and work through the details. I keep some notes here on questions that come up in my reading.
+Writing helps me slow down and work through the details. I keep some notes here on questions that come up in my reading :).
 
 ## Optimization
 

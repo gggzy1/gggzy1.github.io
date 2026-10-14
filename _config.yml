@@ -222,6 +222,7 @@ exclude:
   - package.json
   - package-lock.json
   - _pages/about_einstein.md
+  - assets/rendercv/rendercv_output/Albert_Einstein_CV.pdf
   - purgecss.config.js
   - README.md
   - readme_preview/
