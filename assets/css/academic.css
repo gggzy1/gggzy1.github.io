@@ -318,6 +318,16 @@ mjx-container[display="true"] {
   padding: 2px 0 0 27px;
   border-left: 1px solid var(--rule);
 }
+.home-portrait {
+  width: min(100%, 200px);
+  margin: 0 0 16px;
+}
+.home-portrait img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 3px;
+}
 .eyebrow {
   color: var(--muted);
   font: 11px/1.5 var(--sans);
@@ -341,13 +351,31 @@ mjx-container[display="true"] {
 .home-contact-list li {
   margin: 0;
 }
-.home-contact-list a {
-  color: var(--muted);
-  text-decoration: none;
-}
-.home-contact-list a:hover {
+.home-contact-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
   color: var(--link);
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+.home-contact-link svg {
+  width: 15px;
+  height: 15px;
+  flex: none;
+  fill: none;
+  stroke: var(--muted);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.25;
+}
+.home-contact-link[href^="https://github.com"] svg {
+  fill: var(--muted);
+  stroke: none;
+}
+.home-contact-link:hover span {
   text-decoration: underline;
+  text-underline-offset: 2px;
 }
 .news {
   margin-top: 50px;
