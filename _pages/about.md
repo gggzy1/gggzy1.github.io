@@ -10,7 +10,7 @@ nav_order: 1
 
 <div class="home-grid">
   <section class="home-copy" aria-label="About">
-    <p>Hi! I'm Zhiyun from <a href="https://en.sjtu.edu.cn/">Shanghai Jiao Tong University</a>. I'm a senior undergraduate majoring in Big Data &amp; Management Science and minoring in Computer Science.</p>
+    <p>Hi! I'm Zhiyun, a senior undergraduate at <a href="https://en.sjtu.edu.cn/">Shanghai Jiao Tong University</a>.</p>
 
     <p>I'm currently working as a research assistant with the <a href="https://iic.sjtu.edu.cn/institute-overview/introduction">Institute of Intelligent Computing</a> at <a href="https://www.acem.sjtu.edu.cn/en/about.html">Antai College of Economics and Management</a>, Shanghai Jiao Tong University (SJTU), where I've been fortunate to learn from and work with Prof <a href="https://web.stanford.edu/~yyye/index.html">Yinyu Ye</a>, Prof <a href="https://acem.sjtu.edu.cn/en/faculty/gedongdong.html">Dongdong Ge</a> and Prof <a href="https://www.acem.sjtu.edu.cn/en/faculty/dengqi.html">Qi Deng</a>.</p>
 
